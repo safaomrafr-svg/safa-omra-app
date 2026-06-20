@@ -12,78 +12,351 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="SAFA OMRA">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&display=swap">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { height:100%; width:100%; overflow:hidden; background:#1A6B4A; }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --vert:#1A6B4A; --vert-l:#E1F5EE; --vert-m:#0F6E56;
+    --or:#C9A84C;   --or-l:#FBF3E0;   --or-m:#A07828;
+    --bg:#E8DCCB;   --surface:#FFFFFF;
+    --border:#D4C5AC; --border2:#B8A688;
+    --txt:#1C1C1A;  --txt2:#6B6760;   --txt3:#9B9791;
+    --rouge:#B23A2E; --orange:#C8853E;
+    --r:12px; --rs:8px;
+  }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--txt); min-height:100vh; -webkit-tap-highlight-color:transparent; }
 
-  /* L'app Apps Script en plein écran */
-  #app {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    border:none;
-    display:none;
-  }
+  /* Splash de chargement */
+  #splash { position:fixed; inset:0; background:var(--vert); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1000; color:#fff; transition:opacity .4s; }
+  #splash img { width:110px; height:110px; border-radius:24px; margin-bottom:22px; box-shadow:0 4px 24px rgba(0,0,0,.3); animation:pulse 1.6s ease-in-out infinite; }
+  #splash h1 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; letter-spacing:.04em; margin-bottom:6px; }
+  #splash p { font-size:13px; opacity:.7; }
+  @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:.85} }
 
-  /* Écran de chargement (logo) affiché le temps que le dashboard charge */
-  #splash {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:#1A6B4A;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-family:'Helvetica Neue',sans-serif;
-    z-index:10;
-  }
-  #splash img {
-    width:120px; height:120px;
-    border-radius:24px;
-    margin-bottom:24px;
-    box-shadow:0 4px 24px rgba(0,0,0,0.3);
-    animation:pulse 1.6s ease-in-out infinite;
-  }
-  #splash h1 { font-size:24px; font-weight:700; letter-spacing:0.05em; margin-bottom:8px; }
-  #splash p  { font-size:14px; opacity:0.7; }
-  @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.05);opacity:0.85;} }
+  .topbar { background:var(--vert); padding:14px 20px; display:flex; align-items:center; gap:14px; }
+  .topbar-icon { width:54px; height:54px; background:#fff; border-radius:var(--rs); display:flex; align-items:center; justify-content:center; overflow:hidden; padding:4px; flex-shrink:0; }
+  .topbar-icon img { width:100%; height:100%; object-fit:contain; }
+  .topbar-title { color:#fff; font-size:16px; font-weight:600; }
+  .topbar-sub { color:rgba(255,255,255,.6); font-size:12px; margin-top:2px; }
+  .topbar-right { margin-left:auto; color:rgba(255,255,255,.5); font-size:11px; text-align:right; }
+
+  .wrap { max-width:920px; margin:0 auto; padding:22px 16px 48px; }
+
+  .breadcrumb { font-size:12px; color:var(--txt3); min-height:20px; margin-bottom:6px; }
+  .breadcrumb b { color:var(--txt2); font-weight:500; }
+
+  .back-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; color:var(--txt2); cursor:pointer; padding:6px 12px; border:1px solid var(--border2); border-radius:var(--rs); background:var(--surface); margin-bottom:16px; }
+  .back-btn:hover { background:var(--border); }
+
+  .section-lbl { font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--txt3); margin-bottom:12px; }
+
+  .view { display:none; }
+  .view.active { display:block; animation:fade .3s ease; }
+  @keyframes fade { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  /* Voyages */
+  .grid-voyages { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .btn-voyage { display:flex; flex-direction:column; align-items:center; gap:8px; padding:18px 12px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); cursor:pointer; transition:background .12s,border-color .12s,transform .1s; text-align:center; width:100%; }
+  .btn-voyage:hover { background:var(--bg); border-color:var(--border2); }
+  .btn-voyage:active { transform:scale(.97); }
+  .v-ico { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .v-name { font-size:13px; font-weight:600; line-height:1.3; }
+  .v-sub { font-size:11px; color:var(--txt2); }
+  .pill { padding:3px 9px; border-radius:999px; font-size:10px; font-weight:600; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; width:100%; margin-top:2px; }
+  .stat-cell { background:var(--bg); border-radius:6px; padding:5px 6px; text-align:center; }
+  .stat-cell .val { font-size:15px; font-weight:600; }
+  .stat-cell .lbl { font-size:10px; color:var(--txt3); margin-top:1px; }
+  .val-vert { color:var(--vert); }
+  .val-or { color:var(--or-m); }
+
+  /* Actions */
+  .btn-action { display:flex; align-items:center; gap:14px; padding:18px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); cursor:pointer; text-decoration:none; transition:background .12s,border-color .12s,transform .1s; width:100%; text-align:left; margin-bottom:8px; }
+  .btn-action:hover { background:var(--bg); border-color:var(--border2); }
+  .btn-action:active { transform:scale(.98); }
+  .a-ico { width:44px; height:44px; border-radius:var(--rs); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .a-name { font-size:14px; font-weight:600; }
+  .a-desc { font-size:12px; color:var(--txt2); margin-top:3px; }
+  .a-arrow { margin-left:auto; font-size:18px; color:var(--txt3); }
+
+  /* Suivi */
+  .summary { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:4px; margin-bottom:20px; display:grid; grid-template-columns:repeat(3,1fr); }
+  .sum-cell { text-align:center; padding:14px 8px; position:relative; }
+  .sum-cell:not(:last-child)::after { content:""; position:absolute; right:0; top:20%; height:60%; width:1px; background:var(--border); }
+  .sum-val { font-family:'Cormorant Garamond',serif; font-size:23px; font-weight:700; color:var(--vert); line-height:1; }
+  .sum-val.rouge { color:var(--rouge); }
+  .sum-lbl { font-size:10px; letter-spacing:.4px; color:var(--txt3); margin-top:5px; text-transform:uppercase; }
+
+  .formules { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
+  .fcard { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; position:relative; overflow:hidden; }
+  .fcard-accent { position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .fcard-head { display:flex; align-items:center; gap:7px; margin-bottom:11px; }
+  .fcard-dot { width:9px; height:9px; border-radius:50%; }
+  .fcard-name { font-weight:700; font-size:14px; }
+  .fcard-count { font-size:10px; color:var(--txt3); margin-left:auto; }
+  .frow { display:flex; justify-content:space-between; font-size:13px; padding:3px 0; }
+  .frow .lbl { color:var(--txt2); }
+  .frow .val { font-weight:700; }
+
+  .filters { display:flex; gap:8px; margin-bottom:14px; }
+  .fbtn { padding:7px 15px; border-radius:22px; border:1.5px solid var(--border); background:var(--surface); font-size:12px; font-weight:600; color:var(--txt2); cursor:pointer; }
+  .fbtn.active { background:var(--vert); color:#fff; border-color:var(--vert); }
+
+  #pelerinsList { display:grid; grid-template-columns:1fr; gap:10px; }
+  .pelerin { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; position:relative; overflow:hidden; }
+  .pelerin-accent { position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .pelerin.solde .pelerin-accent { background:var(--vert); }
+  .pelerin.partiel .pelerin-accent { background:var(--orange); }
+  .pelerin.nonpaye .pelerin-accent { background:var(--rouge); }
+  .pelerin-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:4px; }
+  .pelerin-ref { font-weight:700; font-size:12px; word-break:break-all; }
+  .badge { font-size:10px; padding:4px 10px; border-radius:20px; font-weight:700; white-space:nowrap; flex-shrink:0; }
+  .badge.solde { background:#DEF0E6; color:var(--vert); }
+  .badge.partiel { background:#FBEEDD; color:var(--orange); }
+  .badge.nonpaye { background:#F7E0DC; color:var(--rouge); }
+  .pelerin-meta { font-size:11px; color:var(--txt3); margin-bottom:12px; }
+  .pelerin-money { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .money { text-align:center; background:var(--bg); border-radius:9px; padding:8px 4px; }
+  .money-val { font-size:14px; font-weight:700; }
+  .money-lbl { font-size:8px; color:var(--txt3); text-transform:uppercase; letter-spacing:.4px; margin-top:2px; }
+
+  .info-bar { margin-top:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--rs); padding:10px 14px; font-size:12px; color:var(--txt2); }
+  .info-bar a { color:var(--vert); text-decoration:none; font-weight:500; }
+  .mini-spin { display:inline-block; width:13px; height:13px; border:2px solid var(--border); border-top-color:var(--vert); border-radius:50%; animation:spin .7s linear infinite; vertical-align:-2px; }
+  .empty { text-align:center; padding:34px; color:var(--txt3); font-size:13px; background:var(--surface); border:1px solid var(--border); border-radius:14px; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  @media(max-width:420px){ .grid-voyages{grid-template-columns:1fr} }
+  @media(min-width:700px){ #pelerinsList{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 <body>
 
-<!-- Écran de chargement -->
+<!-- Splash -->
 <div id="splash">
   <img src="icon.png" alt="SAFA OMRA">
   <h1>SAFA OMRA</h1>
-  <p>Chargement du tableau de bord…</p>
+  <p>Chargement…</p>
 </div>
 
-<!-- Le dashboard Apps Script, chargé en plein écran -->
-<iframe id="app"
-  src="https://script.google.com/macros/s/AKfycbzs7fJffQ7j66HZFfFn0qGM7Dey8p376Eeokb9gepzSrsT-oH0VCwN6d1EHQnplDCbEVg/exec"
-  allow="clipboard-write">
-</iframe>
+<div class="topbar">
+  <div class="topbar-icon"><img src="icon.png" alt="SAFA OMRA"></div>
+  <div>
+    <div class="topbar-title">SAFA OMRA</div>
+    <div class="topbar-sub">L'autre vision de la Omra</div>
+  </div>
+  <div class="topbar-right" id="ts"></div>
+</div>
+
+<div class="wrap">
+  <div class="breadcrumb" id="bc"></div>
+
+  <!-- Vue 1 : voyages -->
+  <div class="view active" id="v-voyages">
+    <p class="section-lbl">Sélectionner un voyage</p>
+    <div class="grid-voyages" id="voyagesGrid"></div>
+  </div>
+
+  <!-- Vue 2 : actions -->
+  <div class="view" id="v-actions">
+    <span class="back-btn" onclick="go('voyages')">← Retour aux voyages</span>
+    <p class="section-lbl">Choisir une action</p>
+
+    <a class="btn-action" id="lnk-suivi" href="javascript:void(0)" onclick="openSuivi()">
+      <div class="a-ico" style="background:#E1F5EE">📊</div>
+      <div><div class="a-name">Suivi &amp; paiements</div><div class="a-desc">Pèlerins, montants encaissés et soldes à régler</div></div>
+      <span class="a-arrow">→</span>
+    </a>
+    <a class="btn-action" id="lnk-pre" href="#" target="_blank" rel="noopener">
+      <div class="a-ico" style="background:#E1F5EE">📋</div>
+      <div><div class="a-name">Pré-inscription</div><div class="a-desc">Enregistrer un nouveau voyageur</div></div>
+      <span class="a-arrow">↗</span>
+    </a>
+    <a class="btn-action" id="lnk-con" href="#" target="_blank" rel="noopener">
+      <div class="a-ico" style="background:#FBF3E0">🧾</div>
+      <div><div class="a-name">Confirmation &amp; facture</div><div class="a-desc">Finaliser une réservation et générer le PDF</div></div>
+      <span class="a-arrow">↗</span>
+    </a>
+  </div>
+
+  <!-- Vue 3 : suivi détaillé -->
+  <div class="view" id="v-suivi">
+    <span class="back-btn" onclick="go('actions')">← Retour</span>
+    <div id="suiviContent"><div class="empty"><span class="mini-spin"></span> Chargement du suivi…</div></div>
+  </div>
+
+  <div class="info-bar">
+    ℹ️ Données en temps réel depuis tes Google Sheets ·
+    <a href="javascript:location.reload()">🔄 Rafraîchir</a>
+  </div>
+</div>
 
 <script>
-  // Service worker (PWA)
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+// ⚙️ TON LIEN APPS SCRIPT (fournisseur de données)
+const API = "https://script.google.com/macros/s/AKfycbzs7fJffQ7j66HZFfFn0qGM7Dey8p376Eeokb9gepzSrsT-oH0VCwN6d1EHQnplDCbEVg/exec";
+
+// Liens des formulaires (mêmes paramètres que ton dashboard)
+const PLANNING = {
+  oct26:{id:"1L-SlQO_gKvd5Urt3QA51-zSjQIMsdGEvceh4ge-RDeA",c:"Omra confort octobre 2026",e:"omra Eco octobre 2026"},
+  dec26:{id:"1N5zXTIq44_r_ORmH2lZpn7O528-4Dwi5fDjoIkc_eZg",c:"Omra Confort decembre 2026",e:"Omra Eco decembre 2026"},
+  sha27:{id:"17z6AtIee59vYWU9BVWIww2xq1QqZbulxJZbyrUEapb4",c:"Omra Confort Chaabane 2027",e:"Omra Eco Chaabane 2027"},
+  ram27:{id:"1n8bcvZnD1933k2RsYUh9f5MkSfosxdikISYO_-HcI0M",c:"Omra Confort Ramadan 2027",e:"Omra Eco Ramadan 2027"}
+};
+const SCRIPT_PRE  = "https://script.google.com/macros/s/AKfycbweUWXKYozNVwkajFkwASL_oNPnflvpDQS8xrTKYzORqcaHG0LLu-wNgk9J2XZKrV58/exec";
+const SCRIPT_CONF = "https://script.google.com/macros/s/AKfycbzHWN15wIQaygB7UlIRSjvnlJxlSf1VU0LS0tv6tCHchX6BJuFsfsVarcLQOEasBQexug/exec";
+
+function formUrl(base, key){
+  const p = PLANNING[key];
+  return base + "?planning_id=" + p.id +
+    "&onglet_confort=" + encodeURIComponent(p.c) +
+    "&onglet_eco=" + encodeURIComponent(p.e);
+}
+
+const VOYAGES = [
+  {key:"oct26", name:"Omra Octobre 2026",  sub:"Vacances · du 20 au 30 oct",         ico:"🍂", bg:"#E1F5EE", pill:"Ouvert",        pc:"#0F6E56", pbg:"#E1F5EE"},
+  {key:"dec26", name:"Omra Décembre 2026", sub:"Vacances d'Hiver · Prix plus élevés", ico:"❄️", bg:"#E6F1FB", pill:"Ouvert",        pc:"#185FA5", pbg:"#E6F1FB"},
+  {key:"sha27", name:"Omra Chaabane 2027", sub:"Chaabane 1448 · Avant Ramadan",       ico:"🌙", bg:"#FAEEDA", pill:"À venir",        pc:"#854F0B", pbg:"#FAEEDA"},
+  {key:"ram27", name:"Omra Ramadan 2027",  sub:"Ramadan 1448 · Très demandé",         ico:"⭐", bg:"#EEEDFE", pill:"Prochainement", pc:"#534AB7", pbg:"#EEEDFE"}
+];
+
+let S = { key:null, name:null };
+let detailCache = {};
+
+// ── JSONP : appelle l'API sans bannière ──
+function jsonp(params){
+  return new Promise(function(resolve, reject){
+    const cb = "cb_" + Math.random().toString(36).slice(2);
+    const t = setTimeout(function(){ cleanup(); reject(new Error("timeout")); }, 15000);
+    function cleanup(){ clearTimeout(t); delete window[cb]; if(s.parentNode) s.parentNode.removeChild(s); }
+    window[cb] = function(data){ cleanup(); resolve(data); };
+    const s = document.createElement("script");
+    s.src = API + "?" + params + "&callback=" + cb;
+    s.onerror = function(){ cleanup(); reject(new Error("réseau")); };
+    document.body.appendChild(s);
+  });
+}
+
+function fmt(n){ return Number(n||0).toLocaleString('fr-FR') + ' €'; }
+function bClass(s){ return s==='soldé'?'solde':s==='partiel'?'partiel':'nonpaye'; }
+function bLabel(s){ return s==='soldé'?'Soldé':s==='partiel'?'Partiel':'Non payé'; }
+
+function go(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('v-'+view).classList.add('active');
+  document.getElementById('bc').innerHTML = S.name ? '<b>'+S.name+'</b>' : '';
+  window.scrollTo(0,0);
+}
+
+// Vue voyages
+function renderVoyages(stats){
+  document.getElementById('voyagesGrid').innerHTML = VOYAGES.map(function(v){
+    const st = stats[v.key] || {confort:0, eco:0};
+    return '<button class="btn-voyage" onclick="openActions(\''+v.key+'\',\''+v.name.replace(/'/g,"\\'")+'\')">' +
+      '<div class="v-ico" style="background:'+v.bg+'">'+v.ico+'</div>' +
+      '<div class="v-name">'+v.name+'</div>' +
+      '<div class="v-sub">'+v.sub+'</div>' +
+      '<span class="pill" style="background:'+v.pbg+';color:'+v.pc+'">'+v.pill+'</span>' +
+      '<div class="stats-grid">' +
+        '<div class="stat-cell"><div class="val val-vert">'+st.confort+'</div><div class="lbl">Confort</div></div>' +
+        '<div class="stat-cell"><div class="val val-or">'+st.eco+'</div><div class="lbl">Éco</div></div>' +
+      '</div></button>';
+  }).join('');
+}
+
+function openActions(key, name){
+  S.key = key; S.name = name;
+  document.getElementById('lnk-pre').href = formUrl(SCRIPT_PRE, key);
+  document.getElementById('lnk-con').href = formUrl(SCRIPT_CONF, key);
+  go('actions');
+}
+
+// Vue suivi
+function openSuivi(){
+  go('suivi');
+  document.getElementById('suiviContent').innerHTML = '<div class="empty"><span class="mini-spin"></span> Chargement du suivi…</div>';
+  if (detailCache[S.key]) { renderSuivi(detailCache[S.key]); return; }
+  jsonp("api=voyage&v=" + S.key)
+    .then(function(d){ detailCache[S.key] = d; renderSuivi(d); })
+    .catch(function(){ document.getElementById('suiviContent').innerHTML = '<div class="empty">Impossible de charger. Vérifie ta connexion et réessaie.</div>'; });
+}
+
+function renderSuivi(d){
+  if(d.error){ document.getElementById('suiviContent').innerHTML='<div class="empty">Erreur : '+d.error+'</div>'; return; }
+  const totPel = d.confort.pelerins + d.eco.pelerins;
+  const ac = d.confort.acompte + d.eco.acompte;
+  const re = d.confort.reste + d.eco.reste;
+
+  function fcard(name,color,f){
+    return '<div class="fcard"><div class="fcard-accent" style="background:'+color+'"></div>' +
+      '<div class="fcard-head"><span class="fcard-dot" style="background:'+color+'"></span>' +
+      '<span class="fcard-name">'+name+'</span><span class="fcard-count">'+f.pelerins+' pèl. · '+f.dossiers+' dos.</span></div>' +
+      '<div class="frow"><span class="lbl">Total facturé</span><span class="val">'+fmt(f.total)+'</span></div>' +
+      '<div class="frow"><span class="lbl">Encaissé</span><span class="val" style="color:var(--vert)">'+fmt(f.acompte)+'</span></div>' +
+      '<div class="frow"><span class="lbl">Restant dû</span><span class="val" style="color:'+(f.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmt(f.reste)+'</span></div></div>';
   }
 
-  // Quand le dashboard est chargé, on masque le splash et on affiche l'app
-  var app = document.getElementById('app');
-  app.addEventListener('load', function () {
-    document.getElementById('splash').style.display = 'none';
-    app.style.display = 'block';
-  });
+  let html =
+    '<p class="section-lbl">'+d.voyage+'</p>' +
+    '<div class="summary">' +
+      '<div class="sum-cell"><div class="sum-val">'+totPel+'</div><div class="sum-lbl">Pèlerins</div></div>' +
+      '<div class="sum-cell"><div class="sum-val">'+fmt(ac)+'</div><div class="sum-lbl">Encaissé</div></div>' +
+      '<div class="sum-cell"><div class="sum-val rouge">'+fmt(re)+'</div><div class="sum-lbl">Restant dû</div></div>' +
+    '</div>' +
+    '<p class="section-lbl">Par formule</p>' +
+    '<div class="formules">'+fcard('Confort','var(--or)',d.confort)+fcard('Éco','var(--vert)',d.eco)+'</div>' +
+    '<p class="section-lbl">Pèlerins</p>' +
+    '<div class="filters">' +
+      '<button class="fbtn active" onclick="filterPel(\'tous\',this)">Tous</button>' +
+      '<button class="fbtn" onclick="filterPel(\'confort\',this)">Confort</button>' +
+      '<button class="fbtn" onclick="filterPel(\'eco\',this)">Éco</button>' +
+    '</div><div id="pelerinsList"></div>';
 
-  // Sécurité : si jamais le 'load' ne se déclenche pas, on affiche quand même après 6s
-  setTimeout(function () {
-    document.getElementById('splash').style.display = 'none';
-    app.style.display = 'block';
-  }, 6000);
+  document.getElementById('suiviContent').innerHTML = html;
+  window._pel = d.pelerins;
+  renderPel('tous');
+}
+
+function renderPel(f){
+  const list = f==='tous' ? window._pel : window._pel.filter(function(p){ return p.formule===f; });
+  document.getElementById('pelerinsList').innerHTML = (!list || list.length===0)
+    ? '<div class="empty">Aucun pèlerin</div>'
+    : list.map(function(p){
+      return '<div class="pelerin '+bClass(p.statut)+'"><div class="pelerin-accent"></div>' +
+        '<div class="pelerin-head"><div class="pelerin-ref">'+p.ref+'</div>' +
+        '<div class="badge '+bClass(p.statut)+'">'+bLabel(p.statut)+'</div></div>' +
+        '<div class="pelerin-meta">'+(p.formule==='eco'?'Éco':'Confort')+' · '+p.nbVoy+' pèlerin(s)</div>' +
+        '<div class="pelerin-money">' +
+          '<div class="money"><div class="money-val">'+fmt(p.total)+'</div><div class="money-lbl">Total</div></div>' +
+          '<div class="money"><div class="money-val" style="color:var(--vert)">'+fmt(p.acompte)+'</div><div class="money-lbl">Versé</div></div>' +
+          '<div class="money"><div class="money-val" style="color:'+(p.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmt(p.reste)+'</div><div class="money-lbl">Reste</div></div>' +
+        '</div></div>';
+    }).join('');
+}
+
+function filterPel(f, btn){
+  document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderPel(f);
+}
+
+// ── Démarrage ──
+document.getElementById('ts').textContent =
+  new Date().toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+
+jsonp("api=stats")
+  .then(function(stats){
+    renderVoyages(stats);
+    const sp = document.getElementById('splash');
+    sp.style.opacity = '0';
+    setTimeout(function(){ sp.style.display='none'; }, 400);
+  })
+  .catch(function(){
+    renderVoyages({});
+    document.getElementById('splash').style.display='none';
+  });
 </script>
 </body>
 </html>
