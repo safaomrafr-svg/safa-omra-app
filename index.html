@@ -178,11 +178,11 @@
       <div><div class="a-name">Confirmation &amp; facture</div><div class="a-desc">Finaliser une réservation et générer le PDF</div></div>
       <span class="a-arrow">↗</span>
     </a>
-   <a class="btn-action" id="lnk-pai" href="#" target="_blank" rel="noopener">
-      <div class="a-ico" style="background:#E8F5E9">💰</div>
-      <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
-      <span class="a-arrow">↗</span>
-    </a>
+   <a class="btn-action" id="lnk-pai" href="javascript:void(0)" onclick="window.open(SCRIPT_PAI,'_blank')">
+  <div class="a-ico" style="background:#E8F5E9">💰</div>
+  <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
+  <span class="a-arrow">↗</span>
+</a>
   </div>
 
   <!-- Vue 3 : suivi détaillé -->
@@ -274,7 +274,6 @@ function openActions(key, name){
   S.key = key; S.name = name;
   document.getElementById('lnk-pre').href = formUrl(SCRIPT_PRE, key);
   document.getElementById('lnk-con').href = formUrl(SCRIPT_CONF, key);
-  document.getElementById('lnk-pai').href = SCRIPT_PAI;
   go('actions');
 }
 
