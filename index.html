@@ -274,6 +274,7 @@ function openActions(key, name){
   S.key = key; S.name = name;
   document.getElementById('lnk-pre').href = formUrl(SCRIPT_PRE, key);
   document.getElementById('lnk-con').href = formUrl(SCRIPT_CONF, key);
+  document.getElementById('lnk-pai').href = SCRIPT_PAI;
   go('actions');
 }
 
