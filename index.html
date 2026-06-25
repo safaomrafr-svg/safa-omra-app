@@ -330,7 +330,7 @@ function renderPel(f){
     ? '<div class="empty">Aucun pèlerin</div>'
     : list.map(function(p){
       return '<div class="pelerin '+bClass(p.statut)+'"><div class="pelerin-accent"></div>' +
-        '<div class="pelerin-head"><div class="pelerin-ref">'+p.ref+'</div>' +
+        '<div class="pelerin-ref">'+p.nomClient+' <span style="color:var(--txt3);font-weight:400;">#'+p.numRef+'</span></div>' +
         '<div class="badge '+bClass(p.statut)+'">'+bLabel(p.statut)+'</div></div>' +
         '<div class="pelerin-meta">'+(p.formule==='eco'?'Éco':'Confort')+' · '+p.nbVoy+' pèlerin(s)</div>' +
         '<div class="pelerin-money">' +
