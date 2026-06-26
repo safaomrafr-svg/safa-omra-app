@@ -330,10 +330,14 @@ function renderPel(f){
     ? '<div class="empty">Aucun pèlerin</div>'
     : list.map(function(p){
       return '<div class="pelerin '+bClass(p.statut)+'"><div class="pelerin-accent"></div>' +
-        '<div class="pelerin-ref">'+p.nomClient+' <span style="color:var(--txt3);font-weight:400;">#'+p.numRef+'</span></div>' +
-        '<div class="badge '+bClass(p.statut)+'">'+bLabel(p.statut)+'</div></div>' +
-        '<div class="pelerin-meta">'+(p.formule==='eco'?'Éco':'Confort')+' · '+p.nbVoy+' pèlerin(s)</div>' +
-        '<div class="pelerin-money">' +
+        '<div class="pelerin-head">' +
+          '<div>' +
+            '<div class="pelerin-ref">'+p.nomClient+' <span style="color:var(--txt3);font-weight:400;">#'+p.numRef+'</span></div>' +
+            '<div style="font-size:10px;color:var(--txt3);margin-top:2px;">'+(p.formule==='eco'?'Éco':'Confort')+'</div>' +
+          '</div>' +
+          '<div class="badge '+bClass(p.statut)+'">'+bLabel(p.statut)+'</div>' +
+        '</div>' +
+        '<div class="pelerin-money" style="margin-top:10px;">' +
           '<div class="money"><div class="money-val">'+fmt(p.total)+'</div><div class="money-lbl">Total</div></div>' +
           '<div class="money"><div class="money-val" style="color:var(--vert)">'+fmt(p.acompte)+'</div><div class="money-lbl">Versé</div></div>' +
           '<div class="money"><div class="money-val" style="color:'+(p.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmt(p.reste)+'</div><div class="money-lbl">Reste</div></div>' +
