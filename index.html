@@ -173,16 +173,11 @@
       <div><div class="a-name">Pré-inscription</div><div class="a-desc">Enregistrer un nouveau voyageur</div></div>
       <span class="a-arrow">↗</span>
     </a>
-    <a class="btn-action" id="lnk-con" href="#" target="_blank" rel="noopener">
-      <div class="a-ico" style="background:#FBF3E0">🧾</div>
-      <div><div class="a-name">Confirmation &amp; facture</div><div class="a-desc">Finaliser une réservation et générer le PDF</div></div>
+    <a class="btn-action" id="lnk-pai" href="#" target="_blank" rel="noopener">
+      <div class="a-ico" style="background:#E8F5E9">💰</div>
+      <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
       <span class="a-arrow">↗</span>
     </a>
-   <a class="btn-action" id="lnk-pai" href="#" target="_blank" rel="noopener">
-  <div class="a-ico" style="background:#E8F5E9">💰</div>
-  <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
-  <span class="a-arrow">↗</span>
-</a>
   </div>
 
   <!-- Vue 3 : suivi détaillé -->
@@ -201,7 +196,7 @@
 // ⚙️ TON LIEN APPS SCRIPT (fournisseur de données)
 const API = "https://script.google.com/macros/s/AKfycbzs7fJffQ7j66HZFfFn0qGM7Dey8p376Eeokb9gepzSrsT-oH0VCwN6d1EHQnplDCbEVg/exec";
 
-// Liens des formulaires (mêmes paramètres que ton dashboard)
+// Liens des formulaires
 const PLANNING = {
   oct26:{id:"1L-SlQO_gKvd5Urt3QA51-zSjQIMsdGEvceh4ge-RDeA",c:"Omra confort octobre 2026",e:"omra Eco octobre 2026"},
   dec26:{id:"1N5zXTIq44_r_ORmH2lZpn7O528-4Dwi5fDjoIkc_eZg",c:"Omra Confort decembre 2026",e:"Omra Eco decembre 2026"},
@@ -209,7 +204,6 @@ const PLANNING = {
   ram27:{id:"1n8bcvZnD1933k2RsYUh9f5MkSfosxdikISYO_-HcI0M",c:"Omra Confort Ramadan 2027",e:"Omra Eco Ramadan 2027"}
 };
 const SCRIPT_PRE  = "https://script.google.com/macros/s/AKfycbweUWXKYozNVwkajFkwASL_oNPnflvpDQS8xrTKYzORqcaHG0LLu-wNgk9J2XZKrV58/exec";
-const SCRIPT_CONF = "https://script.google.com/macros/s/AKfycbzHWN15wIQaygB7UlIRSjvnlJxlSf1VU0LS0tv6tCHchX6BJuFsfsVarcLQOEasBQexug/exec";
 const SCRIPT_PAI  = "https://script.google.com/macros/s/AKfycbwqbxXlMCEo0W0cdAz6kmUy5tEBnMFQ9uqFNwVDb4IYD745LX0qeRIy0Fl3DbbwFnskqQ/exec";
 
 function formUrl(base, key){
@@ -229,7 +223,6 @@ const VOYAGES = [
 let S = { key:null, name:null };
 let detailCache = {};
 
-// ── JSONP : appelle l'API sans bannière ──
 function jsonp(params){
   return new Promise(function(resolve, reject){
     const cb = "cb_" + Math.random().toString(36).slice(2);
@@ -254,7 +247,6 @@ function go(view){
   window.scrollTo(0,0);
 }
 
-// Vue voyages
 function renderVoyages(stats){
   document.getElementById('voyagesGrid').innerHTML = VOYAGES.map(function(v){
     const st = stats[v.key] || {confort:0, eco:0};
@@ -273,12 +265,10 @@ function renderVoyages(stats){
 function openActions(key, name){
   S.key = key; S.name = name;
   document.getElementById('lnk-pre').href = formUrl(SCRIPT_PRE, key);
-  document.getElementById('lnk-con').href = formUrl(SCRIPT_CONF, key);
   document.getElementById('lnk-pai').href = SCRIPT_PAI + "?voyage=" + key;
   go('actions');
 }
 
-// Vue suivi
 function openSuivi(){
   go('suivi');
   document.getElementById('suiviContent').innerHTML = '<div class="empty"><span class="mini-spin"></span> Chargement du suivi…</div>';
