@@ -1,7 +1,7 @@
-const CACHE = 'safa-omra-v10';
+const CACHE = 'safa-omra-v11';
 
 // Chemins RELATIFS (restent dans /safa-omra-app/)
-const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
+const ASSETS = ['./', './index.html', './manifest.json', './icon.png', './devis.html'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
