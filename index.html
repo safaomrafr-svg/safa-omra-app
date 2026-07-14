@@ -943,7 +943,7 @@ function dvRender(){
     const supp = dvGetSuppChambre(c.type);
     const pu = pAdulteBase + supp;
     const total = qty * pu; sousTotal += total;
-    const label = c.type==='Quadruple' ? 'Chambre Quadruple — Tarif adulte' : `Chambre ${c.type} — Tarif adulte (à partir de 12 ans)`;
+    const label = c.type==='Quadruple' ? 'Chambre Quadruple — Tarif adulte à partir de 12 ans' : `Chambre ${c.type} — Tarif adulte (à partir de 12 ans)`;
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${label}</td><td class="num">${qty}</td><td class="num">${dvFmt(pu)}</td><td class="num">${dvFmt(total)}</td>`;
     tbody.appendChild(tr);
