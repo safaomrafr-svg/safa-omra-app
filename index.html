@@ -58,7 +58,7 @@
   .tab-ico { font-size:18px; line-height:1; }
 
   /* ── Wrap ── */
-  .wrap { max-width:920px; margin:0 auto; padding:22px 16px 48px; }
+  .wrap { max-width:920px; margin:0 auto; padding:22px 16px 48px; overflow-x:hidden; }
 
   .breadcrumb { font-size:12px; color:var(--txt3); min-height:20px; margin-bottom:6px; }
   .breadcrumb b { color:var(--txt2); font-weight:500; }
@@ -235,13 +235,18 @@
     background:var(--paper);
     border:1px solid var(--line);
     border-radius:6px;
-    padding:38px 42px 30px;
+    padding:24px 18px 24px;
     box-shadow:0 10px 28px rgba(43,38,32,.08);
     max-width:720px;
     margin:0 auto;
+    overflow-x:hidden;
+    word-break:break-word;
+  }
+  @media(min-width:600px){
+    .dv-devis { padding:38px 42px 30px; }
   }
   .dv-arch { width:100%; height:22px; margin-bottom:18px; display:block; }
-  .dv-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--emerald); padding-bottom:14px; margin-bottom:18px; gap:14px; }
+  .dv-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--emerald); padding-bottom:14px; margin-bottom:18px; gap:10px; flex-wrap:wrap; }
   .dv-brand { display:flex; align-items:flex-start; gap:12px; }
   .dv-logo-slot { width:130px; height:73px; border-radius:0; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:transparent; color:var(--emerald-deep); font-family:'Fraunces',serif; font-weight:700; font-size:16px; overflow:hidden; cursor:pointer; border:none; padding:0; }
   .dv-logo-slot img { width:100%; height:100%; object-fit:contain; }
@@ -255,14 +260,20 @@
   .dv-ref-box { font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; color:var(--emerald-deep); background:rgba(201,168,76,.15); border:1px solid var(--gold); border-radius:5px; padding:3px 7px; display:inline-block; margin-bottom:5px; }
   .dv-meta-line { font-size:11px; color:#6b6355; margin:2px 0; }
 
-  .dv-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  .dv-info-grid { display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:18px; }
+  @media(min-width:500px){ .dv-info-grid { grid-template-columns:1fr 1fr; gap:18px; } }
   .dv-info-block h4 { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin:0 0 5px; font-weight:700; }
   .dv-info-block p  { font-size:13px; margin:2px 0; color:var(--ink); }
   .dv-info-block .muted { color:#948a78; font-size:11.5px; }
 
-  table.dv-price { width:100%; border-collapse:collapse; margin-bottom:5px; font-size:12.5px; }
-  table.dv-price thead th { text-align:left; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:#83796a; border-bottom:1px solid var(--line); padding:5px 3px; font-weight:600; }
-  table.dv-price td { padding:7px 3px; border-bottom:1px solid #f0ead9; }
+  table.dv-price { width:100%; border-collapse:collapse; margin-bottom:5px; font-size:11px; }
+  table.dv-price thead th { text-align:left; font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:#83796a; border-bottom:1px solid var(--line); padding:4px 2px; font-weight:600; }
+  table.dv-price td { padding:6px 2px; border-bottom:1px solid #f0ead9; }
+  @media(min-width:500px){
+    table.dv-price { font-size:12.5px; }
+    table.dv-price thead th { font-size:10px; padding:5px 3px; }
+    table.dv-price td { padding:7px 3px; }
+  }
   table.dv-price td.num, table.dv-price th.num { text-align:right; }
   table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
 
@@ -408,16 +419,17 @@
           </div>
 
           <div class="dv-cat-block">
-            <div class="dv-cat-title">Bébés (- 2 ans)</div>
+            <div class="dv-cat-title">Bébés (- 2 ans) — Prix fixe</div>
+            <div style="font-size:10.5px;color:var(--gold);margin-bottom:6px;">Prix forfaitaire indépendant du tarif adulte</div>
             <div class="dv-cat-sub">Sans lit à l'hôtel</div>
             <div class="dv-row2">
               <div><label style="margin:2px 0;">Qté</label><input id="dv-q-bebe-sl" type="number" min="0" value="0"></div>
-              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-bebe-sl" type="number" min="0" placeholder="0"></div>
+              <div><label style="margin:2px 0;">Prix fixe (€)</label><input id="dv-p-bebe-sl" type="number" min="0" value="300"></div>
             </div>
             <div class="dv-cat-sub">Avec lit à l'hôtel</div>
             <div class="dv-row2">
               <div><label style="margin:2px 0;">Qté</label><input id="dv-q-bebe-al" type="number" min="0" value="0"></div>
-              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-bebe-al" type="number" min="0" placeholder="0"></div>
+              <div><label style="margin:2px 0;">Prix fixe (€)</label><input id="dv-p-bebe-al" type="number" min="0" value="300"></div>
             </div>
           </div>
         </fieldset>
@@ -834,8 +846,9 @@ function dvAppliquerTarifs(){
   document.getElementById('dv-p-adulte').value = prixBase || '';
   document.getElementById('dv-p-enfant-sl').value = Math.max(0, prixBase - (Number(t.reducEnfantSansLit)||0)) || '';
   document.getElementById('dv-p-enfant-al').value = prixBase || '';
-  document.getElementById('dv-p-bebe-sl').value   = Math.max(0, prixBase - (Number(t.reducBebeSansLit)||0))   || '';
-  document.getElementById('dv-p-bebe-al').value   = Math.max(0, prixBase - (Number(t.reducBebeAvecLit)||0))   || '';
+  // Bébés : prix fixe 300 € par défaut (modifiable manuellement)
+  if(!document.getElementById('dv-p-bebe-sl').value) document.getElementById('dv-p-bebe-sl').value = 300;
+  if(!document.getElementById('dv-p-bebe-al').value) document.getElementById('dv-p-bebe-al').value = 300;
   const hint = document.getElementById('dv-hint-adulte');
   hint.textContent = prixAdulteBase
     ? (sansVol ? `Tarif ${dvCurrentFormule()} : ${dvFmt(prixAdulteBase)} — sans vol (−${dvFmt(vol)}) = ${dvFmt(prixBase)}` : `Tarif ${dvCurrentFormule()} : ${dvFmt(prixAdulteBase)}`)
@@ -1021,6 +1034,8 @@ document.getElementById('dv-btn-reset').addEventListener('click', () => {
   document.getElementById('dv-validite').value = 15;
   document.getElementById('dv-vol').checked = true;
   document.getElementById('dv-depart').value = '';
+  document.getElementById('dv-p-bebe-sl').value = 300;
+  document.getElementById('dv-p-bebe-al').value = 300;
   dvChambres = [{type:'Quadruple',qty:1}]; dvRenderChambresForm();
   dvSupplements = []; dvRenderSuppForm();
   document.getElementById('dv-ref').value = dvRandRef();
@@ -1080,8 +1095,9 @@ function dvBuildModal(){
           <div><label>Prix adulte (E4)</label><input type="number" min="0" data-cfg="${fid}" data-field="prixAdulte" value="${t.prixAdulte}"></div>
           <div><label>Valeur du vol (E6)</label><input type="number" min="0" data-cfg="${fid}" data-field="valeurVol" value="${t.valeurVol}"></div>
           <div><label>Réduc. enfant sans lit (H21)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducEnfantSansLit" value="${t.reducEnfantSansLit}"></div>
-          <div><label>Réduc. bébé sans lit (H22)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducBebeSansLit" value="${t.reducBebeSansLit}"></div>
-          <div><label>Réduc. bébé avec lit (H23)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducBebeAvecLit" value="${t.reducBebeAvecLit}"></div>
+          <div style="grid-column:1/-1;font-size:10.5px;color:var(--gold);background:#fffbf0;border:1px solid #e8dab8;border-radius:6px;padding:6px 8px;">
+            🍼 Bébés (- 2 ans) : prix fixe à renseigner directement dans le formulaire (par défaut 300 €). Pas de calcul automatique.
+          </div>
         </div>
         <div class="dv-modal-supp-title">Suppléments chambres (intégrés automatiquement)</div>
         <div class="dv-modal-supp-list" data-supp-list="${fid}"></div>`;
