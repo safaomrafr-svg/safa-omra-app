@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="SAFA OMRA">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
@@ -24,16 +24,26 @@
     --txt:#1C1C1A;  --txt2:#6B6760;   --txt3:#9B9791;
     --rouge:#B23A2E; --orange:#C8853E;
     --r:12px; --rs:8px;
+
+    /* Devis generator vars (mapped to PWA palette) */
+    --emerald:#1A6B4A;
+    --emerald-deep:#0F4531;
+    --beige:#F5F0E8;
+    --gold:#C9A84C;
+    --ink:#2B2620;
+    --paper:#FFFDF9;
+    --line:#E4DCC9;
   }
   body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--txt); min-height:100vh; -webkit-tap-highlight-color:transparent; }
 
-  /* Splash de chargement */
+  /* ── Splash ── */
   #splash { position:fixed; inset:0; background:var(--vert); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1000; color:#fff; transition:opacity .4s; }
   #splash img { width:110px; height:110px; border-radius:24px; margin-bottom:22px; box-shadow:0 4px 24px rgba(0,0,0,.3); animation:pulse 1.6s ease-in-out infinite; }
   #splash h1 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; letter-spacing:.04em; margin-bottom:6px; }
-  #splash p { font-size:13px; opacity:.7; }
+  #splash p  { font-size:13px; opacity:.7; }
   @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:.85} }
 
+  /* ── Topbar ── */
   .topbar { background:var(--vert); padding:14px 20px; display:flex; align-items:center; gap:14px; }
   .topbar-icon { width:54px; height:54px; background:#fff; border-radius:var(--rs); display:flex; align-items:center; justify-content:center; overflow:hidden; padding:4px; flex-shrink:0; }
   .topbar-icon img { width:100%; height:100%; object-fit:contain; }
@@ -41,81 +51,86 @@
   .topbar-sub { color:rgba(255,255,255,.6); font-size:12px; margin-top:2px; }
   .topbar-right { margin-left:auto; color:rgba(255,255,255,.5); font-size:11px; text-align:right; }
 
+  /* ── Tab bar ── */
+  .tab-bar { background:var(--vert); border-top:1px solid rgba(255,255,255,.12); display:flex; padding:0 20px; gap:0; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 6px 9px; color:rgba(255,255,255,.55); font-size:10px; font-weight:600; letter-spacing:.03em; cursor:pointer; border-bottom:2.5px solid transparent; transition:color .15s,border-color .15s; -webkit-tap-highlight-color:transparent; user-select:none; }
+  .tab.active { color:#fff; border-bottom-color:var(--or); }
+  .tab-ico { font-size:18px; line-height:1; }
+
+  /* ── Wrap ── */
   .wrap { max-width:920px; margin:0 auto; padding:22px 16px 48px; }
 
   .breadcrumb { font-size:12px; color:var(--txt3); min-height:20px; margin-bottom:6px; }
   .breadcrumb b { color:var(--txt2); font-weight:500; }
-
   .back-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; color:var(--txt2); cursor:pointer; padding:6px 12px; border:1px solid var(--border2); border-radius:var(--rs); background:var(--surface); margin-bottom:16px; }
   .back-btn:hover { background:var(--border); }
-
   .section-lbl { font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--txt3); margin-bottom:12px; }
 
+  /* ── Views ── */
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; animation:fade .25s ease; }
   .view { display:none; }
-  .view.active { display:block; animation:fade .3s ease; }
-  @keyframes fade { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  .view.active { display:block; animation:fade .25s ease; }
+  @keyframes fade { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
 
-  /* Voyages */
+  /* ── Voyages ── */
   .grid-voyages { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .btn-voyage { display:flex; flex-direction:column; align-items:center; gap:8px; padding:18px 12px 14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); cursor:pointer; transition:background .12s,border-color .12s,transform .1s; text-align:center; width:100%; }
   .btn-voyage:hover { background:var(--bg); border-color:var(--border2); }
   .btn-voyage:active { transform:scale(.97); }
-  .v-ico { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .v-ico  { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; }
   .v-name { font-size:13px; font-weight:600; line-height:1.3; }
-  .v-sub { font-size:11px; color:var(--txt2); }
-  .pill { padding:3px 9px; border-radius:999px; font-size:10px; font-weight:600; }
+  .v-sub  { font-size:11px; color:var(--txt2); }
+  .pill   { padding:3px 9px; border-radius:999px; font-size:10px; font-weight:600; }
   .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; width:100%; margin-top:2px; }
-  .stat-cell { background:var(--bg); border-radius:6px; padding:5px 6px; text-align:center; }
+  .stat-cell  { background:var(--bg); border-radius:6px; padding:5px 6px; text-align:center; }
   .stat-cell .val { font-size:15px; font-weight:600; }
   .stat-cell .lbl { font-size:10px; color:var(--txt3); margin-top:1px; }
   .val-vert { color:var(--vert); }
-  .val-or { color:var(--or-m); }
+  .val-or   { color:var(--or-m); }
 
-  /* Actions */
+  /* ── Actions ── */
   .btn-action { display:flex; align-items:center; gap:14px; padding:18px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); cursor:pointer; text-decoration:none; transition:background .12s,border-color .12s,transform .1s; width:100%; text-align:left; margin-bottom:8px; }
   .btn-action:hover { background:var(--bg); border-color:var(--border2); }
   .btn-action:active { transform:scale(.98); }
-  .a-ico { width:44px; height:44px; border-radius:var(--rs); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .a-ico  { width:44px; height:44px; border-radius:var(--rs); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
   .a-name { font-size:14px; font-weight:600; }
   .a-desc { font-size:12px; color:var(--txt2); margin-top:3px; }
   .a-arrow { margin-left:auto; font-size:18px; color:var(--txt3); }
 
-  /* Suivi */
+  /* ── Suivi ── */
   .summary { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:4px; margin-bottom:20px; display:grid; grid-template-columns:repeat(3,1fr); }
   .sum-cell { text-align:center; padding:14px 8px; position:relative; }
   .sum-cell:not(:last-child)::after { content:""; position:absolute; right:0; top:20%; height:60%; width:1px; background:var(--border); }
   .sum-val { font-family:'Cormorant Garamond',serif; font-size:23px; font-weight:700; color:var(--vert); line-height:1; }
   .sum-val.rouge { color:var(--rouge); }
   .sum-lbl { font-size:10px; letter-spacing:.4px; color:var(--txt3); margin-top:5px; text-transform:uppercase; }
-
   .formules { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
   .fcard { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; position:relative; overflow:hidden; }
   .fcard-accent { position:absolute; left:0; top:0; bottom:0; width:4px; }
   .fcard-head { display:flex; align-items:center; gap:7px; margin-bottom:11px; }
-  .fcard-dot { width:9px; height:9px; border-radius:50%; }
+  .fcard-dot  { width:9px; height:9px; border-radius:50%; }
   .fcard-name { font-weight:700; font-size:14px; }
   .fcard-count { font-size:10px; color:var(--txt3); margin-left:auto; }
   .frow { display:flex; justify-content:space-between; font-size:13px; padding:3px 0; }
   .frow .lbl { color:var(--txt2); }
   .frow .val { font-weight:700; }
-
   .filters { display:flex; gap:8px; margin-bottom:14px; }
   .fbtn { padding:7px 15px; border-radius:22px; border:1.5px solid var(--border); background:var(--surface); font-size:12px; font-weight:600; color:var(--txt2); cursor:pointer; }
   .fbtn.active { background:var(--vert); color:#fff; border-color:var(--vert); }
-
   #pelerinsList { display:grid; grid-template-columns:1fr; gap:10px; }
   .pelerin { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px; position:relative; overflow:hidden; }
   .pelerin-accent { position:absolute; left:0; top:0; bottom:0; width:4px; }
-  .pelerin.solde .pelerin-accent { background:var(--vert); }
+  .pelerin.solde   .pelerin-accent { background:var(--vert); }
   .pelerin.partiel .pelerin-accent { background:var(--orange); }
   .pelerin.nonpaye .pelerin-accent { background:var(--rouge); }
   .pelerin-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:4px; }
-  .pelerin-ref { font-weight:700; font-size:12px; word-break:break-all; }
+  .pelerin-ref  { font-weight:700; font-size:12px; word-break:break-all; }
   .badge { font-size:10px; padding:4px 10px; border-radius:20px; font-weight:700; white-space:nowrap; flex-shrink:0; }
-  .badge.solde { background:#DEF0E6; color:var(--vert); }
+  .badge.solde   { background:#DEF0E6; color:var(--vert); }
   .badge.partiel { background:#FBEEDD; color:var(--orange); }
   .badge.nonpaye { background:#F7E0DC; color:var(--rouge); }
-  .pelerin-meta { font-size:11px; color:var(--txt3); margin-bottom:12px; }
+  .pelerin-meta  { font-size:11px; color:var(--txt3); margin-bottom:12px; }
   .pelerin-money { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
   .money { text-align:center; background:var(--bg); border-radius:9px; padding:8px 4px; }
   .money-val { font-size:14px; font-weight:700; }
@@ -127,8 +142,154 @@
   .empty { text-align:center; padding:34px; color:var(--txt3); font-size:13px; background:var(--surface); border:1px solid var(--border); border-radius:14px; }
   @keyframes spin { to{transform:rotate(360deg)} }
 
-  @media(max-width:420px){ .grid-voyages{grid-template-columns:1fr} }
-  @media(min-width:700px){ #pelerinsList{grid-template-columns:1fr 1fr} }
+  /* ================================================================
+     GÉNÉRATEUR DE DEVIS — styles autonomes dans le tab-pane
+  ================================================================ */
+  #tab-devis {
+    /* reset de fond pour coller au look PWA */
+    background: transparent;
+  }
+
+  /* Layout principal du générateur : formulaire + aperçu côte à côte */
+  .dv-app {
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media(max-width:860px){ .dv-app{ grid-template-columns:1fr; } }
+
+  /* Panneau formulaire */
+  .dv-panel {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--r);
+    padding:18px;
+    position:sticky;
+    top:12px;
+  }
+  @media(max-width:860px){ .dv-panel{ position:static; } }
+  .dv-panel h2 { font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--emerald-deep); margin:0 0 2px; }
+  .dv-panel .dv-sub { font-size:12px; color:var(--txt2); margin-bottom:14px; }
+
+  /* Fieldsets & labels dans le générateur */
+  .dv-panel fieldset { border:none; padding:0; margin:0 0 14px; }
+  .dv-panel legend { font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; padding:0; display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .dv-panel label { display:block; font-size:12px; font-weight:500; color:#544c3d; margin:8px 0 3px; }
+  .dv-panel label:first-child { margin-top:0; }
+  .dv-panel input[type=text],.dv-panel input[type=number],.dv-panel input[type=email],.dv-panel input[type=tel],.dv-panel input[type=date],.dv-panel select,.dv-panel textarea {
+    width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:var(--rs); font-family:'Inter',sans-serif; font-size:13px; background:#fff; color:var(--ink);
+  }
+  .dv-panel input:focus,.dv-panel select:focus,.dv-panel textarea:focus { outline:2px solid var(--emerald); outline-offset:1px; border-color:var(--emerald); }
+  .dv-row2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .dv-row3 { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:6px; align-items:end; }
+
+  .dv-cat-block { background:#fbf8f1; border:1px solid var(--line); border-radius:9px; padding:9px 9px 3px; margin-bottom:8px; }
+  .dv-cat-title { font-size:11.5px; font-weight:700; color:var(--emerald-deep); margin-bottom:5px; }
+  .dv-cat-sub   { font-size:11px; color:#948a78; margin:5px 0 1px; }
+  .dv-price-hint { font-size:10.5px; color:var(--gold); font-weight:600; margin-top:2px; }
+
+  .dv-supp-row { display:grid; grid-template-columns:1fr 50px 78px 30px; gap:5px; margin-bottom:5px; align-items:center; }
+  .dv-supp-row input { padding:6px 5px; font-size:12.5px; }
+  .dv-btn-remove { background:#fff; border:1px solid var(--line); border-radius:6px; color:#a33; cursor:pointer; height:30px; font-size:13px; line-height:1; }
+  .dv-btn-add { margin-top:3px; background:transparent; border:1px dashed var(--emerald); color:var(--emerald-deep); font-size:12px; font-weight:600; padding:6px 9px; border-radius:var(--rs); cursor:pointer; width:100%; }
+  .dv-btn-add:hover { background:rgba(26,107,74,0.06); }
+
+  .dv-quick-supp { display:flex; gap:5px; margin-bottom:7px; flex-wrap:wrap; }
+  .dv-chip { font-size:11px; background:#fff; border:1px solid var(--line); color:#544c3d; padding:4px 8px; border-radius:20px; cursor:pointer; }
+  .dv-chip:hover { border-color:var(--emerald); color:var(--emerald-deep); }
+
+  .dv-actions { display:flex; gap:8px; margin-top:6px; }
+  .dv-btn-primary { flex:1; background:var(--emerald); color:#fff; border:none; border-radius:var(--rs); padding:11px 12px; font-size:13.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; }
+  .dv-btn-primary:hover { background:var(--emerald-deep); }
+  .dv-btn-secondary { background:#fff; border:1px solid var(--line); color:#6b6355; border-radius:var(--rs); padding:11px 12px; font-size:12.5px; cursor:pointer; }
+  .dv-btn-link { background:none; border:none; color:var(--emerald-deep); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer; padding:0; }
+
+  /* Modal tarifs */
+  .dv-modal-overlay { display:none; position:fixed; inset:0; background:rgba(43,38,32,.45); z-index:200; align-items:center; justify-content:center; padding:16px; }
+  .dv-modal-overlay.open { display:flex; }
+  .dv-modal { background:#fff; border-radius:14px; max-width:620px; width:100%; max-height:88vh; overflow-y:auto; padding:20px; }
+  .dv-modal h3 { font-family:'Fraunces',serif; color:var(--emerald-deep); margin:0 0 4px; font-size:17px; }
+  .dv-modal .dv-sub { font-size:11.5px; color:#6b6355; margin-bottom:14px; }
+  .dv-modal-tabs { display:flex; gap:5px; margin-bottom:12px; flex-wrap:wrap; }
+  .dv-modal-tab { font-size:11.5px; padding:5px 11px; border-radius:20px; cursor:pointer; border:1px solid var(--line); background:#fff; color:#544c3d; }
+  .dv-modal-tab.active { background:var(--emerald); color:#fff; border-color:var(--emerald); }
+  .dv-modal-panel { display:none; }
+  .dv-modal-panel.active { display:block; }
+  .dv-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px; }
+  .dv-modal-grid label { font-size:11px; }
+  .dv-modal-supp-title { font-size:10.5px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:.05em; margin:12px 0 6px; }
+  .dv-modal-supp-row { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:5px; margin-bottom:5px; }
+  .dv-modal-supp-row input { font-size:12px; padding:5px 7px; }
+  .dv-modal-actions { display:flex; gap:8px; margin-top:16px; }
+
+  /* Zone aperçu du devis */
+  .dv-preview-wrap { min-width:0; }
+  .dv-print-bar { display:flex; justify-content:center; gap:8px; margin-bottom:12px; }
+  .dv-print-bar button { background:var(--emerald); color:#fff; border:none; border-radius:var(--rs); padding:10px 18px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .dv-print-bar button:hover { background:var(--emerald-deep); }
+  .dv-print-bar button.ghost { background:#fff; color:var(--emerald-deep); border:1px solid var(--emerald); }
+
+  /* Document devis */
+  .dv-devis {
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:38px 42px 30px;
+    box-shadow:0 10px 28px rgba(43,38,32,.08);
+    max-width:720px;
+    margin:0 auto;
+  }
+  .dv-arch { width:100%; height:22px; margin-bottom:18px; display:block; }
+  .dv-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--emerald); padding-bottom:14px; margin-bottom:18px; gap:14px; }
+  .dv-brand { display:flex; align-items:flex-start; gap:12px; }
+  .dv-logo-slot { width:130px; height:73px; border-radius:0; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:transparent; color:var(--emerald-deep); font-family:'Fraunces',serif; font-weight:700; font-size:16px; overflow:hidden; cursor:pointer; border:none; padding:0; }
+  .dv-logo-slot img { width:100%; height:100%; object-fit:contain; }
+  .dv-brand-name { font-family:'Fraunces',serif; font-weight:700; font-size:22px; color:var(--emerald-deep); letter-spacing:.01em; margin:0; }
+  .dv-brand-tag  { font-family:'Fraunces',serif; font-style:italic; font-size:11.5px; color:var(--gold); margin:2px 0 8px; }
+  .dv-agency-contact { font-size:10.5px; color:#83796a; line-height:1.6; }
+  .dv-agency-contact input { border:none; background:transparent; padding:0; font-size:10.5px; color:#83796a; width:140px; text-align:left; font-family:'Inter',sans-serif; }
+  .dv-agency-contact input:focus { outline:1px dashed var(--gold); }
+  .dv-doc-meta { text-align:right; }
+  .dv-doc-title { font-family:'Fraunces',serif; font-size:13.5px; font-weight:700; letter-spacing:.14em; color:var(--emerald-deep); text-transform:uppercase; margin:0 0 5px; }
+  .dv-ref-box { font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; color:var(--emerald-deep); background:rgba(201,168,76,.15); border:1px solid var(--gold); border-radius:5px; padding:3px 7px; display:inline-block; margin-bottom:5px; }
+  .dv-meta-line { font-size:11px; color:#6b6355; margin:2px 0; }
+
+  .dv-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  .dv-info-block h4 { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin:0 0 5px; font-weight:700; }
+  .dv-info-block p  { font-size:13px; margin:2px 0; color:var(--ink); }
+  .dv-info-block .muted { color:#948a78; font-size:11.5px; }
+
+  table.dv-price { width:100%; border-collapse:collapse; margin-bottom:5px; font-size:12.5px; }
+  table.dv-price thead th { text-align:left; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:#83796a; border-bottom:1px solid var(--line); padding:5px 3px; font-weight:600; }
+  table.dv-price td { padding:7px 3px; border-bottom:1px solid #f0ead9; }
+  table.dv-price td.num, table.dv-price th.num { text-align:right; }
+  table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
+
+  .dv-totals { margin-top:7px; display:flex; justify-content:flex-end; }
+  .dv-totals-inner { width:240px; }
+  .dv-totals-row { display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; }
+  .dv-totals-row.grand { background:var(--emerald); color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:16px; padding:9px 11px; border-radius:7px; margin-top:7px; }
+
+  .dv-flight-note { font-size:11.5px; margin-top:9px; padding:7px 9px; border-radius:7px; background:#f6f1e4; border:1px solid var(--line); color:#6b6355; }
+  .dv-notes { margin-top:18px; padding-top:12px; border-top:1px solid var(--line); font-size:11px; color:#6b6355; line-height:1.6; white-space:pre-wrap; }
+  .dv-validity { font-size:11px; color:var(--emerald-deep); font-weight:600; margin-top:8px; }
+
+  .dv-panel textarea { min-height:60px; resize:vertical; font-family:'Inter',sans-serif; }
+
+  /* Print */
+  @media print {
+    .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
+    body { background:#fff; }
+    .wrap { padding:0; }
+    .tab-pane { display:none !important; }
+    #tab-devis { display:block !important; }
+    .dv-app { display:block; }
+    .dv-devis { box-shadow:none; border:none; padding:0; max-width:none; margin:0; }
+  }
+
+  @media(max-width:420px){ .grid-voyages{ grid-template-columns:1fr; } }
+  @media(min-width:700px){ #pelerinsList{ grid-template-columns:1fr 1fr; } }
 </style>
 </head>
 <body>
@@ -140,6 +301,7 @@
   <p>Chargement…</p>
 </div>
 
+<!-- Topbar -->
 <div class="topbar">
   <div class="topbar-icon"><img src="icon.png" alt="SAFA OMRA"></div>
   <div>
@@ -149,71 +311,309 @@
   <div class="topbar-right" id="ts"></div>
 </div>
 
+<!-- Tab bar -->
+<div class="tab-bar">
+  <div class="tab active" id="tab-btn-devis" onclick="switchTab('devis')">
+    <span class="tab-ico">📄</span>
+    <span>Devis</span>
+  </div>
+  <div class="tab" id="tab-btn-dashboard" onclick="switchTab('dashboard')">
+    <span class="tab-ico">📊</span>
+    <span>Voyages</span>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="breadcrumb" id="bc"></div>
 
-  <!-- Vue 1 : voyages -->
-  <div class="view active" id="v-voyages">
-    <p class="section-lbl">Sélectionner un voyage</p>
-    <div class="grid-voyages" id="voyagesGrid"></div>
-  </div>
+  <!-- ══════════════════════════════════════════════
+       ONGLET 1 : GÉNÉRATEUR DE DEVIS
+  ══════════════════════════════════════════════ -->
+  <div class="tab-pane active" id="tab-devis">
+    <div class="dv-app">
 
-  <!-- Vue 2 : actions -->
-  <div class="view" id="v-actions">
-    <span class="back-btn" onclick="go('voyages')">← Retour aux voyages</span>
-    <p class="section-lbl">Choisir une action</p>
+      <!-- Formulaire -->
+      <div class="dv-panel">
+        <h2>Générateur de devis</h2>
+        <div class="dv-sub">Remplis le formulaire — l'aperçu se met à jour à droite.</div>
 
-    <a class="btn-action" id="lnk-suivi" href="javascript:void(0)" onclick="openSuivi()">
-      <div class="a-ico" style="background:#E1F5EE">📊</div>
-      <div><div class="a-name">Suivi &amp; paiements</div><div class="a-desc">Pèlerins, montants encaissés et soldes à régler</div></div>
-      <span class="a-arrow">→</span>
-    </a>
-    <a class="btn-action" id="lnk-pre" href="#" target="_blank" rel="noopener">
-      <div class="a-ico" style="background:#E1F5EE">📋</div>
-      <div><div class="a-name">Pré-inscription</div><div class="a-desc">Enregistrer un nouveau voyageur</div></div>
-      <span class="a-arrow">↗</span>
-    </a>
-    <a class="btn-action" id="lnk-pai" href="#" target="_blank" rel="noopener">
-      <div class="a-ico" style="background:#E8F5E9">💰</div>
-      <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
-      <span class="a-arrow">↗</span>
-    </a>
-  </div>
+        <fieldset>
+          <legend><span>Client</span></legend>
+          <label for="dv-nom">Nom complet</label>
+          <input id="dv-nom" type="text" placeholder="Ex. M. et Mme Benali">
+          <div class="dv-row2">
+            <div><label for="dv-tel">Téléphone</label><input id="dv-tel" type="tel" placeholder="06 00 00 00 00"></div>
+            <div><label for="dv-email">Email</label><input id="dv-email" type="email" placeholder="client@email.com"></div>
+          </div>
+        </fieldset>
 
-  <!-- Vue 3 : suivi détaillé -->
-  <div class="view" id="v-suivi">
-    <span class="back-btn" onclick="go('actions')">← Retour</span>
-    <div id="suiviContent"><div class="empty"><span class="mini-spin"></span> Chargement du suivi…</div></div>
-  </div>
+        <fieldset>
+          <legend>
+            <span>Voyage</span>
+            <button type="button" class="dv-btn-link" id="dv-btn-open-tarifs">⚙ Tarifs</button>
+          </legend>
+          <label for="dv-voyage">Voyage</label>
+          <select id="dv-voyage">
+            <option value="OCT26|Octobre 2026">Octobre 2026</option>
+            <option value="DEC26|Décembre 2026">Décembre 2026</option>
+            <option value="CHA27|Chaabane 2027">Chaabane 2027</option>
+            <option value="RAM27|Ramadan 2027">Ramadan 2027</option>
+            <option value="PERSO|Omra personnalisée">Omra personnalisée</option>
+          </select>
+          <div class="dv-row2">
+            <div>
+              <label for="dv-formule">Formule</label>
+              <select id="dv-formule">
+                <option value="Confort">Confort</option>
+                <option value="Éco">Éco</option>
+              </select>
+            </div>
+          </div>
+          <label>Chambres</label>
+          <div id="dv-chambres-list"></div>
+          <button type="button" class="dv-btn-add" id="dv-btn-add-chambre">+ Ajouter une chambre</button>
+          <div style="display:flex;align-items:center;gap:8px;margin:9px 0 3px;font-size:12.5px;color:#544c3d;">
+            <input type="checkbox" id="dv-vol" checked>
+            <label for="dv-vol" style="margin:0;">Billet d'avion inclus</label>
+          </div>
+          <label for="dv-depart">Date de départ (calcul âge enfant/bébé)</label>
+          <input id="dv-depart" type="date">
+        </fieldset>
 
-  <div class="info-bar">
-    ℹ️ Données en temps réel depuis tes Google Sheets ·
-    <a href="javascript:location.reload()">🔄 Rafraîchir</a>
+        <fieldset>
+          <legend>Voyageurs &amp; prix</legend>
+
+          <div class="dv-cat-block">
+            <div class="dv-cat-title">Adultes (à partir de 12 ans)</div>
+            <div class="dv-row3">
+              <span style="font-size:12.5px;color:#544c3d;">Adulte à partir de 12 ans</span>
+              <input id="dv-q-adulte" type="number" min="0" value="1">
+              <input id="dv-p-adulte" type="number" min="0" placeholder="0">
+            </div>
+            <div class="dv-price-hint" id="dv-hint-adulte"></div>
+          </div>
+
+          <div class="dv-cat-block">
+            <div class="dv-cat-title">Enfants (2 ans et +)</div>
+            <div class="dv-cat-sub">Sans lit à l'hôtel</div>
+            <div class="dv-row2">
+              <div><label style="margin:2px 0;">Qté</label><input id="dv-q-enfant-sl" type="number" min="0" value="0"></div>
+              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-enfant-sl" type="number" min="0" placeholder="0"></div>
+            </div>
+            <div class="dv-cat-sub">Avec lit à l'hôtel</div>
+            <div class="dv-row2">
+              <div><label style="margin:2px 0;">Qté</label><input id="dv-q-enfant-al" type="number" min="0" value="0"></div>
+              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-enfant-al" type="number" min="0" placeholder="0"></div>
+            </div>
+          </div>
+
+          <div class="dv-cat-block">
+            <div class="dv-cat-title">Bébés (- 2 ans)</div>
+            <div class="dv-cat-sub">Sans lit à l'hôtel</div>
+            <div class="dv-row2">
+              <div><label style="margin:2px 0;">Qté</label><input id="dv-q-bebe-sl" type="number" min="0" value="0"></div>
+              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-bebe-sl" type="number" min="0" placeholder="0"></div>
+            </div>
+            <div class="dv-cat-sub">Avec lit à l'hôtel</div>
+            <div class="dv-row2">
+              <div><label style="margin:2px 0;">Qté</label><input id="dv-q-bebe-al" type="number" min="0" value="0"></div>
+              <div><label style="margin:2px 0;">Prix (€)</label><input id="dv-p-bebe-al" type="number" min="0" placeholder="0"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Suppléments</legend>
+          <div class="dv-quick-supp" id="dv-quick-supp"></div>
+          <div id="dv-supp-list"></div>
+          <button type="button" class="dv-btn-add" id="dv-btn-add-supp">+ Ajouter un supplément</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Remise</legend>
+          <label for="dv-remise">Montant de la remise (€)</label>
+          <input id="dv-remise" type="number" min="0" placeholder="0">
+        </fieldset>
+
+        <fieldset>
+          <legend>Référence &amp; validité</legend>
+          <label for="dv-ref">N° de devis</label>
+          <input id="dv-ref" type="text">
+          <div class="dv-row2">
+            <div><label for="dv-validite">Validité (jours)</label><input id="dv-validite" type="number" min="1" value="15"></div>
+            <div><label for="dv-date">Date du devis</label><input id="dv-date" type="text"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Notes / conditions</legend>
+          <textarea id="dv-notes"></textarea>
+        </fieldset>
+
+        <div class="dv-actions">
+          <button class="dv-btn-secondary" id="dv-btn-reset">Nouveau devis</button>
+        </div>
+      </div><!-- /dv-panel -->
+
+      <!-- Aperçu -->
+      <div class="dv-preview-wrap">
+        <div class="dv-print-bar">
+          <button id="dv-btn-print">🖨️ Imprimer / PDF</button>
+          <button id="dv-btn-logo" class="ghost">🖼️ Logo</button>
+        </div>
+        <input type="file" id="dv-logo-input" accept="image/*" style="display:none;">
+
+        <div class="dv-devis" id="dv-doc">
+          <svg class="dv-arch" viewBox="0 0 700 26" preserveAspectRatio="none">
+            <path d="M0,26 L260,26 C260,10 280,2 350,2 C420,2 440,10 440,26 L700,26" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+          </svg>
+          <div class="dv-head">
+            <div class="dv-brand">
+              <div class="dv-logo-slot" id="dv-logo-slot" title="Cliquer pour changer le logo">SO</div>
+              <div>
+                <p class="dv-brand-name">SAFA OMRA</p>
+                <p class="dv-brand-tag">L'autre vision de la Omra</p>
+                <div class="dv-agency-contact">
+                  Tél. <input type="text" id="dv-ag-tel" placeholder="06 05 77 93 73"><br>
+                  <input type="text" id="dv-ag-email" placeholder="contact@safaomra.fr"><br>
+                  <input type="text" id="dv-ag-insta" placeholder="@safaomra.fr">
+                </div>
+              </div>
+            </div>
+            <div class="dv-doc-meta">
+              <p class="dv-doc-title">Devis</p>
+              <div class="dv-ref-box" id="dv-out-ref">—</div>
+              <p class="dv-meta-line">Date : <span id="dv-out-date">—</span></p>
+              <p class="dv-meta-line">Valable jusqu'au <span id="dv-out-validite">—</span></p>
+            </div>
+          </div>
+
+          <div class="dv-info-grid">
+            <div class="dv-info-block">
+              <h4>Client</h4>
+              <p id="dv-out-nom">—</p>
+              <p class="muted" id="dv-out-tel">—</p>
+              <p class="muted" id="dv-out-email">—</p>
+            </div>
+            <div class="dv-info-block">
+              <h4>Voyage</h4>
+              <p id="dv-out-voyage">—</p>
+              <p class="muted" id="dv-out-formule">—</p>
+              <p class="muted" id="dv-out-chambre">—</p>
+            </div>
+          </div>
+
+          <table class="dv-price">
+            <thead>
+              <tr><th>Prestation</th><th class="num">Qté</th><th class="num">P.U.</th><th class="num">Total</th></tr>
+            </thead>
+            <tbody id="dv-out-tbody"></tbody>
+          </table>
+
+          <div id="dv-out-flight-note" class="dv-flight-note" style="display:none;">
+            Formule sans billet d'avion — vol non inclus dans ce devis.
+          </div>
+
+          <div class="dv-totals">
+            <div class="dv-totals-inner">
+              <div class="dv-totals-row grand"><span>Total</span><span id="dv-out-total">0 €</span></div>
+            </div>
+          </div>
+
+          <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
+          <div class="dv-notes" id="dv-out-notes"></div>
+        </div><!-- /dv-devis -->
+      </div><!-- /dv-preview-wrap -->
+    </div><!-- /dv-app -->
+  </div><!-- /tab-devis -->
+
+  <!-- ══════════════════════════════════════════════
+       ONGLET 2 : DASHBOARD VOYAGES
+  ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-dashboard">
+
+    <!-- Vue 1 : voyages -->
+    <div class="view active" id="v-voyages">
+      <p class="section-lbl">Sélectionner un voyage</p>
+      <div class="grid-voyages" id="voyagesGrid"></div>
+    </div>
+
+    <!-- Vue 2 : actions -->
+    <div class="view" id="v-actions">
+      <span class="back-btn" onclick="go('voyages')">← Retour aux voyages</span>
+      <p class="section-lbl">Choisir une action</p>
+      <a class="btn-action" id="lnk-suivi" href="javascript:void(0)" onclick="openSuivi()">
+        <div class="a-ico" style="background:#E1F5EE">📊</div>
+        <div><div class="a-name">Suivi &amp; paiements</div><div class="a-desc">Pèlerins, montants encaissés et soldes à régler</div></div>
+        <span class="a-arrow">→</span>
+      </a>
+      <a class="btn-action" id="lnk-pre" href="#" target="_blank" rel="noopener">
+        <div class="a-ico" style="background:#E1F5EE">📋</div>
+        <div><div class="a-name">Pré-inscription</div><div class="a-desc">Enregistrer un nouveau voyageur</div></div>
+        <span class="a-arrow">↗</span>
+      </a>
+      <a class="btn-action" id="lnk-pai" href="#" target="_blank" rel="noopener">
+        <div class="a-ico" style="background:#E8F5E9">💰</div>
+        <div><div class="a-name">Enregistrer un paiement</div><div class="a-desc">Saisir un versement V2 ou V3 pour un dossier</div></div>
+        <span class="a-arrow">↗</span>
+      </a>
+    </div>
+
+    <!-- Vue 3 : suivi détaillé -->
+    <div class="view" id="v-suivi">
+      <span class="back-btn" onclick="go('actions')">← Retour</span>
+      <div id="suiviContent"><div class="empty"><span class="mini-spin"></span> Chargement…</div></div>
+    </div>
+
+    <div class="info-bar">
+      ℹ️ Données en temps réel depuis tes Google Sheets ·
+      <a href="javascript:location.reload()">🔄 Rafraîchir</a>
+    </div>
+  </div><!-- /tab-dashboard -->
+
+</div><!-- /wrap -->
+
+<!-- Modal tarifs devis -->
+<div class="dv-modal-overlay" id="dv-modal-tarifs">
+  <div class="dv-modal">
+    <h3>Paramètres tarifs</h3>
+    <div class="dv-sub">Renseigne les prix et réductions par voyage et par formule. Les suppléments chambre sont intégrés automatiquement dans le prix affiché — aucun détail séparé n'est visible côté client.</div>
+    <div class="dv-modal-tabs" id="dv-modal-tabs"></div>
+    <div id="dv-modal-panels"></div>
+    <div class="dv-modal-actions">
+      <button class="dv-btn-primary" id="dv-btn-save-tarifs">Enregistrer</button>
+      <button class="dv-btn-secondary" id="dv-btn-close-tarifs">Fermer</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ⚙️ TON LIEN APPS SCRIPT (fournisseur de données)
+/* ════════════════════════════════════════════════════════════════
+   0. TAB NAVIGATION
+════════════════════════════════════════════════════════════════ */
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-btn-' + name).classList.add('active');
+  document.getElementById('bc').innerHTML = '';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   1. DASHBOARD VOYAGES
+════════════════════════════════════════════════════════════════ */
 const API = "https://script.google.com/macros/s/AKfycbzs7fJffQ7j66HZFfFn0qGM7Dey8p376Eeokb9gepzSrsT-oH0VCwN6d1EHQnplDCbEVg/exec";
 
-// Liens des formulaires
 const PLANNING = {
   oct26:{id:"1L-SlQO_gKvd5Urt3QA51-zSjQIMsdGEvceh4ge-RDeA",c:"Omra confort octobre 2026",e:"omra Eco octobre 2026"},
   dec26:{id:"1N5zXTIq44_r_ORmH2lZpn7O528-4Dwi5fDjoIkc_eZg",c:"Omra Confort decembre 2026",e:"Omra Eco decembre 2026"},
   sha27:{id:"17z6AtIee59vYWU9BVWIww2xq1QqZbulxJZbyrUEapb4",c:"Omra Confort Chaabane 2027",e:"Omra Eco Chaabane 2027"},
   ram27:{id:"1n8bcvZnD1933k2RsYUh9f5MkSfosxdikISYO_-HcI0M",c:"Omra Confort Ramadan 2027",e:"Omra Eco Ramadan 2027"}
 };
-const SCRIPT_PRE  = "https://script.google.com/macros/s/AKfycbweUWXKYozNVwkajFkwASL_oNPnflvpDQS8xrTKYzORqcaHG0LLu-wNgk9J2XZKrV58/exec";
-const SCRIPT_PAI  = "https://script.google.com/macros/s/AKfycbwqbxXlMCEo0W0cdAz6kmUy5tEBnMFQ9uqFNwVDb4IYD745LX0qeRIy0Fl3DbbwFnskqQ/exec";
+const SCRIPT_PRE = "https://script.google.com/macros/s/AKfycbweUWXKYozNVwkajFkwASL_oNPnflvpDQS8xrTKYzORqcaHG0LLu-wNgk9J2XZKrV58/exec";
+const SCRIPT_PAI = "https://script.google.com/macros/s/AKfycbwqbxXlMCEo0W0cdAz6kmUy5tEBnMFQ9uqFNwVDb4IYD745LX0qeRIy0Fl3DbbwFnskqQ/exec";
 
-function formUrl(base, key){
-  const p = PLANNING[key];
-  return base + "?planning_id=" + p.id +
-    "&onglet_confort=" + encodeURIComponent(p.c) +
-    "&onglet_eco=" + encodeURIComponent(p.e);
-}
-
-const VOYAGES = [
+const VOYAGES_CFG = [
   {key:"oct26", name:"Omra Octobre 2026",  sub:"Vacances · du 20 au 30 oct",         ico:"🍂", bg:"#E1F5EE", pill:"Ouvert",        pc:"#0F6E56", pbg:"#E1F5EE"},
   {key:"dec26", name:"Omra Décembre 2026", sub:"Vacances d'Hiver · Prix plus élevés", ico:"❄️", bg:"#E6F1FB", pill:"Ouvert",        pc:"#185FA5", pbg:"#E6F1FB"},
   {key:"sha27", name:"Omra Chaabane 2027", sub:"Chaabane 1448 · Avant Ramadan",       ico:"🌙", bg:"#FAEEDA", pill:"À venir",        pc:"#854F0B", pbg:"#FAEEDA"},
@@ -222,6 +622,13 @@ const VOYAGES = [
 
 let S = { key:null, name:null };
 let detailCache = {};
+
+function formUrl(base, key){
+  const p = PLANNING[key];
+  return base + "?planning_id=" + p.id +
+    "&onglet_confort=" + encodeURIComponent(p.c) +
+    "&onglet_eco=" + encodeURIComponent(p.e);
+}
 
 function jsonp(params){
   return new Promise(function(resolve, reject){
@@ -236,19 +643,19 @@ function jsonp(params){
   });
 }
 
-function fmt(n){ return Number(n||0).toLocaleString('fr-FR') + ' €'; }
+function fmtEur(n){ return Number(n||0).toLocaleString('fr-FR') + ' €'; }
 function bClass(s){ return s==='soldé'?'solde':s==='partiel'?'partiel':'nonpaye'; }
 function bLabel(s){ return s==='soldé'?'Soldé':s==='partiel'?'Partiel':'Non payé'; }
 
 function go(view){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('#tab-dashboard .view').forEach(v=>v.classList.remove('active'));
   document.getElementById('v-'+view).classList.add('active');
   document.getElementById('bc').innerHTML = S.name ? '<b>'+S.name+'</b>' : '';
   window.scrollTo(0,0);
 }
 
 function renderVoyages(stats){
-  document.getElementById('voyagesGrid').innerHTML = VOYAGES.map(function(v){
+  document.getElementById('voyagesGrid').innerHTML = VOYAGES_CFG.map(function(v){
     const st = stats[v.key] || {confort:0, eco:0};
     return '<button class="btn-voyage" onclick="openActions(\''+v.key+'\',\''+v.name.replace(/'/g,"\\'")+'\')">' +
       '<div class="v-ico" style="background:'+v.bg+'">'+v.ico+'</div>' +
@@ -288,17 +695,17 @@ function renderSuivi(d){
     return '<div class="fcard"><div class="fcard-accent" style="background:'+color+'"></div>' +
       '<div class="fcard-head"><span class="fcard-dot" style="background:'+color+'"></span>' +
       '<span class="fcard-name">'+name+'</span><span class="fcard-count">'+f.pelerins+' pèl. · '+f.dossiers+' dos.</span></div>' +
-      '<div class="frow"><span class="lbl">Total facturé</span><span class="val">'+fmt(f.total)+'</span></div>' +
-      '<div class="frow"><span class="lbl">Encaissé</span><span class="val" style="color:var(--vert)">'+fmt(f.acompte)+'</span></div>' +
-      '<div class="frow"><span class="lbl">Restant dû</span><span class="val" style="color:'+(f.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmt(f.reste)+'</span></div></div>';
+      '<div class="frow"><span class="lbl">Total facturé</span><span class="val">'+fmtEur(f.total)+'</span></div>' +
+      '<div class="frow"><span class="lbl">Encaissé</span><span class="val" style="color:var(--vert)">'+fmtEur(f.acompte)+'</span></div>' +
+      '<div class="frow"><span class="lbl">Restant dû</span><span class="val" style="color:'+(f.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmtEur(f.reste)+'</span></div></div>';
   }
 
   let html =
     '<p class="section-lbl">'+d.voyage+'</p>' +
     '<div class="summary">' +
       '<div class="sum-cell"><div class="sum-val">'+totPel+'</div><div class="sum-lbl">Pèlerins</div></div>' +
-      '<div class="sum-cell"><div class="sum-val">'+fmt(ac)+'</div><div class="sum-lbl">Encaissé</div></div>' +
-      '<div class="sum-cell"><div class="sum-val rouge">'+fmt(re)+'</div><div class="sum-lbl">Restant dû</div></div>' +
+      '<div class="sum-cell"><div class="sum-val">'+fmtEur(ac)+'</div><div class="sum-lbl">Encaissé</div></div>' +
+      '<div class="sum-cell"><div class="sum-val rouge">'+fmtEur(re)+'</div><div class="sum-lbl">Restant dû</div></div>' +
     '</div>' +
     '<p class="section-lbl">Par formule</p>' +
     '<div class="formules">'+fcard('Confort','var(--or)',d.confort)+fcard('Éco','var(--vert)',d.eco)+'</div>' +
@@ -328,9 +735,9 @@ function renderPel(f){
           '<div class="badge '+bClass(p.statut)+'">'+bLabel(p.statut)+'</div>' +
         '</div>' +
         '<div class="pelerin-money" style="margin-top:10px;">' +
-          '<div class="money"><div class="money-val">'+fmt(p.total)+'</div><div class="money-lbl">Total</div></div>' +
-          '<div class="money"><div class="money-val" style="color:var(--vert)">'+fmt(p.acompte)+'</div><div class="money-lbl">Versé</div></div>' +
-          '<div class="money"><div class="money-val" style="color:'+(p.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmt(p.reste)+'</div><div class="money-lbl">Reste</div></div>' +
+          '<div class="money"><div class="money-val">'+fmtEur(p.total)+'</div><div class="money-lbl">Total</div></div>' +
+          '<div class="money"><div class="money-val" style="color:var(--vert)">'+fmtEur(p.acompte)+'</div><div class="money-lbl">Versé</div></div>' +
+          '<div class="money"><div class="money-val" style="color:'+(p.reste>0?'var(--rouge)':'var(--vert)')+'">'+fmtEur(p.reste)+'</div><div class="money-lbl">Reste</div></div>' +
         '</div></div>';
     }).join('');
 }
@@ -341,12 +748,409 @@ function filterPel(f, btn){
   renderPel(f);
 }
 
-// ── Démarrage ──
+/* ════════════════════════════════════════════════════════════════
+   2. GÉNÉRATEUR DE DEVIS
+════════════════════════════════════════════════════════════════ */
+const DV_VOYAGES = [
+  { code:'OCT26', label:'Octobre 2026' },
+  { code:'DEC26', label:'Décembre 2026' },
+  { code:'CHA27', label:'Chaabane 2027' },
+  { code:'RAM27', label:'Ramadan 2027' },
+  { code:'PERSO', label:'Omra personnalisée' }
+];
+const DV_FORMULES   = ['Confort', 'Éco'];
+const DV_STORAGE    = 'safaomra_devis_config_v1';
+const DV_LOGO_KEY   = 'safaomra_devis_logo_v1';
+const DV_TYPES_CH   = ['Quadruple', 'Triple', 'Double', 'Individuelle'];
+
+function dvDefaultConfig(){
+  const cfg = {};
+  DV_VOYAGES.forEach(v => {
+    cfg[v.code] = {};
+    DV_FORMULES.forEach(f => {
+      cfg[v.code][f] = {
+        prixAdulte:'', reducEnfantSansLit:'', reducBebeSansLit:'', reducBebeAvecLit:'', valeurVol:'',
+        supplements:[
+          {label:'Chambre Double',prix:''},{label:'Chambre Triple',prix:''},{label:'Chambre Individuelle',prix:''},
+          {label:'Guide',prix:''},{label:'Ihram',prix:''},{label:'Bagage supplémentaire',prix:''}
+        ]
+      };
+    });
+  });
+  return cfg;
+}
+function dvLoadConfig(){
+  try{
+    const raw = localStorage.getItem(DV_STORAGE);
+    if(!raw) return dvDefaultConfig();
+    const parsed = JSON.parse(raw);
+    const base = dvDefaultConfig();
+    DV_VOYAGES.forEach(v => DV_FORMULES.forEach(f => {
+      if(parsed[v.code] && parsed[v.code][f]) base[v.code][f] = Object.assign({}, base[v.code][f], parsed[v.code][f]);
+    }));
+    return base;
+  } catch(e){ return dvDefaultConfig(); }
+}
+function dvSaveConfig(cfg){ try{ localStorage.setItem(DV_STORAGE, JSON.stringify(cfg)); } catch(e){} }
+
+let DV_CFG = dvLoadConfig();
+let dvSupplements = [];
+let dvChambres = [{ type:'Quadruple', qty:1 }];
+
+function dvFmt(n){ n=Number(n)||0; return n.toLocaleString('fr-FR',{maximumFractionDigits:0}) + " €"; }
+function dvPad(n){ return String(n).padStart(2,'0'); }
+function dvToday(){ const d=new Date(); return `${dvPad(d.getDate())}/${dvPad(d.getMonth()+1)}/${d.getFullYear()}`; }
+function dvAddDays(days){ const d=new Date(); d.setDate(d.getDate()+(Number(days)||0)); return `${dvPad(d.getDate())}/${dvPad(d.getMonth()+1)}/${d.getFullYear()}`; }
+function dvRandRef(){
+  const [code] = document.getElementById('dv-voyage').value.split('|');
+  const d = new Date();
+  return `${code}-DEV-${dvPad(d.getDate())}${dvPad(d.getMonth()+1)}${String(d.getFullYear()).slice(2)}-${Math.floor(Math.random()*900)+100}`;
+}
+function dvCurrentCode(){ return document.getElementById('dv-voyage').value.split('|')[0]; }
+function dvCurrentFormule(){ return document.getElementById('dv-formule').value; }
+function dvCurrentTarifs(){
+  const code = dvCurrentCode(), f = dvCurrentFormule();
+  return (DV_CFG[code] && DV_CFG[code][f]) ? DV_CFG[code][f] : null;
+}
+function dvGetSuppChambre(type){
+  if(type==='Quadruple') return 0;
+  const t = dvCurrentTarifs(); if(!t||!t.supplements) return 0;
+  const m = t.supplements.find(s => s.label === 'Chambre ' + type);
+  return m ? (Number(m.prix)||0) : 0;
+}
+function dvPrixAdulteBase(){
+  const t = dvCurrentTarifs(); if(!t) return Number(document.getElementById('dv-p-adulte').value)||0;
+  const base = Number(t.prixAdulte)||0;
+  const sansVol = !document.getElementById('dv-vol').checked;
+  return sansVol ? Math.max(0, base - (Number(t.valeurVol)||0)) : base;
+}
+
+function dvAppliquerTarifs(){
+  const t = dvCurrentTarifs(); if(!t) return;
+  const prixAdulteBase = Number(t.prixAdulte)||0;
+  const sansVol = !document.getElementById('dv-vol').checked;
+  const vol = Number(t.valeurVol)||0;
+  const prixBase = sansVol ? Math.max(0, prixAdulteBase - vol) : prixAdulteBase;
+  document.getElementById('dv-p-adulte').value = prixBase || '';
+  document.getElementById('dv-p-enfant-sl').value = Math.max(0, prixBase - (Number(t.reducEnfantSansLit)||0)) || '';
+  document.getElementById('dv-p-enfant-al').value = prixBase || '';
+  document.getElementById('dv-p-bebe-sl').value   = Math.max(0, prixBase - (Number(t.reducBebeSansLit)||0))   || '';
+  document.getElementById('dv-p-bebe-al').value   = Math.max(0, prixBase - (Number(t.reducBebeAvecLit)||0))   || '';
+  const hint = document.getElementById('dv-hint-adulte');
+  hint.textContent = prixAdulteBase
+    ? (sansVol ? `Tarif ${dvCurrentFormule()} : ${dvFmt(prixAdulteBase)} — sans vol (−${dvFmt(vol)}) = ${dvFmt(prixBase)}` : `Tarif ${dvCurrentFormule()} : ${dvFmt(prixAdulteBase)}`)
+    : 'Aucun tarif enregistré — clique sur "⚙ Tarifs" pour le renseigner.';
+  dvRenderQuickSupp(t);
+  dvRenderChambresForm();
+}
+
+function dvRenderQuickSupp(t){
+  const box = document.getElementById('dv-quick-supp'); box.innerHTML = '';
+  if(!t||!t.supplements) return;
+  const EXCL = ['Chambre Double','Chambre Triple','Chambre Individuelle'];
+  t.supplements.forEach(s => {
+    if(!s.label || EXCL.includes(s.label)) return;
+    const chip = document.createElement('div'); chip.className = 'dv-chip';
+    const pTxt = s.prix !== '' && s.prix !== undefined ? ` (${dvFmt(s.prix)})` : '';
+    chip.textContent = `+ ${s.label}${pTxt}`;
+    chip.addEventListener('click', () => { dvSupplements.push({label:s.label, qty:1, prix:Number(s.prix)||0}); dvRenderSuppForm(); dvRender(); });
+    box.appendChild(chip);
+  });
+}
+
+function dvRenderSuppForm(){
+  const list = document.getElementById('dv-supp-list'); list.innerHTML = '';
+  dvSupplements.forEach((s,i) => {
+    const row = document.createElement('div'); row.className = 'dv-supp-row';
+    row.innerHTML = `
+      <input type="text"   data-idx="${i}" data-field="label" value="${s.label.replace(/"/g,'&quot;')}" placeholder="Libellé">
+      <input type="number" data-idx="${i}" data-field="qty"   value="${s.qty}" min="0" placeholder="Qté">
+      <input type="number" data-idx="${i}" data-field="prix"  value="${s.prix}" min="0" placeholder="P.U.">
+      <button type="button" class="dv-btn-remove" data-remove="${i}">✕</button>`;
+    list.appendChild(row);
+  });
+}
+
+function dvRenderChambresForm(){
+  const list = document.getElementById('dv-chambres-list'); list.innerHTML = '';
+  dvChambres.forEach((c,i) => {
+    const supp = dvGetSuppChambre(c.type);
+    const prixBase = Number(document.getElementById('dv-p-adulte').value)||0;
+    const prixTotal = prixBase + supp;
+    const hint = c.type==='Quadruple'
+      ? 'Quadruple — tarif de base inclus'
+      : `${c.type} — ${dvFmt(prixBase)} + ${dvFmt(supp)} supp. = ${dvFmt(prixTotal)}/pers.`;
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 56px 30px;gap:5px;margin-bottom:2px;align-items:center;">
+        <select data-cidx="${i}" data-cfield="type">${DV_TYPES_CH.map(t=>`<option${t===c.type?' selected':''}>${t}</option>`).join('')}</select>
+        <input type="number" min="1" value="${c.qty}" data-cidx="${i}" data-cfield="qty" style="padding:7px 5px;font-size:12.5px;">
+        ${i===0 ? '<div></div>' : `<button type="button" class="dv-btn-remove" data-cremove="${i}">✕</button>`}
+      </div>
+      <div style="font-size:10.5px;color:var(--gold);margin-bottom:7px;">${hint}</div>`;
+    list.appendChild(div);
+  });
+}
+
+function dvRender(){
+  const nom = document.getElementById('dv-nom').value || '—';
+  const tel  = document.getElementById('dv-tel').value;
+  const email= document.getElementById('dv-email').value;
+  const [voyageCode, voyageLabel] = document.getElementById('dv-voyage').value.split('|');
+  const formule   = document.getElementById('dv-formule').value;
+  const volInclus = document.getElementById('dv-vol').checked;
+  const pAdulteBase = Number(document.getElementById('dv-p-adulte').value)||0;
+  const qESL = Number(document.getElementById('dv-q-enfant-sl').value)||0;
+  const pESL = Number(document.getElementById('dv-p-enfant-sl').value)||0;
+  const qEAL = Number(document.getElementById('dv-q-enfant-al').value)||0;
+  const pEAL = Number(document.getElementById('dv-p-enfant-al').value)||0;
+  const qBSL = Number(document.getElementById('dv-q-bebe-sl').value)||0;
+  const pBSL = Number(document.getElementById('dv-p-bebe-sl').value)||0;
+  const qBAL = Number(document.getElementById('dv-q-bebe-al').value)||0;
+  const pBAL = Number(document.getElementById('dv-p-bebe-al').value)||0;
+  const remise = Number(document.getElementById('dv-remise').value)||0;
+  const validiteJours = document.getElementById('dv-validite').value || 15;
+  const notes = document.getElementById('dv-notes').value;
+
+  document.getElementById('dv-out-ref').textContent = document.getElementById('dv-ref').value || '—';
+  document.getElementById('dv-out-date').textContent = document.getElementById('dv-date').value || dvToday();
+  document.getElementById('dv-out-validite').textContent = dvAddDays(validiteJours);
+  document.getElementById('dv-out-nom').textContent = nom;
+  document.getElementById('dv-out-tel').textContent = tel || '';
+  document.getElementById('dv-out-email').textContent = email || '';
+  document.getElementById('dv-out-voyage').textContent = voyageLabel;
+  document.getElementById('dv-out-formule').textContent = 'Formule ' + formule;
+  document.getElementById('dv-out-chambre').textContent = dvChambres.map(c => c.qty + '× ' + c.type).join(' + ');
+
+  const tbody = document.getElementById('dv-out-tbody'); tbody.innerHTML = '';
+  let sousTotal = 0;
+
+  dvChambres.forEach(c => {
+    const qty = Number(c.qty)||0; if(qty<=0) return;
+    const supp = dvGetSuppChambre(c.type);
+    const pu = pAdulteBase + supp;
+    const total = qty * pu; sousTotal += total;
+    const label = c.type==='Quadruple' ? 'Chambre Quadruple — Tarif adulte' : `Chambre ${c.type} — Tarif adulte (à partir de 12 ans)`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${label}</td><td class="num">${qty}</td><td class="num">${dvFmt(pu)}</td><td class="num">${dvFmt(total)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  function addRow(label, qty, pu){
+    if(qty<=0) return;
+    const total = qty * pu; sousTotal += total;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${label}</td><td class="num">${qty}</td><td class="num">${dvFmt(pu)}</td><td class="num">${dvFmt(total)}</td>`;
+    tbody.appendChild(tr);
+  }
+  addRow('Enfant (2–11 ans) — sans lit', qESL, pESL);
+  addRow('Enfant (2–11 ans) — avec lit', qEAL, pEAL);
+  addRow('Bébé (- 2 ans) — sans lit',    qBSL, pBSL);
+  addRow('Bébé (- 2 ans) — avec lit',    qBAL, pBAL);
+
+  dvSupplements.forEach(s => {
+    const qty = Number(s.qty)||0; const pu = Number(s.prix)||0;
+    if(s.label && qty>0){
+      const total = qty * pu; sousTotal += total;
+      const tr = document.createElement('tr'); tr.className='supp';
+      tr.innerHTML = `<td>${s.label}</td><td class="num">${qty}</td><td class="num">${dvFmt(pu)}</td><td class="num">${dvFmt(total)}</td>`;
+      tbody.appendChild(tr);
+    }
+  });
+
+  document.getElementById('dv-out-flight-note').style.display = volInclus ? 'none' : 'block';
+  document.getElementById('dv-out-total').textContent = dvFmt(Math.max(sousTotal - remise, 0));
+  document.getElementById('dv-out-notes').textContent = notes;
+}
+
+/* Events – formulaire */
+document.getElementById('dv-voyage').addEventListener('change', () => { document.getElementById('dv-ref').value = dvRandRef(); dvAppliquerTarifs(); dvRender(); });
+document.getElementById('dv-formule').addEventListener('change', () => { dvAppliquerTarifs(); dvRender(); });
+document.getElementById('dv-vol').addEventListener('change', () => { dvAppliquerTarifs(); dvRender(); });
+
+document.querySelectorAll('.dv-panel input, .dv-panel select, .dv-panel textarea').forEach(el => {
+  el.addEventListener('input', dvRender);
+  el.addEventListener('change', dvRender);
+});
+['dv-ag-tel','dv-ag-email','dv-ag-insta'].forEach(id => {
+  document.getElementById(id).addEventListener('input', dvRender);
+});
+
+/* Suppléments */
+document.getElementById('dv-supp-list').addEventListener('input', e => {
+  const idx=e.target.getAttribute('data-idx'), field=e.target.getAttribute('data-field');
+  if(idx===null) return;
+  dvSupplements[idx][field] = (field==='qty'||field==='prix') ? Number(e.target.value) : e.target.value;
+  dvRender();
+});
+document.getElementById('dv-supp-list').addEventListener('click', e => {
+  const idx=e.target.getAttribute('data-remove'); if(idx===null) return;
+  dvSupplements.splice(Number(idx),1); dvRenderSuppForm(); dvRender();
+});
+document.getElementById('dv-btn-add-supp').addEventListener('click', () => {
+  dvSupplements.push({label:'',qty:1,prix:0}); dvRenderSuppForm(); dvRender();
+});
+
+/* Chambres */
+document.getElementById('dv-chambres-list').addEventListener('change', e => {
+  const idx=e.target.getAttribute('data-cidx'), field=e.target.getAttribute('data-cfield');
+  if(idx===null) return;
+  dvChambres[Number(idx)][field] = field==='qty' ? Number(e.target.value) : e.target.value;
+  dvRenderChambresForm(); dvRender();
+});
+document.getElementById('dv-chambres-list').addEventListener('input', e => {
+  const idx=e.target.getAttribute('data-cidx'), field=e.target.getAttribute('data-cfield');
+  if(idx===null||field!=='qty') return;
+  dvChambres[Number(idx)][field] = Number(e.target.value); dvRenderChambresForm(); dvRender();
+});
+document.getElementById('dv-chambres-list').addEventListener('click', e => {
+  const idx=e.target.getAttribute('data-cremove'); if(idx===null) return;
+  dvChambres.splice(Number(idx),1); dvRenderChambresForm(); dvRender();
+});
+document.getElementById('dv-btn-add-chambre').addEventListener('click', () => {
+  dvChambres.push({type:'Triple',qty:1}); dvRenderChambresForm(); dvRender();
+});
+
+/* Imprimer / reset */
+document.getElementById('dv-btn-print').addEventListener('click', () => window.print());
+document.getElementById('dv-btn-reset').addEventListener('click', () => {
+  document.querySelectorAll('.dv-panel input[type=text],.dv-panel input[type=tel],.dv-panel input[type=email],.dv-panel textarea').forEach(el => el.value='');
+  document.getElementById('dv-q-adulte').value = 1;
+  ['dv-q-enfant-sl','dv-q-enfant-al','dv-q-bebe-sl','dv-q-bebe-al'].forEach(id => document.getElementById(id).value=0);
+  document.getElementById('dv-remise').value = '';
+  document.getElementById('dv-validite').value = 15;
+  document.getElementById('dv-vol').checked = true;
+  document.getElementById('dv-depart').value = '';
+  dvChambres = [{type:'Quadruple',qty:1}]; dvRenderChambresForm();
+  dvSupplements = []; dvRenderSuppForm();
+  document.getElementById('dv-ref').value = dvRandRef();
+  document.getElementById('dv-date').value = dvToday();
+  dvAppliquerTarifs(); dvRender();
+});
+
+/* Logo */
+function dvLoadLogo(){
+  try{
+    const data = localStorage.getItem(DV_LOGO_KEY);
+    if(data) document.getElementById('dv-logo-slot').innerHTML = `<img src="${data}" alt="Logo">`;
+  } catch(e){}
+}
+document.getElementById('dv-logo-slot').addEventListener('click', () => document.getElementById('dv-logo-input').click());
+document.getElementById('dv-btn-logo').addEventListener('click', () => document.getElementById('dv-logo-input').click());
+document.getElementById('dv-logo-input').addEventListener('change', e => {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{ localStorage.setItem(DV_LOGO_KEY, reader.result); } catch(err){}
+    document.getElementById('dv-logo-slot').innerHTML = `<img src="${reader.result}" alt="Logo">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ── Modal tarifs ── */
+function dvBuildModal(){
+  const tabsBox = document.getElementById('dv-modal-tabs');
+  const panelsBox = document.getElementById('dv-modal-panels');
+  tabsBox.innerHTML = ''; panelsBox.innerHTML = '';
+
+  DV_VOYAGES.forEach((v,vi) => {
+    const tab = document.createElement('div');
+    tab.className = 'dv-modal-tab' + (vi===0?' active':'');
+    tab.textContent = v.label; tab.dataset.voyage = v.code;
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.dv-modal-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.dv-modal-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('dv-mp-'+v.code).classList.add('active');
+    });
+    tabsBox.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'dv-modal-panel' + (vi===0?' active':'');
+    panel.id = 'dv-mp-' + v.code;
+
+    DV_FORMULES.forEach(f => {
+      const t = DV_CFG[v.code][f];
+      const fid = v.code + '_' + f;
+      const block = document.createElement('div');
+      block.style.cssText = 'margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #E4DCC9;';
+      block.innerHTML = `
+        <div style="font-weight:700;color:var(--emerald-deep);font-size:12.5px;margin-bottom:7px;">Formule ${f}</div>
+        <div class="dv-modal-grid">
+          <div><label>Prix adulte (E4)</label><input type="number" min="0" data-cfg="${fid}" data-field="prixAdulte" value="${t.prixAdulte}"></div>
+          <div><label>Valeur du vol (E6)</label><input type="number" min="0" data-cfg="${fid}" data-field="valeurVol" value="${t.valeurVol}"></div>
+          <div><label>Réduc. enfant sans lit (H21)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducEnfantSansLit" value="${t.reducEnfantSansLit}"></div>
+          <div><label>Réduc. bébé sans lit (H22)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducBebeSansLit" value="${t.reducBebeSansLit}"></div>
+          <div><label>Réduc. bébé avec lit (H23)</label><input type="number" min="0" data-cfg="${fid}" data-field="reducBebeAvecLit" value="${t.reducBebeAvecLit}"></div>
+        </div>
+        <div class="dv-modal-supp-title">Suppléments chambres (intégrés automatiquement)</div>
+        <div class="dv-modal-supp-list" data-supp-list="${fid}"></div>`;
+      panel.appendChild(block);
+
+      const suppList = block.querySelector(`[data-supp-list="${fid}"]`);
+      t.supplements.forEach((s,si) => {
+        const row = document.createElement('div'); row.className = 'dv-modal-supp-row';
+        row.innerHTML = `
+          <input type="text"   data-cfg="${fid}" data-supp-idx="${si}" data-supp-field="label" value="${s.label}">
+          <input type="number" data-cfg="${fid}" data-supp-idx="${si}" data-supp-field="prix"  value="${s.prix}" placeholder="€">
+          <button type="button" class="dv-btn-remove" data-supp-remove="${fid}:${si}">✕</button>`;
+        suppList.appendChild(row);
+      });
+
+      const addBtn = document.createElement('button');
+      addBtn.type='button'; addBtn.className='dv-btn-add'; addBtn.style.marginTop='2px';
+      addBtn.textContent = '+ Ajouter un supplément';
+      addBtn.addEventListener('click', () => { DV_CFG[v.code][f].supplements.push({label:'',prix:''}); dvBuildModal(); });
+      panel.appendChild(addBtn);
+    });
+    panelsBox.appendChild(panel);
+  });
+
+  panelsBox.querySelectorAll('input[data-cfg][data-field]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const [code,f] = inp.dataset.cfg.split('_');
+      DV_CFG[code][f][inp.dataset.field] = inp.value;
+    });
+  });
+  panelsBox.querySelectorAll('input[data-cfg][data-supp-idx]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const [code,f] = inp.dataset.cfg.split('_');
+      DV_CFG[code][f].supplements[Number(inp.dataset.suppIdx)][inp.dataset.suppField] = inp.value;
+    });
+  });
+  panelsBox.querySelectorAll('[data-supp-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const [fid,idx] = btn.dataset.suppRemove.split(':');
+      const [code,f] = fid.split('_');
+      DV_CFG[code][f].supplements.splice(Number(idx),1);
+      dvBuildModal();
+    });
+  });
+}
+
+document.getElementById('dv-btn-open-tarifs').addEventListener('click', () => { dvBuildModal(); document.getElementById('dv-modal-tarifs').classList.add('open'); });
+document.getElementById('dv-btn-close-tarifs').addEventListener('click', () => { DV_CFG = dvLoadConfig(); document.getElementById('dv-modal-tarifs').classList.remove('open'); });
+document.getElementById('dv-btn-save-tarifs').addEventListener('click', () => { dvSaveConfig(DV_CFG); document.getElementById('dv-modal-tarifs').classList.remove('open'); dvAppliquerTarifs(); dvRender(); });
+document.getElementById('dv-modal-tarifs').addEventListener('click', e => { if(e.target.id==='dv-modal-tarifs'){ DV_CFG=dvLoadConfig(); document.getElementById('dv-modal-tarifs').classList.remove('open'); } });
+
+/* ════════════════════════════════════════════════════════════════
+   3. DÉMARRAGE
+════════════════════════════════════════════════════════════════ */
 document.getElementById('ts').textContent =
   new Date().toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
+// Init devis
+document.getElementById('dv-date').value = dvToday();
+document.getElementById('dv-ref').value  = dvRandRef();
+dvRenderSuppForm();
+dvLoadLogo();
+dvRenderChambresForm();
+dvAppliquerTarifs();
+dvRender();
+
+// Init dashboard (charge les stats en arrière-plan)
 jsonp("api=stats")
   .then(function(stats){
     renderVoyages(stats);
