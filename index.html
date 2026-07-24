@@ -532,8 +532,9 @@
             </div>
           </div>
 
-          <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
-          <div class="dv-notes" id="dv-out-notes"></div>
+         <div class="dv-notes" id="dv-out-notes"></div> 
+         <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
+          
         </div><!-- /dv-devis -->
       </div><!-- /dv-preview-wrap -->
     </div><!-- /dv-app -->
@@ -806,6 +807,16 @@ function dvLoadConfig(){
 function dvSaveConfig(cfg){ try{ localStorage.setItem(DV_STORAGE, JSON.stringify(cfg)); } catch(e){} }
 
 let DV_CFG = dvLoadConfig();
+
+ // Restaurer le logo sauvegardé
+(function() {
+  const savedLogo = localStorage.getItem(DV_LOGO_KEY);
+  if (savedLogo) {
+    const slot = document.getElementById('dv-logo-slot');
+    slot.innerHTML = `<img src="${savedLogo}" alt="Logo">`;
+  }
+})();
+ 
 let dvSupplements = [];
 let dvChambres = [{ type:'Quadruple', qty:1 }];
 
