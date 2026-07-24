@@ -944,7 +944,7 @@ function dvRender(){
   document.getElementById('dv-out-email').textContent = email || '';
   document.getElementById('dv-out-voyage').textContent = voyageLabel;
   document.getElementById('dv-out-formule').textContent = 'Formule ' + formule;
-  document.getElementById('dv-out-chambre').textContent = dvChambres.map(c => c.qty + '× ' + c.type).join(' + ');
+  document.getElementById('dv-out-chambre').textContent = '';
 
   const tbody = document.getElementById('dv-out-tbody'); tbody.innerHTML = '';
   let sousTotal = 0;
