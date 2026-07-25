@@ -484,7 +484,7 @@
             <div class="dv-cat-sub">Avec lit à l'hôtel</div>
             <div class="dv-row2">
               <div><label style="margin:2px 0;">Qté</label><input id="dv-q-bebe-al" type="number" min="0" value="0"></div>
-              <div><label style="margin:2px 0;">Prix fixe (€)</label><input id="dv-p-bebe-al" type="number" min="0" value="300"></div>
+              <div><label style="margin:2px 0;">Prix fixe (€)</label><input id="dv-p-bebe-al" type="number" min="0" value="0"></div>
             </div>
           </div>
         </fieldset>
@@ -874,6 +874,46 @@ let DV_CFG = dvLoadConfig();
 })();
  
 let dvSupplements = [];
+
+const DV_HOTELS_MEKKAH = [
+  { name:'Swissôtel Al Maqam',                  dist:'50 m de la Kaaba' },
+  { name:'Pullman ZamZam Makkah',                dist:'150 m de la Kaaba' },
+  { name:'Fairmont Makkah Clock Royal Tower',    dist:'200 m de la Kaaba' },
+  { name:'Hilton Suites Makkah',                 dist:'250 m de la Kaaba' },
+  { name:'Conrad Makkah',                        dist:'350 m de la Kaaba' },
+  { name:'Al Safwah Royale Orchid',              dist:'500 m de la Kaaba' },
+  { name:'Dar Al Tawhid Intercontinental',       dist:'550 m de la Kaaba' },
+  { name:'Mövenpick Hajar Tower',                dist:'700 m de la Kaaba' },
+  { name:'Le Méridien Towers Makkah',            dist:'750 m de la Kaaba' },
+  { name:'Grand Millennium Makkah',              dist:'850 m de la Kaaba' },
+  { name:'Al Marwa Rayhaan by Rotana',           dist:'900 m de la Kaaba' },
+  { name:'Elaf Kinda',                           dist:'1 km de la Kaaba' },
+  { name:'Anjum Hotel Makkah',                   dist:'1,2 km de la Kaaba' },
+  { name:'Sheraton Makkah Jabal Al Kaaba',       dist:'2,5 km de la Kaaba' },
+  { name:'Autre / Personnalisé',                 dist:'', custom:true },
+];
+
+const DV_HOTELS_MEDINE = [
+  { name:'Anwar Al Madinah Mövenpick',           dist:'50 m du Masjid Nabawi' },
+  { name:'Pullman ZamZam Madina',                dist:'80 m du Masjid Nabawi' },
+  { name:'Dar Al Iman InterContinental',         dist:'200 m du Masjid Nabawi' },
+  { name:'Hilton Madinah',                       dist:'350 m du Masjid Nabawi' },
+  { name:'Mövenpick Hotel Madinah',              dist:'450 m du Masjid Nabawi' },
+  { name:'Saja Al Madinah',                      dist:'750 m du Masjid Nabawi' },
+  { name:'Al Haram Hotel Madinah',               dist:'800 m du Masjid Nabawi' },
+  { name:'Radisson Blu Hotel Madinah',           dist:'950 m du Masjid Nabawi' },
+  { name:'Le Méridien Madinah',                  dist:'1 km du Masjid Nabawi' },
+  { name:'Sheraton Madinah Hotel',               dist:'1,2 km du Masjid Nabawi' },
+  { name:'Oberoi Madina',                        dist:'2 km du Masjid Nabawi' },
+  { name:'Autre / Personnalisé',                 dist:'', custom:true },
+];
+
+// État des hôtels sélectionnés
+// Chaque entrée : { ville:'Mekkah'|'Medine', hotelIdx: number, customName:'', customDist:'' }
+let dvHotels = [
+  { ville:'Mekkah', hotelIdx:0, customName:'', customDist:'' },
+  { ville:'Medine', hotelIdx:0, customName:'', customDist:'' },
+];
 let dvChambres = [{ type:'Quadruple', qty:1, ville:'Mekkah', hotelName:'', customName:'', customDist:'' }];
 
 function dvFmt(n){ n=Number(n)||0; return n.toLocaleString('fr-FR',{maximumFractionDigits:0}) + " €"; }
@@ -981,8 +1021,8 @@ function dvRenderChambresForm(){
     div.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:4px;">
         <select data-cidx="${i}" data-cfield="ville" style="font-size:12px;padding:6px 7px;font-weight:600;background:#f0f6f2;border-color:#c9dfd1;">
-          <option value="Mekkah"${cVille==='Mekkah'?' selected':''}> Mekkah</option>
-          <option value="Medine"${cVille==='Medine'?' selected':''}> Médine</option>
+          <option value="Mekkah"${cVille==='Mekkah'?' selected':''}>🕋 Mekkah</option>
+          <option value="Medine"${cVille==='Medine'?' selected':''}>🕌 Médine</option>
         </select>
         <select data-cidx="${i}" data-cfield="hotelName" style="font-size:11.5px;padding:6px 7px;background:#f5f8f5;border-color:#c9dfd1;">
           ${hotelOptions}
@@ -1274,45 +1314,6 @@ document.getElementById('dv-modal-tarifs').addEventListener('click', e => { if(e
    3. SÉLECTEUR D'HÔTELS
 ════════════════════════════════════════════════════════════════ */
 
-const DV_HOTELS_MEKKAH = [
-  { name:'Swissôtel Al Maqam',                  dist:'50 m de la Kaaba' },
-  { name:'Pullman ZamZam Makkah',                dist:'150 m de la Kaaba' },
-  { name:'Fairmont Makkah Clock Royal Tower',    dist:'200 m de la Kaaba' },
-  { name:'Hilton Suites Makkah',                 dist:'250 m de la Kaaba' },
-  { name:'Conrad Makkah',                        dist:'350 m de la Kaaba' },
-  { name:'Al Safwah Royale Orchid',              dist:'500 m de la Kaaba' },
-  { name:'Dar Al Tawhid Intercontinental',       dist:'550 m de la Kaaba' },
-  { name:'Mövenpick Hajar Tower',                dist:'700 m de la Kaaba' },
-  { name:'Le Méridien Towers Makkah',            dist:'750 m de la Kaaba' },
-  { name:'Grand Millennium Makkah',              dist:'850 m de la Kaaba' },
-  { name:'Al Marwa Rayhaan by Rotana',           dist:'900 m de la Kaaba' },
-  { name:'Elaf Kinda',                           dist:'1 km de la Kaaba' },
-  { name:'Anjum Hotel Makkah',                   dist:'1,2 km de la Kaaba' },
-  { name:'Sheraton Makkah Jabal Al Kaaba',       dist:'2,5 km de la Kaaba' },
-  { name:'Autre / Personnalisé',                 dist:'', custom:true },
-];
-
-const DV_HOTELS_MEDINE = [
-  { name:'Anwar Al Madinah Mövenpick',           dist:'50 m du Masjid Nabawi' },
-  { name:'Pullman ZamZam Madina',                dist:'80 m du Masjid Nabawi' },
-  { name:'Dar Al Iman InterContinental',         dist:'200 m du Masjid Nabawi' },
-  { name:'Hilton Madinah',                       dist:'350 m du Masjid Nabawi' },
-  { name:'Mövenpick Hotel Madinah',              dist:'450 m du Masjid Nabawi' },
-  { name:'Saja Al Madinah',                      dist:'750 m du Masjid Nabawi' },
-  { name:'Al Haram Hotel Madinah',               dist:'800 m du Masjid Nabawi' },
-  { name:'Radisson Blu Hotel Madinah',           dist:'950 m du Masjid Nabawi' },
-  { name:'Le Méridien Madinah',                  dist:'1 km du Masjid Nabawi' },
-  { name:'Sheraton Madinah Hotel',               dist:'1,2 km du Masjid Nabawi' },
-  { name:'Oberoi Madina',                        dist:'2 km du Masjid Nabawi' },
-  { name:'Autre / Personnalisé',                 dist:'', custom:true },
-];
-
-// État des hôtels sélectionnés
-// Chaque entrée : { ville:'Mekkah'|'Medine', hotelIdx: number, customName:'', customDist:'' }
-let dvHotels = [
-  { ville:'Mekkah', hotelIdx:0, customName:'', customDist:'' },
-  { ville:'Medine', hotelIdx:0, customName:'', customDist:'' },
-];
 
 function dvGetHotelList(ville){ return ville==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE; }
 
