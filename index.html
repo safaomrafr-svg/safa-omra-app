@@ -507,7 +507,7 @@
           <label for="dv-ref">N° de devis</label>
           <input id="dv-ref" type="text">
           <div class="dv-row2">
-            <div><label for="dv-validite">Validité (jours)</label><input id="dv-validite" type="number" min="1" value="15"></div>
+            <div><label for="dv-validite">Validité (jours)</label><input id="dv-validite" type="number" min="1" value="24h"></div>
             <div><label for="dv-date">Date du devis</label><input id="dv-date" type="text"></div>
           </div>
         </fieldset>
@@ -981,8 +981,8 @@ function dvRenderChambresForm(){
     div.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:4px;">
         <select data-cidx="${i}" data-cfield="ville" style="font-size:12px;padding:6px 7px;font-weight:600;background:#f0f6f2;border-color:#c9dfd1;">
-          <option value="Mekkah"${cVille==='Mekkah'?' selected':''}>🕋 Mekkah</option>
-          <option value="Medine"${cVille==='Medine'?' selected':''}>🕌 Médine</option>
+          <option value="Mekkah"${cVille==='Mekkah'?' selected':''}> Mekkah</option>
+          <option value="Medine"${cVille==='Medine'?' selected':''}> Médine</option>
         </select>
         <select data-cidx="${i}" data-cfield="hotelName" style="font-size:11.5px;padding:6px 7px;background:#f5f8f5;border-color:#c9dfd1;">
           ${hotelOptions}
