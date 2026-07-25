@@ -288,6 +288,60 @@
 
   .dv-panel textarea { min-height:60px; resize:vertical; font-family:'Inter',sans-serif; }
 
+  /* ── Sélecteur hôtels ── */
+  .dv-hotel-block {
+    background:#f5f8f5;
+    border:1px solid #c9dfd1;
+    border-radius:9px;
+    padding:9px 9px 6px;
+    margin-bottom:8px;
+    position:relative;
+  }
+  .dv-hotel-block:last-child { margin-bottom:0; }
+  .dv-hotel-city-label {
+    font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--emerald); margin-bottom:6px; display:flex; align-items:center; gap:5px;
+  }
+  .dv-hotel-city-label span { font-size:13px; }
+  .dv-hotel-select-row { display:grid; grid-template-columns:1fr 28px; gap:5px; align-items:center; margin-bottom:4px; }
+  .dv-hotel-select-row select { font-size:12.5px; padding:6px 7px; }
+  .dv-hotel-dist {
+    font-size:10px; color:var(--emerald-deep); font-weight:600;
+    background:rgba(26,107,74,.08); border-radius:5px; padding:2px 6px;
+    display:inline-block; margin-bottom:4px;
+  }
+  .dv-hotel-custom { display:none; }
+  .dv-hotel-custom.visible { display:block; }
+  .dv-hotel-custom input { font-size:12px; padding:6px 8px; margin-bottom:3px; }
+  .dv-hotel-custom-row { display:grid; grid-template-columns:1fr 90px; gap:5px; }
+  .dv-btn-remove-hotel {
+    width:28px; height:28px; background:#fff; border:1px solid #c9dfd1;
+    border-radius:6px; color:#a33; cursor:pointer; font-size:13px; line-height:1;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    align-self:center;
+  }
+
+  /* Hôtels dans le devis imprimé */
+  .dv-hotels-section {
+    margin-bottom:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  @media(max-width:500px){ .dv-hotels-section{ grid-template-columns:1fr; } }
+  .dv-hotel-card {
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 11px;
+    background:#f9fdf9;
+  }
+  .dv-hotel-card-city {
+    font-size:9px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:4px;
+  }
+  .dv-hotel-card-name { font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .dv-hotel-card-dist { font-size:11px; color:var(--emerald-deep); }
+
   /* Print */
   @media print {
     .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
@@ -390,6 +444,7 @@
           <label for="dv-depart">Date de départ (calcul âge enfant/bébé)</label>
           <input id="dv-depart" type="date">
         </fieldset>
+
 
         <fieldset>
           <legend>Voyageurs &amp; prix</legend>
@@ -514,6 +569,7 @@
               <p class="muted" id="dv-out-chambre">—</p>
             </div>
           </div>
+
 
           <table class="dv-price">
             <thead>
@@ -818,7 +874,7 @@ let DV_CFG = dvLoadConfig();
 })();
  
 let dvSupplements = [];
-let dvChambres = [{ type:'Quadruple', qty:1 }];
+let dvChambres = [{ type:'Quadruple', qty:1, ville:'Mekkah', hotelName:'', customName:'', customDist:'' }];
 
 function dvFmt(n){ n=Number(n)||0; return n.toLocaleString('fr-FR',{maximumFractionDigits:0}) + " €"; }
 function dvPad(n){ return String(n).padStart(2,'0'); }
@@ -904,14 +960,46 @@ function dvRenderChambresForm(){
     const hint = c.type==='Quadruple'
       ? 'Quadruple — tarif de base inclus'
       : `${c.type} — ${dvFmt(prixBase)} + ${dvFmt(supp)} supp. = ${dvFmt(prixTotal)}/pers.`;
+
+    // Ville sélectionnée pour cette chambre
+    const cVille = c.ville || 'Mekkah';
+    const listeHotels = cVille === 'Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
+
+    // Trouver l'hôtel correspondant au nom stocké (ou premier par défaut)
+    let hotelSelIdx = listeHotels.findIndex(h => h.name === c.hotelName);
+    if(hotelSelIdx < 0) hotelSelIdx = 0;
+    const hotelSel = listeHotels[hotelSelIdx];
+    const isCustom = !!hotelSel.custom;
+    const hDist = isCustom ? (c.customDist || '') : (hotelSel.dist || '');
+
+    const hotelOptions = listeHotels.map((h, hi) =>
+      `<option value="${hi}"${hi===hotelSelIdx?' selected':''}>${h.name}</option>`
+    ).join('');
+
     const div = document.createElement('div');
+    div.style.cssText = 'margin-bottom:12px;border:1px solid #dde8e2;border-radius:8px;padding:8px 8px 5px;background:#fafcfa;';
     div.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:4px;">
+        <select data-cidx="${i}" data-cfield="ville" style="font-size:12px;padding:6px 7px;font-weight:600;background:#f0f6f2;border-color:#c9dfd1;">
+          <option value="Mekkah"${cVille==='Mekkah'?' selected':''}>🕋 Mekkah</option>
+          <option value="Medine"${cVille==='Medine'?' selected':''}>🕌 Médine</option>
+        </select>
+        <select data-cidx="${i}" data-cfield="hotelName" style="font-size:11.5px;padding:6px 7px;background:#f5f8f5;border-color:#c9dfd1;">
+          ${hotelOptions}
+        </select>
+      </div>
+      ${hDist ? `<div style="font-size:10px;color:var(--emerald-deep);font-weight:600;padding:0 2px 5px;">📍 ${hDist}</div>` : ''}
+      ${isCustom ? `
+      <div style="display:grid;grid-template-columns:1fr 90px;gap:5px;margin-bottom:5px;">
+        <input type="text" data-cidx="${i}" data-cfield="customName" value="${c.customName||''}" placeholder="Nom de l'hôtel" style="font-size:12px;padding:5px 7px;">
+        <input type="text" data-cidx="${i}" data-cfield="customDist" value="${c.customDist||''}" placeholder="Distance" style="font-size:12px;padding:5px 7px;">
+      </div>` : ''}
       <div style="display:grid;grid-template-columns:1fr 56px 30px;gap:5px;margin-bottom:2px;align-items:center;">
         <select data-cidx="${i}" data-cfield="type">${DV_TYPES_CH.map(t=>`<option${t===c.type?' selected':''}>${t}</option>`).join('')}</select>
         <input type="number" min="1" value="${c.qty}" data-cidx="${i}" data-cfield="qty" style="padding:7px 5px;font-size:12.5px;">
         ${i===0 ? '<div></div>' : `<button type="button" class="dv-btn-remove" data-cremove="${i}">✕</button>`}
       </div>
-      <div style="font-size:10.5px;color:var(--gold);margin-bottom:7px;">${hint}</div>`;
+      <div style="font-size:10.5px;color:var(--gold);">${hint}</div>`;
     list.appendChild(div);
   });
 }
@@ -954,7 +1042,17 @@ function dvRender(){
     const supp = dvGetSuppChambre(c.type);
     const pu = pAdulteBase + supp;
     const total = qty * pu; sousTotal += total;
-    const label = c.type==='Quadruple' ? 'Chambre Quadruple — Tarif adulte à partir de 12 ans' : `Chambre ${c.type} — Tarif adulte (à partir de 12 ans)`;
+
+    // Infos hôtel lié
+    const _listeH = (c.ville||'Mekkah')==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
+    const _entryH = _listeH.find(h => h.name === c.hotelName) || _listeH[0];
+    const _icon = (c.ville||'Mekkah')==='Mekkah' ? '🕋' : '🕌';
+    let _nomH = _entryH.custom ? (c.customName||'Hôtel personnalisé') : _entryH.name;
+    let _distH = _entryH.custom ? (c.customDist||'') : (_entryH.dist||'');
+    const _distPart = _distH ? ` — ${_distH}` : '';
+    const hotelInfo = `<br><span style="font-size:10px;color:var(--emerald-deep);font-weight:500;">${_icon} ${_nomH}${_distPart}</span>`;
+    const typeLabel = c.type==='Quadruple' ? 'Chambre Quadruple' : `Chambre ${c.type}`;
+    const label = `${typeLabel} — Tarif adulte (à partir de 12 ans)${hotelInfo}`;
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${label}</td><td class="num">${qty}</td><td class="num">${dvFmt(pu)}</td><td class="num">${dvFmt(total)}</td>`;
     tbody.appendChild(tr);
@@ -1019,20 +1117,32 @@ document.getElementById('dv-btn-add-supp').addEventListener('click', () => {
 document.getElementById('dv-chambres-list').addEventListener('change', e => {
   const idx=e.target.getAttribute('data-cidx'), field=e.target.getAttribute('data-cfield');
   if(idx===null) return;
-  dvChambres[Number(idx)][field] = field==='qty' ? Number(e.target.value) : e.target.value;
+  const ci = Number(idx);
+  if(field==='qty') dvChambres[ci].qty = Number(e.target.value);
+  else if(field==='ville'){ dvChambres[ci].ville = e.target.value; dvChambres[ci].hotelName = ''; }
+  else if(field==='hotelName'){ 
+    // Stocker le nom de l'hôtel (stable même si la liste change)
+    const liste = dvChambres[ci].ville==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
+    const entry = liste[Number(e.target.value)];
+    dvChambres[ci].hotelName = entry ? entry.name : '';
+  }
+  else dvChambres[ci][field] = e.target.value;
   dvRenderChambresForm(); dvRender();
 });
 document.getElementById('dv-chambres-list').addEventListener('input', e => {
   const idx=e.target.getAttribute('data-cidx'), field=e.target.getAttribute('data-cfield');
-  if(idx===null||field!=='qty') return;
-  dvChambres[Number(idx)][field] = Number(e.target.value); dvRenderChambresForm(); dvRender();
+  if(idx===null) return;
+  if(field==='qty') dvChambres[Number(idx)].qty = Number(e.target.value);
+  else if(field==='customName') dvChambres[Number(idx)].customName = e.target.value;
+  else if(field==='customDist') dvChambres[Number(idx)].customDist = e.target.value;
+  dvRenderChambresForm(); dvRender();
 });
 document.getElementById('dv-chambres-list').addEventListener('click', e => {
   const idx=e.target.getAttribute('data-cremove'); if(idx===null) return;
   dvChambres.splice(Number(idx),1); dvRenderChambresForm(); dvRender();
 });
 document.getElementById('dv-btn-add-chambre').addEventListener('click', () => {
-  dvChambres.push({type:'Triple',qty:1}); dvRenderChambresForm(); dvRender();
+  dvChambres.push({type:'Triple',qty:1,ville:'Mekkah',hotelName:'',customName:'',customDist:''}); dvRenderChambresForm(); dvRender();
 });
 
 /* Imprimer / reset */
@@ -1047,7 +1157,7 @@ document.getElementById('dv-btn-reset').addEventListener('click', () => {
   document.getElementById('dv-depart').value = '';
   document.getElementById('dv-p-bebe-sl').value = 300;
   document.getElementById('dv-p-bebe-al').value = 300;
-  dvChambres = [{type:'Quadruple',qty:1}]; dvRenderChambresForm();
+  dvChambres = [{type:'Quadruple',qty:1,ville:'Mekkah',hotelName:'',customName:'',customDist:''}]; dvRenderChambresForm();
   dvSupplements = []; dvRenderSuppForm();
   document.getElementById('dv-ref').value = dvRandRef();
   document.getElementById('dv-date').value = dvToday();
@@ -1161,7 +1271,63 @@ document.getElementById('dv-btn-save-tarifs').addEventListener('click', () => { 
 document.getElementById('dv-modal-tarifs').addEventListener('click', e => { if(e.target.id==='dv-modal-tarifs'){ DV_CFG=dvLoadConfig(); document.getElementById('dv-modal-tarifs').classList.remove('open'); } });
 
 /* ════════════════════════════════════════════════════════════════
-   3. DÉMARRAGE
+   3. SÉLECTEUR D'HÔTELS
+════════════════════════════════════════════════════════════════ */
+
+const DV_HOTELS_MEKKAH = [
+  { name:'Swissôtel Al Maqam',                  dist:'50 m de la Kaaba' },
+  { name:'Pullman ZamZam Makkah',                dist:'150 m de la Kaaba' },
+  { name:'Fairmont Makkah Clock Royal Tower',    dist:'200 m de la Kaaba' },
+  { name:'Hilton Suites Makkah',                 dist:'250 m de la Kaaba' },
+  { name:'Conrad Makkah',                        dist:'350 m de la Kaaba' },
+  { name:'Al Safwah Royale Orchid',              dist:'500 m de la Kaaba' },
+  { name:'Dar Al Tawhid Intercontinental',       dist:'550 m de la Kaaba' },
+  { name:'Mövenpick Hajar Tower',                dist:'700 m de la Kaaba' },
+  { name:'Le Méridien Towers Makkah',            dist:'750 m de la Kaaba' },
+  { name:'Grand Millennium Makkah',              dist:'850 m de la Kaaba' },
+  { name:'Al Marwa Rayhaan by Rotana',           dist:'900 m de la Kaaba' },
+  { name:'Elaf Kinda',                           dist:'1 km de la Kaaba' },
+  { name:'Anjum Hotel Makkah',                   dist:'1,2 km de la Kaaba' },
+  { name:'Sheraton Makkah Jabal Al Kaaba',       dist:'2,5 km de la Kaaba' },
+  { name:'Autre / Personnalisé',                 dist:'', custom:true },
+];
+
+const DV_HOTELS_MEDINE = [
+  { name:'Anwar Al Madinah Mövenpick',           dist:'50 m du Masjid Nabawi' },
+  { name:'Pullman ZamZam Madina',                dist:'80 m du Masjid Nabawi' },
+  { name:'Dar Al Iman InterContinental',         dist:'200 m du Masjid Nabawi' },
+  { name:'Hilton Madinah',                       dist:'350 m du Masjid Nabawi' },
+  { name:'Mövenpick Hotel Madinah',              dist:'450 m du Masjid Nabawi' },
+  { name:'Saja Al Madinah',                      dist:'750 m du Masjid Nabawi' },
+  { name:'Al Haram Hotel Madinah',               dist:'800 m du Masjid Nabawi' },
+  { name:'Radisson Blu Hotel Madinah',           dist:'950 m du Masjid Nabawi' },
+  { name:'Le Méridien Madinah',                  dist:'1 km du Masjid Nabawi' },
+  { name:'Sheraton Madinah Hotel',               dist:'1,2 km du Masjid Nabawi' },
+  { name:'Oberoi Madina',                        dist:'2 km du Masjid Nabawi' },
+  { name:'Autre / Personnalisé',                 dist:'', custom:true },
+];
+
+// État des hôtels sélectionnés
+// Chaque entrée : { ville:'Mekkah'|'Medine', hotelIdx: number, customName:'', customDist:'' }
+let dvHotels = [
+  { ville:'Mekkah', hotelIdx:0, customName:'', customDist:'' },
+  { ville:'Medine', hotelIdx:0, customName:'', customDist:'' },
+];
+
+function dvGetHotelList(ville){ return ville==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE; }
+
+function dvGetHotelData(h){
+  const list = dvGetHotelList(h.ville);
+  const entry = list[h.hotelIdx] || list[0];
+  if(entry.custom){
+    return { name: h.customName || '—', dist: h.customDist || '' };
+  }
+  return { name: entry.name, dist: entry.dist };
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   4. DÉMARRAGE
 ════════════════════════════════════════════════════════════════ */
 document.getElementById('ts').textContent =
   new Date().toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
