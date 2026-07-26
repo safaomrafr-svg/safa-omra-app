@@ -806,14 +806,20 @@ function dvRender(){
     const key = villeLabel+'|'+h.name;
     if(!hotelsUniq.find(x=>x.key===key)) hotelsUniq.push({key, villeLabel, name:h.name, dist:h.dist});
   });
-  const lignesDetail = [
-    'Transport et transferts aéroport inclus',
-    'Visa Omra inclus',
-    'Guide et accompagnement spirituel inclus',
-    ...hotelsUniq.map(x =>
-      x.villeLabel+' — <span class="h-name">'+x.name+'</span>'+(x.dist?' <span class="h-dist">('+x.dist+')</span>':'')
-    )
-  ];
+  const notesTexte = document.getElementById('dv-notes').value.trim();
+const lignesNotes = notesTexte
+  ? notesTexte.split('\n').filter(l => l.trim()).map(l => l.trim())
+  : [];
+
+const lignesDetail = [
+  'Transport et transferts aéroport inclus',
+  'Visa Omra inclus',
+  'Guide et accompagnement spirituel inclus',
+  ...hotelsUniq.map(x =>
+    x.villeLabel+' — <span class="h-name">'+x.name+'</span>'+(x.dist?' <span class="h-dist">('+x.dist+')</span>':'')
+  ),
+  ...lignesNotes
+];
   detailBox.style.display = 'block';
   detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+
     lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
@@ -853,7 +859,7 @@ function dvRender(){
 
   document.getElementById('dv-out-flight-note').style.display = volInclus?'none':'block';
   document.getElementById('dv-out-total').textContent = dvFmt(Math.max(total-remise,0));
-  document.getElementById('dv-out-notes').textContent = notes;
+  document.getElementById('dv-out-notes').textContent = '';
 }
 
 /* ════════ 8. TARIFS ════════ */
