@@ -489,11 +489,8 @@ table.dv-price td.num { text-align:right; vertical-align:middle; white-space:now
             </div>
           </div>
          <div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
-<div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
-<div class="dv-notes" id="dv-out-notes"></div>
-         <div class="dv-notes" id="dv-out-notes"></div> 
          <div class="dv-notes" id="dv-out-notes"></div>
-          <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
+         <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
         </div>
       </div>
     </div>
@@ -791,15 +788,7 @@ function dvRender(){
   const tbody = document.getElementById('dv-out-tbody');
   tbody.innerHTML = '';
   let total = 0;
-
-  dvChambres.forEach(c => {
-    const qty = Number(c.qty)||0;
-    if(qty<=0) return;
-    const supp  = dvGetSuppChambre(c.type);
-    const pu    = pABase + supp;
-    const ligne = qty * pu;
-    total += ligne;
- // Bloc détail hébergements
+// Bloc détail hébergements
 const detailBox = document.getElementById('dv-out-detail');
 const hotelsUniq = [];
 dvChambres.forEach(c => {
@@ -821,7 +810,14 @@ const lignesDetail = [
 detailBox.style.display = 'block';
 detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+
   lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';  
-
+  dvChambres.forEach(c => {
+    const qty = Number(c.qty)||0;
+    if(qty<=0) return;
+    const supp  = dvGetSuppChambre(c.type);
+    const pu    = pABase + supp;
+    const ligne = qty * pu;
+    total += ligne;
+ 
     /* Résoudre l'hôtel */
     const h    = dvResolveHotel(c);
     const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
