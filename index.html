@@ -154,34 +154,14 @@
   .dv-btn-secondary { background:#fff; border:1px solid var(--line); color:#6b6355; border-radius:var(--rs); padding:11px 12px; font-size:12.5px; cursor:pointer; }
   .dv-btn-link { background:none; border:none; color:var(--emerald-deep); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer; padding:0; }
 
-  /* Bloc chambre dans le formulaire */
-  .dv-chambre-block {
-    margin-bottom:10px; border:1px solid #dde8e2; border-radius:8px;
-    padding:8px 8px 5px; background:#fafcfa;
-  }
-  .dv-chambre-ville-row {
-    display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:3px;
-  }
-  .dv-chambre-ville-row select {
-    font-size:12px; padding:6px 7px; font-weight:600;
-    background:#f0f6f2; border-color:#c9dfd1;
-  }
-  .dv-chambre-hotel-row select {
-    font-size:11.5px; padding:6px 7px; width:100%;
-    background:#f5f8f5; border-color:#c9dfd1; margin-bottom:3px;
-  }
-  .dv-chambre-dist {
-    font-size:10px; color:var(--emerald-deep); font-weight:600;
-    padding:0 2px 4px;
-  }
-  .dv-chambre-custom {
-    display:grid; grid-template-columns:1fr 90px; gap:5px; margin-bottom:5px;
-  }
+  .dv-chambre-block { margin-bottom:10px; border:1px solid #dde8e2; border-radius:8px; padding:8px 8px 5px; background:#fafcfa; }
+  .dv-chambre-ville-row { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:3px; }
+  .dv-chambre-ville-row select { font-size:12px; padding:6px 7px; font-weight:600; background:#f0f6f2; border-color:#c9dfd1; }
+  .dv-chambre-hotel-row select { font-size:11.5px; padding:6px 7px; width:100%; background:#f5f8f5; border-color:#c9dfd1; margin-bottom:3px; }
+  .dv-chambre-dist { font-size:10px; color:var(--emerald-deep); font-weight:600; padding:0 2px 4px; }
+  .dv-chambre-custom { display:grid; grid-template-columns:1fr 90px; gap:5px; margin-bottom:5px; }
   .dv-chambre-custom input { font-size:12px; padding:5px 7px; }
-  .dv-chambre-type-row {
-    display:grid; grid-template-columns:1fr 56px 30px; gap:5px;
-    margin-bottom:2px; align-items:center;
-  }
+  .dv-chambre-type-row { display:grid; grid-template-columns:1fr 56px 30px; gap:5px; margin-bottom:2px; align-items:center; }
   .dv-chambre-hint { font-size:10.5px; color:var(--gold); }
 
   .dv-modal-overlay { display:none; position:fixed; inset:0; background:rgba(43,38,32,.45); z-index:200; align-items:center; justify-content:center; padding:16px; }
@@ -209,15 +189,21 @@
 
   .dv-devis { background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:24px 18px 24px; box-shadow:0 10px 28px rgba(43,38,32,.08); max-width:720px; margin:0 auto; overflow-x:hidden; word-break:break-word; }
   @media(min-width:600px){ .dv-devis { padding:38px 42px 30px; } }
-  .dv-arch { width:100%; height:22px; margin-bottom:18px; display:block; }
+
+  /* ── SVG voûte ── */
+  .dv-arch { width:100%; height:28px; margin-bottom:14px; display:block; }
+
   .dv-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--emerald); padding-bottom:14px; margin-bottom:18px; gap:10px; flex-wrap:wrap; }
   .dv-brand { display:flex; align-items:flex-start; gap:12px; }
-  .dv-logo-slot { width:130px; height:73px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:transparent; color:var(--emerald-deep); font-family:'Fraunces',serif; font-weight:700; font-size:16px; overflow:hidden; cursor:pointer; border:none; padding:0; }
+
+  /* ── LOGO AGRANDI ── */
+  .dv-logo-slot { width:160px; height:90px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:transparent; color:var(--emerald-deep); font-family:'Fraunces',serif; font-weight:700; font-size:16px; overflow:hidden; cursor:pointer; border:none; padding:0; }
   .dv-logo-slot img { width:100%; height:100%; object-fit:contain; }
+
   .dv-brand-name { font-family:'Fraunces',serif; font-weight:700; font-size:22px; color:var(--emerald-deep); letter-spacing:.01em; margin:0; }
   .dv-brand-tag  { font-family:'Fraunces',serif; font-style:italic; font-size:11.5px; color:var(--gold); margin:2px 0 8px; }
   .dv-agency-contact { font-size:10.5px; color:#83796a; line-height:1.6; }
-  .dv-agency-contact input { border:none; background:transparent; padding:0; font-size:10.5px; color:#83796a; width:140px; text-align:left; font-family:'Inter',sans-serif; }
+  .dv-agency-contact input { border:none; background:transparent; padding:0; font-size:10.5px; color:#83796a; width:160px; text-align:left; font-family:'Inter',sans-serif; }
   .dv-agency-contact input:focus { outline:1px dashed var(--gold); }
   .dv-doc-meta { text-align:right; }
   .dv-doc-title { font-family:'Fraunces',serif; font-size:13.5px; font-weight:700; letter-spacing:.14em; color:var(--emerald-deep); text-transform:uppercase; margin:0 0 5px; }
@@ -228,17 +214,32 @@
   .dv-info-block h4 { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin:0 0 5px; font-weight:700; }
   .dv-info-block p  { font-size:13px; margin:2px 0; color:var(--ink); }
   .dv-info-block .muted { color:#948a78; font-size:11.5px; }
-  table.dv-price { width:100%; border-collapse:collapse; margin-bottom:5px; font-size:11px; }
-  table.dv-price thead th { text-align:left; font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:#83796a; border-bottom:1px solid var(--line); padding:4px 2px; font-weight:600; }
-  table.dv-price td { padding:6px 2px; border-bottom:1px solid #f0ead9; }
-  @media(min-width:500px){ table.dv-price { font-size:12.5px; } table.dv-price thead th { font-size:10px; padding:5px 3px; } table.dv-price td { padding:7px 3px; } }
-  table.dv-price td.num, table.dv-price th.num { text-align:right; }
+
+  table.dv-price { width:100%; border-collapse:collapse; margin-bottom:5px; }
+  table.dv-price thead tr { border-bottom:1.5px solid var(--line); }
+  table.dv-price thead th { text-align:left; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--or-m); border-bottom:none; padding:0 4px 9px; font-weight:600; white-space:nowrap; }
+  table.dv-price thead th.num { text-align:right; }
+  table.dv-price tbody tr { border-bottom:1px solid #f0ead9; }
+  table.dv-price tbody tr:last-child { border-bottom:none; }
+  table.dv-price td { padding:11px 4px; vertical-align:top; font-size:12.5px; }
+  table.dv-price td.num { text-align:right; vertical-align:middle; white-space:nowrap; font-variant-numeric:tabular-nums; }
   table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
+  .prest-main  { font-weight:600; font-size:13px; line-height:1.35; }
+  .prest-cat   { font-size:11px; color:var(--txt2); font-style:italic; margin-top:2px; }
+  .prest-ville { font-size:11px; color:var(--emerald-deep); margin-top:3px; font-weight:500; }
+
   .dv-totals { margin-top:7px; display:flex; justify-content:flex-end; }
   .dv-totals-inner { width:240px; }
   .dv-totals-row { display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; }
   .dv-totals-row.grand { background:var(--emerald); color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:16px; padding:9px 11px; border-radius:7px; margin-top:7px; }
   .dv-flight-note { font-size:11.5px; margin-top:9px; padding:7px 9px; border-radius:7px; background:#f6f1e4; border:1px solid var(--line); color:#6b6355; }
+  .dv-detail-block { margin-top:16px; background:#f6f1e4; border:1px solid var(--line); border-radius:8px; padding:13px 16px; }
+  .dv-detail-block h5 { font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--gold); margin:0 0 8px; }
+  .dv-detail-list { list-style:none; padding:0; margin:0; }
+  .dv-detail-list li { font-size:11.5px; color:#5a5046; line-height:1.7; display:flex; gap:6px; }
+  .dv-detail-list li::before { content:"–"; color:var(--gold); flex-shrink:0; }
+  .dv-detail-list .h-name { font-weight:600; color:var(--emerald-deep); }
+  .dv-detail-list .h-dist { color:#948a78; }
   .dv-notes { margin-top:18px; padding-top:12px; border-top:1px solid var(--line); font-size:11px; color:#6b6355; line-height:1.6; white-space:pre-wrap; }
   .dv-validity { font-size:11px; color:var(--emerald-deep); font-weight:600; margin-top:80px; }
   .dv-panel textarea { min-height:60px; resize:vertical; font-family:'Inter',sans-serif; }
@@ -254,27 +255,6 @@
   }
   @media(max-width:420px){ .grid-voyages{ grid-template-columns:1fr; } }
   @media(min-width:700px){ #pelerinsList{ grid-template-columns:1fr 1fr; } }
-
- table.dv-price thead tr { border-bottom:1.5px solid var(--line); }
-table.dv-price thead th {
-  text-align:left; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase;
-  color:var(--or-m); border-bottom:none; padding:0 4px 9px; font-weight:600; white-space:nowrap;
-}
-table.dv-price thead th.num { text-align:right; }
-table.dv-price tbody tr { border-bottom:1px solid #f0ead9; }
-table.dv-price tbody tr:last-child { border-bottom:none; }
-table.dv-price td { padding:11px 4px; vertical-align:top; }
-table.dv-price td.num { text-align:right; vertical-align:middle; white-space:nowrap; font-variant-numeric:tabular-nums; }
-.prest-main  { font-weight:600; font-size:13px; line-height:1.35; }
-.prest-cat   { font-size:11px; color:var(--txt2); font-style:italic; margin-top:2px; }
-.prest-ville { font-size:11px; color:var(--emerald-deep); margin-top:3px; font-weight:500; }
-.dv-detail-block { margin-top:16px; background:#f6f1e4; border:1px solid var(--line); border-radius:8px; padding:13px 16px; }
-.dv-detail-block h5 { font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--gold); margin:0 0 8px; }
-.dv-detail-list { list-style:none; padding:0; margin:0; }
-.dv-detail-list li { font-size:11.5px; color:#5a5046; line-height:1.7; display:flex; gap:6px; }
-.dv-detail-list li::before { content:"–"; color:var(--gold); flex-shrink:0; }
-.dv-detail-list .h-name { font-weight:600; color:var(--emerald-deep); }
-.dv-detail-list .h-dist { color:#948a78; }
 </style>
 </head>
 <body>
@@ -437,9 +417,12 @@ table.dv-price td.num { text-align:right; vertical-align:middle; white-space:now
         </div>
         <input type="file" id="dv-logo-input" accept="image/*" style="display:none;">
         <div class="dv-devis" id="dv-doc">
-          <svg class="dv-arch" viewBox="0 0 700 26" preserveAspectRatio="none">
+
+          <!-- Voûte inspirée du logo SAFA OMRA -->
+          <svg class="dv-arch" viewBox="0 0 700 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,26 L260,26 C260,10 280,2 350,2 C420,2 440,10 440,26 L700,26" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
           </svg>
+
           <div class="dv-head">
             <div class="dv-brand">
               <div class="dv-logo-slot" id="dv-logo-slot" title="Cliquer pour changer le logo">SO</div>
@@ -488,9 +471,9 @@ table.dv-price td.num { text-align:right; vertical-align:middle; white-space:now
               <div class="dv-totals-row grand"><span>Total</span><span id="dv-out-total">0 €</span></div>
             </div>
           </div>
-         <div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
-         <div class="dv-notes" id="dv-out-notes"></div>
-         <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
+          <div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
+          <div class="dv-notes" id="dv-out-notes"></div>
+          <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
         </div>
       </div>
     </div>
@@ -633,7 +616,6 @@ let DV_CFG = dvLoadConfig();
 
 (function(){ const s=localStorage.getItem(DV_LOGO_KEY); if(s){document.getElementById('dv-logo-slot').innerHTML='<img src="'+s+'" alt="Logo">';} })();
 
-/* État chambres : chaque chambre = { type, qty, ville, hotelName, customName, customDist } */
 let dvChambres    = [{type:'Quadruple', qty:1, ville:'Mekkah', hotelName:'', customName:'', customDist:''}];
 let dvSupplements = [];
 
@@ -648,7 +630,6 @@ function dvCurrentFormule(){ return document.getElementById('dv-formule').value;
 function dvCurrentTarifs(){ const code=dvCurrentCode(),f=dvCurrentFormule(); return (DV_CFG[code]&&DV_CFG[code][f])?DV_CFG[code][f]:null; }
 function dvGetSuppChambre(type){ if(type==='Quadruple')return 0; const t=dvCurrentTarifs();if(!t||!t.supplements)return 0; const m=t.supplements.find(s=>s.label==='Chambre '+type); return m?(Number(m.prix)||0):0; }
 
-/* Résoudre l'hôtel d'une chambre → {name, dist, isCustom} */
 function dvResolveHotel(c){
   const liste = (c.ville||'Mekkah')==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
   const entry  = liste.find(h=>h.name===c.hotelName) || liste[0];
@@ -708,19 +689,16 @@ function dvRenderChambresForm(){
   });
 }
 
-/* ════════ 6. LISTENER UNIQUE SUR #dv-chambres-list ════════ */
+/* ════════ 6. LISTENERS CHAMBRES ════════ */
 document.getElementById('dv-chambres-list').addEventListener('change', function(e){
   const ci = e.target.getAttribute('data-ci');
   const cf = e.target.getAttribute('data-cf');
   if(ci===null || cf===null) return;
   const idx = Number(ci);
-
   if(cf === 'ville'){
-    /* Changer la ville → réinitialiser hotelName */
     dvChambres[idx].ville     = e.target.value;
-    dvChambres[idx].hotelName = '';            /* premier hôtel de la nouvelle liste */
+    dvChambres[idx].hotelName = '';
   } else if(cf === 'hotelName'){
-    /* La valeur du select est l'index dans la liste filtrée */
     const liste = dvChambres[idx].ville==='Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
     const entry = liste[Number(e.target.value)];
     dvChambres[idx].hotelName = entry ? entry.name : '';
@@ -788,28 +766,30 @@ function dvRender(){
   const tbody = document.getElementById('dv-out-tbody');
   tbody.innerHTML = '';
   let total = 0;
-// Bloc détail hébergements
-const detailBox = document.getElementById('dv-out-detail');
-const hotelsUniq = [];
-dvChambres.forEach(c => {
-  if((Number(c.qty)||0) <= 0) return;
-  const h = dvResolveHotel(c);
-  const icon = (c.ville||'Mekkah')==='Mekkah' ? '🕋' : '🕌';
-  const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
-  const key = villeLabel+'|'+h.name;
-  if(!hotelsUniq.find(x=>x.key===key)) hotelsUniq.push({key, icon, villeLabel, name:h.name, dist:h.dist});
-});
-const lignesDetail = [
-  'Transport et transferts aéroport inclus',
-  'Visa Omra inclus',
-  'Guide et accompagnement spirituel inclus',
-  ...hotelsUniq.map(x =>
-    x.villeLabel+' — <span class="h-name">'+x.name+'</span>'+(x.dist?' <span class="h-dist">('+x.dist+')</span>':'')
-  )
-];
-detailBox.style.display = 'block';
-detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+
-  lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';  
+
+  /* ── Bloc détail hébergements ── */
+  const detailBox = document.getElementById('dv-out-detail');
+  const hotelsUniq = [];
+  dvChambres.forEach(c => {
+    if((Number(c.qty)||0) <= 0) return;
+    const h = dvResolveHotel(c);
+    const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
+    const key = villeLabel+'|'+h.name;
+    if(!hotelsUniq.find(x=>x.key===key)) hotelsUniq.push({key, villeLabel, name:h.name, dist:h.dist});
+  });
+  const lignesDetail = [
+    'Transport et transferts aéroport inclus',
+    'Visa Omra inclus',
+    'Guide et accompagnement spirituel inclus',
+    ...hotelsUniq.map(x =>
+      x.villeLabel+' — <span class="h-name">'+x.name+'</span>'+(x.dist?' <span class="h-dist">('+x.dist+')</span>':'')
+    )
+  ];
+  detailBox.style.display = 'block';
+  detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+
+    lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
+
+  /* ── Lignes chambres ── */
   dvChambres.forEach(c => {
     const qty = Number(c.qty)||0;
     if(qty<=0) return;
@@ -817,19 +797,18 @@ detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv
     const pu    = pABase + supp;
     const ligne = qty * pu;
     total += ligne;
- 
-    /* Résoudre l'hôtel */
-    const h    = dvResolveHotel(c);
+
+    const h          = dvResolveHotel(c);
     const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
-const typeLabel = c.type==='Quadruple' ? 'Chambre Quadruple' : 'Chambre '+c.type;
-const label =
-  '<div class="prest-main">'+typeLabel+'</div>'+
-  '<div class="prest-cat">Tarif adulte — à partir de 12 ans</div>'+
-  '<div class="prest-ville">'+villeLabel+' — '+h.name+'</div>';
-  
-const tr = document.createElement('tr');
-tr.innerHTML = '<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(ligne)+'</td>';
-tbody.appendChild(tr);
+    const typeLabel  = c.type==='Quadruple' ? 'Chambre Quadruple' : 'Chambre '+c.type;
+    const label =
+      '<div class="prest-main">'+typeLabel+'</div>'+
+      '<div class="prest-cat">Tarif adulte — à partir de 12 ans</div>'+
+      '<div class="prest-ville">'+villeLabel+' — '+h.name+'</div>';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(ligne)+'</td>';
+    tbody.appendChild(tr);
   });
 
   function addRow(label,qty,pu){ if(qty<=0)return; const t=qty*pu; total+=t; const tr=document.createElement('tr'); tr.innerHTML='<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(t)+'</td>'; tbody.appendChild(tr); }
@@ -888,7 +867,7 @@ function dvRenderSuppForm(){
   });
 }
 
-/* ════════ 9. EVENTS GÉNÉRAUX ════════ */
+/* ════════ 9. EVENTS ════════ */
 document.getElementById('dv-voyage').addEventListener('change',()=>{document.getElementById('dv-ref').value=dvRandRef();dvAppliquerTarifs();dvRender();});
 document.getElementById('dv-formule').addEventListener('change',()=>{dvAppliquerTarifs();dvRender();});
 document.getElementById('dv-vol').addEventListener('change',()=>{dvAppliquerTarifs();dvRender();});
