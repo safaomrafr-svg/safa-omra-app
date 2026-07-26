@@ -254,6 +254,27 @@
   }
   @media(max-width:420px){ .grid-voyages{ grid-template-columns:1fr; } }
   @media(min-width:700px){ #pelerinsList{ grid-template-columns:1fr 1fr; } }
+
+ table.dv-price thead tr { border-bottom:1.5px solid var(--line); }
+table.dv-price thead th {
+  text-align:left; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--or-m); border-bottom:none; padding:0 4px 9px; font-weight:600; white-space:nowrap;
+}
+table.dv-price thead th.num { text-align:right; }
+table.dv-price tbody tr { border-bottom:1px solid #f0ead9; }
+table.dv-price tbody tr:last-child { border-bottom:none; }
+table.dv-price td { padding:11px 4px; vertical-align:top; }
+table.dv-price td.num { text-align:right; vertical-align:middle; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.prest-main  { font-weight:600; font-size:13px; line-height:1.35; }
+.prest-cat   { font-size:11px; color:var(--txt2); font-style:italic; margin-top:2px; }
+.prest-ville { font-size:11px; color:var(--emerald-deep); margin-top:3px; font-weight:500; }
+.dv-detail-block { margin-top:16px; background:#f6f1e4; border:1px solid var(--line); border-radius:8px; padding:13px 16px; }
+.dv-detail-block h5 { font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--gold); margin:0 0 8px; }
+.dv-detail-list { list-style:none; padding:0; margin:0; }
+.dv-detail-list li { font-size:11.5px; color:#5a5046; line-height:1.7; display:flex; gap:6px; }
+.dv-detail-list li::before { content:"–"; color:var(--gold); flex-shrink:0; }
+.dv-detail-list .h-name { font-weight:600; color:var(--emerald-deep); }
+.dv-detail-list .h-dist { color:#948a78; }
 </style>
 </head>
 <body>
@@ -467,7 +488,11 @@
               <div class="dv-totals-row grand"><span>Total</span><span id="dv-out-total">0 €</span></div>
             </div>
           </div>
-          <div class="dv-notes" id="dv-out-notes"></div>
+         <div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
+<div class="dv-detail-block" id="dv-out-detail" style="display:none;"></div>
+<div class="dv-notes" id="dv-out-notes"></div>
+         <div class="dv-notes" id="dv-out-notes"></div> 
+         <div class="dv-notes" id="dv-out-notes"></div>
           <p class="dv-validity">Ce devis est établi à titre indicatif et ne constitue pas une réservation.</p>
         </div>
       </div>
@@ -774,18 +799,40 @@ function dvRender(){
     const pu    = pABase + supp;
     const ligne = qty * pu;
     total += ligne;
+ // Bloc détail hébergements
+const detailBox = document.getElementById('dv-out-detail');
+const hotelsUniq = [];
+dvChambres.forEach(c => {
+  if((Number(c.qty)||0) <= 0) return;
+  const h = dvResolveHotel(c);
+  const icon = (c.ville||'Mekkah')==='Mekkah' ? '🕋' : '🕌';
+  const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
+  const key = villeLabel+'|'+h.name;
+  if(!hotelsUniq.find(x=>x.key===key)) hotelsUniq.push({key, icon, villeLabel, name:h.name, dist:h.dist});
+});
+const lignesDetail = [
+  'Transport et transferts aéroport inclus',
+  'Visa Omra inclus',
+  'Guide et accompagnement spirituel inclus',
+  ...hotelsUniq.map(x =>
+    x.villeLabel+' — <span class="h-name">'+x.name+'</span>'+(x.dist?' <span class="h-dist">('+x.dist+')</span>':'')
+  )
+];
+detailBox.style.display = 'block';
+detailBox.innerHTML = '<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+
+  lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';  
 
     /* Résoudre l'hôtel */
     const h    = dvResolveHotel(c);
-    const icon = (c.ville||'Mekkah')==='Mekkah' ? '🕋' : '🕌';
-    const dist = h.dist ? ' — '+h.dist : '';
-    const hotelSpan = '<br><span style="font-size:10px;color:var(--emerald-deep);font-weight:500;">'+icon+' '+h.name+dist+'</span>';
-
-    const typeLabel = c.type==='Quadruple' ? 'Chambre Quadruple' : 'Chambre '+c.type;
-    const label     = typeLabel+' — Tarif adulte (à partir de 12 ans)'+hotelSpan;
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(ligne)+'</td>';
-    tbody.appendChild(tr);
+    const villeLabel = (c.ville||'Mekkah')==='Mekkah' ? 'Mekkah' : 'Médine';
+const typeLabel = c.type==='Quadruple' ? 'Chambre Quadruple' : 'Chambre '+c.type;
+const label =
+  '<div class="prest-main">'+typeLabel+'</div>'+
+  '<div class="prest-cat">Tarif adulte — à partir de 12 ans</div>'+
+  '<div class="prest-ville">'+icon+' '+villeLabel+'</div>';
+const tr = document.createElement('tr');
+tr.innerHTML = '<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(ligne)+'</td>';
+tbody.appendChild(tr);
   });
 
   function addRow(label,qty,pu){ if(qty<=0)return; const t=qty*pu; total+=t; const tr=document.createElement('tr'); tr.innerHTML='<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(t)+'</td>'; tbody.appendChild(tr); }
