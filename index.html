@@ -244,17 +244,46 @@
   .dv-validity { font-size:11px; color:var(--emerald-deep); font-weight:600; margin-top:80px; }
   .dv-panel textarea { min-height:60px; resize:vertical; font-family:'Inter',sans-serif; }
 
-  @media print {
-    .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
-    body { background:#fff; }
-    .wrap { padding:0; }
-    .tab-pane { display:none !important; }
-    #tab-devis { display:block !important; }
-    .dv-app { display:block; }
-    .dv-devis { box-shadow:none; border:none; padding:0; max-width:none; margin:0; }
+@media print {
+  .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
+  body { background:#fff; margin:0; }
+  .wrap { padding:0; max-width:none; }
+  .tab-pane { display:none !important; }
+  #tab-devis { display:block !important; }
+  .dv-app { display:block; }
+  .dv-preview-wrap { display:block; }
+
+  .dv-devis {
+    box-shadow:none;
+    border:none;
+    padding:20px 28px;
+    max-width:none;
+    margin:0;
+    /* Force les couleurs à s'imprimer */
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
   }
-  @media(max-width:420px){ .grid-voyages{ grid-template-columns:1fr; } }
-  @media(min-width:700px){ #pelerinsList{ grid-template-columns:1fr 1fr; } }
+
+  /* Bloc total vert */
+  .dv-totals-row.grand {
+    background:#1A6B4A !important;
+    color:#fff !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* Bloc détail hébergements */
+  .dv-detail-block {
+    background:#f6f1e4 !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* Éviter les coupures de page dans le tableau */
+  table.dv-price { page-break-inside:avoid; }
+  .dv-detail-block { page-break-inside:avoid; }
+  .dv-totals { page-break-inside:avoid; }
+}}
 </style>
 </head>
 <body>
