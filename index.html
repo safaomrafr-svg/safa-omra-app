@@ -238,7 +238,7 @@
   .dv-detail-block { margin-top:16px; background:#f6f1e4; border:1px solid var(--line); border-radius:8px; padding:13px 16px; }
   .dv-detail-block h5 { font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--gold); margin:0 0 8px; }
   .dv-detail-list { list-style:none; padding:0; margin:0; }
-  .dv-detail-list li { font-size:11.5px; color:#5a5046; line-height:1.7; display:flex; gap:6px; }
+  .dv-detail-list li { font-size:11.5px; color:#5a5046; line-height:1.7; display:flex; gap:6px; word-break:normal; overflow-wrap:break-word; }
   .dv-detail-list li::before { content:"–"; color:var(--gold); flex-shrink:0; }
   .dv-detail-list .h-name { font-weight:600; color:var(--emerald-deep); }
   .dv-detail-list .h-dist { color:#948a78; }
@@ -924,10 +924,10 @@ function dvRender(){
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
-    ...hotelsDetail.map(x =>
-      'Mekkah — <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+
-      ' · Médine — <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')
-    ),
+   ...hotelsDetail.flatMap(x => [
+  'Mekkah — <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':''),
+  'Médine — <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')
+]),
     ...lignesNotes
   ];
 
