@@ -882,14 +882,10 @@ function dvRender(){
       hotelsDetail.push({key, mk, md});
     }
 
-    const typeLabel  = c.type==='Quadruple' ? 'Pack Quadruple' : 'Pack '+c.type;
+    const typeLabel  = 'Chambre '+c.type;
     const label =
       '<div class="prest-main">'+typeLabel+'</div>'+
-      '<div class="prest-cat">Tarif adulte — à partir de 12 ans</div>'+
-      '<div class="prest-hotels">'+
-        ' Mekkah — '+mk.name+'<br>'+
-        ' Médine — '+md.name+
-      '</div>';
+      '<div class="prest-cat">Tarif adulte — à partir de 12 ans</div>';
 
     const tr = document.createElement('tr');
     tr.innerHTML = '<td>'+label+'</td><td class="num">'+qty+'</td><td class="num">'+dvFmt(pu)+'</td><td class="num">'+dvFmt(ligne)+'</td>';
