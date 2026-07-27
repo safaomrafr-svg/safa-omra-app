@@ -346,6 +346,16 @@
           </div>
           <label for="dv-depart">Date de départ (calcul âge enfant/bébé)</label>
           <input id="dv-depart" type="date">
+          <div class="dv-row2">
+            <div>
+              <label for="dv-nuits-mekkah">Nombre de nuits à Mekkah</label>
+              <input id="dv-nuits-mekkah" type="number" min="0" value="5">
+            </div>
+            <div>
+              <label for="dv-nuits-medine">Nombre de nuits à Médine</label>
+              <input id="dv-nuits-medine" type="number" min="0" value="5">
+            </div>
+          </div>
         </fieldset>
 
         <fieldset>
@@ -845,6 +855,8 @@ function dvRender(){
   const qBAL=Number(document.getElementById('dv-q-bebe-al').value)||0,  pBAL=Number(document.getElementById('dv-p-bebe-al').value)||0;
   const remise   = Number(document.getElementById('dv-remise').value)||0;
   const validite = document.getElementById('dv-validite').value||1;
+  const nuitsMekkah = Number(document.getElementById('dv-nuits-mekkah').value)||0;
+  const nuitsMedine = Number(document.getElementById('dv-nuits-medine').value)||0;
 
   document.getElementById('dv-out-ref').textContent      = document.getElementById('dv-ref').value||'—';
   document.getElementById('dv-out-date').textContent     = document.getElementById('dv-date').value||dvToday();
@@ -921,9 +933,9 @@ function dvRender(){
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
    ...hotelsDetail.flatMap(x => [
-  'Mekkah — <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':''),
-  'Médine — <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')
-]),
+      'Mekkah — <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(nuitsMekkah?' <span class="h-dist">— '+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</span>':''),
+      'Médine — <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(nuitsMedine?' <span class="h-dist">— '+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</span>':'')
+    ]),
     ...lignesNotes
   ];
 
