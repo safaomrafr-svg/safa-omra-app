@@ -749,13 +749,8 @@ function dvRenderChambresForm(){
   dvChambres.forEach((c, i) => {
     const supp     = dvGetSuppChambre(c.type);
     const prixBase = Number(document.getElementById('dv-p-adulte').value)||0;
-    const prixPack = prixBase + supp;
-    const hint = c.type === 'Quadruple'
-  ? 'Tarif adulte de base — Mekkah + Médine inclus'
-  : supp > 0
-    ? 'Supp. ' + c.type.toLowerCase() + ' : +' + dvFmt(supp) + '/pers. → ' + dvFmt(prixPack) + '/pers.'
-    : 'Supp. chambre non configuré — clique sur "⚙ Tarifs"';
-   
+    
+       
     /* Listes et sélection */
     function buildOpts(liste, selectedName) {
       return liste.map((h,hi)=>'<option value="'+hi+'"'+(h.name===selectedName?' selected':'')+'>'+h.name+'</option>').join('');
@@ -777,7 +772,7 @@ function dvRenderChambresForm(){
       '<div class="dv-chambre-hotels">'+
         /* Mekkah */
         '<div class="dv-chambre-ville-col">'+
-          '<div class="dv-chambre-ville-label">🕋 Mekkah</div>'+
+          '<div class="dv-chambre-ville-label"> Mekkah</div>'+
           '<select class="dv-chambre-hotel-sel" data-ci="'+i+'" data-cf="hotelMekkah">'+buildOpts(DV_HOTELS_MEKKAH, c.hotelMekkah)+'</select>'+
           (mkEntry.dist && !mkCustom ? '<div class="dv-chambre-dist">📍 '+mkEntry.dist+'</div>' : '')+
           (mkCustom ?
@@ -789,7 +784,7 @@ function dvRenderChambresForm(){
         '</div>'+
         /* Médine */
         '<div class="dv-chambre-ville-col">'+
-          '<div class="dv-chambre-ville-label">🕌 Médine</div>'+
+          '<div class="dv-chambre-ville-label"> Médine</div>'+
           '<select class="dv-chambre-hotel-sel" data-ci="'+i+'" data-cf="hotelMedine">'+buildOpts(DV_HOTELS_MEDINE, c.hotelMedine)+'</select>'+
           (mdEntry.dist && !mdCustom ? '<div class="dv-chambre-dist">📍 '+mdEntry.dist+'</div>' : '')+
           (mdCustom ?
@@ -802,11 +797,9 @@ function dvRenderChambresForm(){
       '</div>'+
       /* Type de chambre + qté */
       '<div class="dv-chambre-type-row">'+
-        '<select data-ci="'+i+'" data-cf="type">'+DV_TYPES_CH.map(t=>'<option'+(t===c.type?' selected':'')+'>'+t+'</option>').join('')+'</select>'+
-        '<input type="number" min="1" value="'+c.qty+'" data-ci="'+i+'" data-cf="qty" style="padding:7px 5px;font-size:12.5px;" placeholder="Qté">'+
-        '<div></div>'+
-      '</div>'+
-      '<div class="dv-chambre-hint">'+hint+'</div>';
+  '<select data-ci="'+i+'" data-cf="type">'+DV_TYPES_CH.map(t=>'<option'+(t===c.type?' selected':'')+'>'+t+'</option>').join('')+'</select>'+
+  '<div></div><div></div>'+
+'</div>';
     list.appendChild(div);
   });
 }
