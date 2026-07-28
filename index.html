@@ -364,8 +364,10 @@
     <input id="dv-vol-autre" type="text" placeholder="Ville de départ…">
   </div>
 </div>
-          <label for="dv-depart">Date de départ (calcul âge enfant/bébé)</label>
-          <input id="dv-depart" type="date">
+         <div class="dv-row2">
+  <div><label for="dv-depart">Date de départ</label><input id="dv-depart" type="date"></div>
+  <div><label for="dv-retour">Date de retour</label><input id="dv-retour" type="date"></div>
+</div>
           <div class="dv-row2">
             <div>
               <label for="dv-nuits-mekkah">Nombre de nuits à Mekkah</label>
@@ -883,7 +885,11 @@ function dvRender(){
   document.getElementById('dv-out-email').textContent    = email||'';
   document.getElementById('dv-out-voyage').textContent   = voyageLabel;
   document.getElementById('dv-out-formule').textContent  = 'Formule '+formule;
-  document.getElementById('dv-out-chambre').textContent  = '';
+const depart = document.getElementById('dv-depart').value;
+const retour = document.getElementById('dv-retour').value;
+function fmtDate(d){ if(!d) return ''; const [y,m,j]=d.split('-'); return j+'/'+m+'/'+y; }
+document.getElementById('dv-out-chambre').textContent  = 
+  (depart||retour) ? 'Du '+fmtDate(depart)+' au '+fmtDate(retour) : '';
 
   const tbody = document.getElementById('dv-out-tbody');
   tbody.innerHTML = '';
