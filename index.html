@@ -347,6 +347,23 @@
             <input type="checkbox" id="dv-vol" checked>
             <label for="dv-vol" style="margin:0;">Billet d'avion inclus</label>
           </div>
+         <div id="dv-vol-depart-wrap" style="margin-top:8px;">
+  <label for="dv-vol-depart">Départ depuis</label>
+  <select id="dv-vol-depart">
+    <option value="Paris (CDG)">Paris (CDG)</option>
+    <option value="Paris (Orly)">Paris (Orly)</option>
+    <option value="Lyon">Lyon</option>
+    <option value="Marseille">Marseille</option>
+    <option value="Bordeaux">Bordeaux</option>
+    <option value="Toulouse">Toulouse</option>
+    <option value="Nantes">Nantes</option>
+    <option value="Strasbourg">Strasbourg</option>
+    <option value="Autre">Autre (préciser)</option>
+  </select>
+  <div id="dv-vol-autre-wrap" style="display:none;margin-top:5px;">
+    <input id="dv-vol-autre" type="text" placeholder="Ville de départ…">
+  </div>
+</div>
           <label for="dv-depart">Date de départ (calcul âge enfant/bébé)</label>
           <input id="dv-depart" type="date">
           <div class="dv-row2">
@@ -942,7 +959,14 @@ dvChambres.forEach(c => {
   const lignesNotes = notesTexte ? notesTexte.split('\n').filter(l=>l.trim()).map(l=>l.trim()) : [];
 
   const lignesDetail = [
-    'Vols aller et retour',
+    // Remplace 'Vols aller et retour' par :
+...(volInclus ? (() => {
+  const sel = document.getElementById('dv-vol-depart').value;
+  const ville = sel === 'Autre'
+    ? (document.getElementById('dv-vol-autre').value.trim() || 'ville à préciser')
+    : sel;
+  return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'];
+})() : []),
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
@@ -1016,7 +1040,16 @@ function dvRenderSuppForm(){
 /* ════════ 9. EVENTS ════════ */
 document.getElementById('dv-voyage').addEventListener('change',()=>{document.getElementById('dv-ref').value=dvRandRef();dvAppliquerTarifs();dvRender();});
 document.getElementById('dv-formule').addEventListener('change',()=>{dvAppliquerTarifs();dvRender();});
-document.getElementById('dv-vol').addEventListener('change',()=>{dvAppliquerTarifs();dvRender();});
+document.getElementById('dv-vol').addEventListener('change', function() {
+  document.getElementById('dv-vol-depart-wrap').style.display = this.checked ? 'block' : 'none';
+  dvAppliquerTarifs();
+  dvRender();
+});
+document.getElementById('dv-vol-depart').addEventListener('change', function() {
+  document.getElementById('dv-vol-autre-wrap').style.display = this.value === 'Autre' ? 'block' : 'none';
+  dvRender();
+});
+document.getElementById('dv-vol-autre').addEventListener('input', dvRender);
 document.querySelectorAll('.dv-panel input,.dv-panel select,.dv-panel textarea').forEach(el=>{el.addEventListener('input',dvRender);el.addEventListener('change',dvRender);});
 ['dv-ag-tel','dv-ag-email','dv-ag-insta'].forEach(id=>{document.getElementById(id).addEventListener('input',dvRender);});
 
