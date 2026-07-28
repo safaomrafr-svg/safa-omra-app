@@ -363,6 +363,25 @@
   <div id="dv-vol-autre-wrap" style="display:none;margin-top:5px;">
     <input id="dv-vol-autre" type="text" placeholder="Ville de départ…">
   </div>
+  <label for="dv-vol-compagnie" style="margin-top:8px;">Compagnie aérienne</label>
+  <select id="dv-vol-compagnie">
+    <option value="">— Non précisée —</option>
+    <option value="Saudia (Saudi Arabian Airlines)">Saudia (Saudi Arabian Airlines)</option>
+    <option value="flynas">flynas</option>
+    <option value="flyadeal">flyadeal</option>
+    <option value="Air Arabia">Air Arabia</option>
+    <option value="Royal Air Maroc">Royal Air Maroc</option>
+    <option value="Air Jordanian">Air Jordanian</option>
+    <option value="Air Algérie">Air Algérie</option>
+    <option value="Turkish Airlines">Turkish Airlines</option>
+    <option value="Emirates">Emirates</option>
+    <option value="Qatar Airways">Qatar Airways</option>
+    <option value="Air France">Air France</option>
+    <option value="Autre">Autre (préciser)</option>
+  </select>
+  <div id="dv-vol-compagnie-autre-wrap" style="display:none;margin-top:5px;">
+    <input id="dv-vol-compagnie-autre" type="text" placeholder="Nom de la compagnie…">
+  </div>
 </div>
          <div class="dv-row2">
   <div><label for="dv-depart">Date de départ</label><input id="dv-depart" type="date"></div>
@@ -968,7 +987,12 @@ dvChambres.forEach(c => {
   const ville = sel === 'Autre'
     ? (document.getElementById('dv-vol-autre').value.trim() || 'ville à préciser')
     : sel;
-  return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'];
+  const compSel = document.getElementById('dv-vol-compagnie').value;
+  const compagnie = compSel === 'Autre'
+    ? (document.getElementById('dv-vol-compagnie-autre').value.trim() || '')
+    : compSel;
+  const compLabel = compagnie ? ' avec <strong>'+compagnie+'</strong>' : '';
+  return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
 })() : []),
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
@@ -1053,6 +1077,11 @@ document.getElementById('dv-vol-depart').addEventListener('change', function() {
   dvRender();
 });
 document.getElementById('dv-vol-autre').addEventListener('input', dvRender);
+ document.getElementById('dv-vol-compagnie').addEventListener('change', function() {
+  document.getElementById('dv-vol-compagnie-autre-wrap').style.display = this.value === 'Autre' ? 'block' : 'none';
+  dvRender();
+});
+document.getElementById('dv-vol-compagnie-autre').addEventListener('input', dvRender);
 document.querySelectorAll('.dv-panel input,.dv-panel select,.dv-panel textarea').forEach(el=>{el.addEventListener('input',dvRender);el.addEventListener('change',dvRender);});
 ['dv-ag-tel','dv-ag-email','dv-ag-insta'].forEach(id=>{document.getElementById(id).addEventListener('input',dvRender);});
 
