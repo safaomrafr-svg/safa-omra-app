@@ -590,64 +590,51 @@ function filterPel(f,btn){ document.querySelectorAll('.fbtn').forEach(function(b
 
 /* ════════ 2. DONNÉES HÔTELS ════════ */
 const DV_HOTELS_MEKKAH = [
-  {name:'Swissôtel Al Maqam',dist:'390 m de la Kaaba'},
-  {name:'Makkah Towers',dist:'100 m de la Kaaba'},
-  {name:'Pullman ZamZam Makkah',dist:'350 m de la Kaaba'},
-  {name:'Fairmont Makkah Clock Royal Tower',dist:'200 m de la Kaaba'},
-  {name:'InterContinental Dar Al Tawhid Makkah',dist:'250 m de la Kaaba'},
-  {name:'Hilton Suites Jabal Omar Makkah',dist:'300 m de la Kaaba'},
-  {name:'Hyatt Regency Makkah Jabal Omar',dist:'300 m de la Kaaba'},
-  {name:'Rotana Jabal Omar Makkah',dist:'300 m de la Kaaba'},
-  {name:'Hilton Convention Jabal Omar Makkah',dist:'350 m de la Kaaba'},
-  {name:'Conrad Makkah',dist:'350 m de la Kaaba'},
-  {name:'DoubleTree by Hilton Jabal Omar',dist:'350 m de la Kaaba'},
-  {name:'Jabal Omar Marriott Hotel Makkah',dist:'500 m de la Kaaba'},
-  {name:'Address Jabal Omar Makkah',dist:'500 m de la Kaaba'},
-  {name:'Al Safwah Royale Orchid',dist:'500 m de la Kaaba'},
-  {name:'Dar Al Tawhid Intercontinental',dist:'550 m de la Kaaba'},
-  {name:'Le Méridien Makkah',dist:'700 m de la Kaaba'},
-  {name:'Mövenpick Hajar Tower',dist:'700 m de la Kaaba'},
-  {name:'Tilal Jabal Al Kaaba',dist:'800 m de la Kaaba'},
-  {name:'Grand Millennium Makkah',dist:'850 m de la Kaaba'},
-  {name:'Al Marwa Rayhaan by Rotana',dist:'900 m de la Kaaba'},
-  {name:'Al Shohada Hotel',dist:'1 km de la Kaaba'},
-  {name:'Elaf Kinda',dist:'1 km de la Kaaba'},
-  {name:'Anjum Hotel Makkah',dist:'1 km de la Kaaba'},
-  {name:'Maysan Al Maqam Hotel',dist:'1,5 km de la Kaaba'},
-  {name:'Sheraton Makkah Jabal Al Kaaba',dist:'2,5 km de la Kaaba'},
-  {name:'Voco',dist:'20 mn de la Kaaba'},
-  {name:'Autre / Personnalisé',dist:'',custom:true},
+  {name:"Fairmont Makkah Clock Royal Tower",      stars:5, distance:100,  walking:2,  transport:"walking"},
+  {name:"Raffles Makkah Palace",                  stars:5, distance:120,  walking:2,  transport:"walking"},
+  {name:"Swissôtel Makkah",                       stars:5, distance:220,  walking:3,  transport:"walking"},
+  {name:"Swissôtel Al Maqam",                     stars:5, distance:250,  walking:3,  transport:"walking"},
+  {name:"Pullman ZamZam Makkah",                  stars:5, distance:300,  walking:4,  transport:"walking"},
+  {name:"Mövenpick Hotel & Residences Hajar Tower",stars:5,distance:320,  walking:4,  transport:"walking"},
+  {name:"Al Marwa Rayhaan by Rotana",             stars:5, distance:330,  walking:4,  transport:"walking"},
+  {name:"Hilton Suites Jabal Omar",               stars:5, distance:350,  walking:5,  transport:"walking"},
+  {name:"Conrad Makkah",                          stars:5, distance:370,  walking:5,  transport:"walking"},
+  {name:"Hyatt Regency Makkah Jabal Omar",        stars:5, distance:400,  walking:5,  transport:"walking"},
+  {name:"Dar Al Tawhid InterContinental",         stars:5, distance:420,  walking:5,  transport:"walking"},
+  {name:"Anjum Hotel",                            stars:5, distance:450,  walking:6,  transport:"walking"},
+  {name:"Hilton Convention Jabal Omar",           stars:5, distance:480,  walking:6,  transport:"walking"},
+  {name:"DoubleTree by Hilton Jabal Omar",        stars:4, distance:550,  walking:7,  transport:"walking"},
+  {name:"Jabal Omar Marriott",                    stars:5, distance:650,  walking:8,  transport:"walking"},
+  {name:"Address Jabal Omar Makkah",              stars:5, distance:700,  walking:9,  transport:"walking"},
+  {name:"Le Méridien Makkah",                     stars:5, distance:900,  walking:11, transport:"walking"},
+  {name:"Tilal Jabal Al Kaaba",                   stars:4, distance:950,  walking:12, transport:"walking"},
+  {name:"Sheraton Makkah Jabal Al Kaaba",         stars:5, distance:1000, walking:13, transport:"walking"},
+  {name:"voco Makkah by IHG",                     stars:4, distance:1500, walking:20, transport:"shuttle"},
+  {name:"Autre / Personnalisé",                   stars:0, distance:0,    walking:0,  transport:"walking", custom:true},
 ];
 
 const DV_HOTELS_MEDINE = [
-  {name:'Anwar Al Madinah Mövenpick',dist:'50 m du Masjid Nabawi'},
-  {name:'InterContinental Dar Al Iman Madinah',dist:'80 m du Masjid Nabawi'},
-  {name:'Pullman ZamZam Madina',dist:'80 m du Masjid Nabawi'},
-  {name:'Sofitel Shahd Al Madinah',dist:'150 m du Masjid Nabawi'},
-  {name:'Diyar Ajwa (Tapestry by Hilton)',dist:'200 m du Masjid Nabawi'},
-  {name:'Dar Al-Taqwa Hotel Madinah',dist:'200 m du Masjid Nabawi'},
-  {name:'Dar Al Iman InterContinental',dist:'200 m du Masjid Nabawi'},
-  {name:'Al Aqeeq Madinah Hotel',dist:'300 m du Masjid Nabawi'},
-  {name:'Novotel Madinah',dist:'350 m du Masjid Nabawi'},
-  {name:'Hilton Madinah',dist:'350 m du Masjid Nabawi'},
-  {name:'InterContinental Dar Al Hijra Madinah',dist:'400 m du Masjid Nabawi'},
-  {name:'Grand Millennium Al Haram Madinah',dist:'450 m du Masjid Nabawi'},
-  {name:'Peninsula Worth Hotel Madinah',dist:'500 m du Masjid Nabawi'},
-  {name:'Mövenpick Hotel Madinah',dist:'450 m du Masjid Nabawi'},
-  {name:'Al Manakha Rotana Madinah',dist:'600 m du Masjid Nabawi'},
-  {name:'Millennium Taiba Hotel',dist:'700 m du Masjid Nabawi'},
-  {name:'Crowne Plaza Madinah by IHG',dist:'750 m du Masjid Nabawi'},
-  {name:'Saja By Warwick Madinah',dist:'750 m du Masjid Nabawi'},
-  {name:'Al Haram Hotel Madinah',dist:'800 m du Masjid Nabawi'},
-  {name:'Elaf Taiba Hotel',dist:'800 m du Masjid Nabawi'},
-  {name:'Radisson Blu Hotel Madinah',dist:'950 m du Masjid Nabawi'},
-  {name:'Le Méridien Madinah',dist:'1 km du Masjid Nabawi'},
-  {name:'Grand Safi Hotel',dist:'1 km du Masjid Nabawi'},
-  {name:'Jayden Hotel',dist:'1,2 km du Masjid Nabawi'},
-  {name:'Sheraton Madinah Hotel',dist:'1,2 km du Masjid Nabawi'},
-  {name:'Oberoi Madina',dist:'2 km du Masjid Nabawi'},
-  {name:'Nusuk Al Hijra',dist:'environ 3 min du Masjid Nabawi'},
-  {name:'Autre / Personnalisé',dist:'',custom:true},
+  {name:"Dar Al Taqwa",                           stars:5, distance:80,   walking:2,  transport:"walking"},
+  {name:"Oberoi Madina",                          stars:5, distance:100,  walking:2,  transport:"walking"},
+  {name:"Dar Al Iman InterContinental",           stars:5, distance:120,  walking:2,  transport:"walking"},
+  {name:"Anwar Al Madinah Mövenpick",             stars:5, distance:150,  walking:3,  transport:"walking"},
+  {name:"Pullman ZamZam Madinah",                 stars:5, distance:180,  walking:3,  transport:"walking"},
+  {name:"Madinah Hilton",                         stars:5, distance:200,  walking:3,  transport:"walking"},
+  {name:"Sofitel Shahd Al Madinah",               stars:5, distance:220,  walking:3,  transport:"walking"},
+  {name:"Al Aqeeq Hotel",                         stars:5, distance:250,  walking:4,  transport:"walking"},
+  {name:"Millennium Taiba",                       stars:5, distance:280,  walking:4,  transport:"walking"},
+  {name:"Taiba Madinah Hotel",                    stars:5, distance:300,  walking:4,  transport:"walking"},
+  {name:"Saja by Warwick Madinah",                stars:4, distance:300,  walking:4,  transport:"walking"},
+  {name:"Crowne Plaza Madinah",                   stars:5, distance:350,  walking:5,  transport:"walking"},
+  {name:"Maden Hotel",                            stars:5, distance:380,  walking:5,  transport:"walking"},
+  {name:"Emaar Royal Hotel",                      stars:5, distance:420,  walking:5,  transport:"walking"},
+  {name:"Diyar Ajwa Hotel",                       stars:4, distance:500,  walking:6,  transport:"walking"},
+  {name:"Elaf Taiba Hotel",                       stars:4, distance:550,  walking:7,  transport:"walking"},
+  {name:"Jayden Hotel",                           stars:4, distance:900,  walking:12, transport:"walking"},
+  {name:"Le Méridien Madinah",                    stars:5, distance:3200, walking:40, transport:"shuttle"},
+  {name:"Radisson Blu Hotel Madinah",             stars:4, distance:3500, walking:45, transport:"shuttle"},
+  {name:"Sheraton Madinah Hotel",                 stars:5, distance:4000, walking:50, transport:"shuttle"},
+  {name:"Autre / Personnalisé",                   stars:0, distance:0,    walking:0,  transport:"walking", custom:true},
 ];
 
 /* ════════ 3. DEVIS — CONFIG ════════ */
@@ -709,15 +696,30 @@ function dvGetSuppChambre(type){
 
 /* Résoudre l'hôtel d'une ville (Mekkah ou Medine) */
 function dvResolveHotelVille(c, ville) {
-  const liste = ville === 'Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
+  const liste    = ville === 'Mekkah' ? DV_HOTELS_MEKKAH : DV_HOTELS_MEDINE;
   const hotelName = ville === 'Mekkah' ? c.hotelMekkah : c.hotelMedine;
   const customName = ville === 'Mekkah' ? (c.customMekkahName||'') : (c.customMedineName||'');
   const customDist = ville === 'Mekkah' ? (c.customMekkahDist||'') : (c.customMedineDist||'');
-  const entry = liste.find(h=>h.name===hotelName) || liste[0];
-  if(entry && entry.custom) {
-    return {name: customName || 'Hôtel personnalisé', dist: customDist, isCustom:true};
+  const entry = liste.find(h => h.name === hotelName) || liste[0];
+  if (entry && entry.custom) {
+    return {name: customName||'Hôtel personnalisé', dist: customDist, stars:0, walking:0, transport:'walking', isCustom:true};
   }
-  return {name: entry ? entry.name : '', dist: entry ? (entry.dist||'') : '', isCustom:false};
+  return {
+    name:      entry ? entry.name : '',
+    dist: entry ? dvFmtDist(entry.distance, ville) : '',
+    stars:     entry ? entry.stars : 0,
+    walking:   entry ? entry.walking : 0,
+    transport: entry ? entry.transport : 'walking',
+    isCustom:  false
+  };
+}
+
+function dvFmtDist(m, ville) {
+  if (!m) return '';
+  const ref = ville === 'Mekkah' ? 'de la Kaaba' : 'du Masjid Nabawi';
+  return m >= 1000
+    ? (m / 1000).toFixed(1).replace('.', ',') + ' km ' + ref
+    : m + ' m ' + ref;
 }
 
 /* ════════ 5. RENDER FORMULAIRE CHAMBRES (PACK) ════════ */
@@ -932,10 +934,22 @@ function dvRender(){
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
-   ...hotelsDetail.flatMap(x => [
-      'Mekkah — <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(nuitsMekkah?' <span class="h-dist">— '+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</span>':''),
-      'Médine — <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(nuitsMedine?' <span class="h-dist">— '+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</span>':'')
-    ]),
+ ...hotelsDetail.flatMap(x => [
+  ' Mekkah'
+    + (nuitsMekkah ? ' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>' : '')
+    + ' à <span class="h-name">'+x.mk.name+'</span>'
+    + (x.mk.stars ? ' <span class="h-dist">('+('★'.repeat(x.mk.stars))+')</span>' : '')
+    + ' <span class="h-dist">— '+x.mk.dist
+    + (x.mk.transport==='shuttle' ? ' · navette' : ' · '+x.mk.walking+' min à pied')
+    +'</span>',
+  ' Médine'
+    + (nuitsMedine ? ' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>' : '')
+    + ' à <span class="h-name">'+x.md.name+'</span>'
+    + (x.md.stars ? ' <span class="h-dist">('+('★'.repeat(x.md.stars))+')</span>' : '')
+    + ' <span class="h-dist">— '+x.md.dist
+    + (x.md.transport==='shuttle' ? ' · navette' : ' · '+x.md.walking+' min à pied')
+    +'</span>'
+]),
     ...lignesNotes
   ];
 
