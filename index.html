@@ -750,9 +750,11 @@ function dvRenderChambresForm(){
     const supp     = dvGetSuppChambre(c.type);
     const prixBase = Number(document.getElementById('dv-p-adulte').value)||0;
     const prixPack = prixBase + supp;
-    const hint     = c.type==='Quadruple'
-      ? 'Pack Quadruple — tarif adulte de base (Mekkah + Médine inclus)'
-      : 'Pack '+c.type+' — '+dvFmt(prixBase)+' + '+dvFmt(supp)+' supp. = '+dvFmt(prixPack)+'/pers. (les 2 villes)';
+    const persParChambre = {Quadruple:4, Triple:3, Double:2, Individuelle:1};
+const nbPers = (persParChambre[c.type] || 1) * (Number(c.qty) || 1);
+const hint = c.type === 'Quadruple'
+  ? nbPers + ' pers. — tarif adulte de base (Mekkah + Médine inclus)'
+  : nbPers + ' pers. — ' + dvFmt(prixBase) + ' + ' + dvFmt(supp) + ' supp. = ' + dvFmt(prixPack) + '/pers.';
 
     /* Listes et sélection */
     function buildOpts(liste, selectedName) {
