@@ -664,7 +664,7 @@ const DV_STORAGE  = 'safaomra_devis_config_v1';
 const DV_LOGO_KEY = 'safaomra_devis_logo_v1';
 const DV_TYPES_CH = ['Quadruple','Triple','Double','Individuelle'];
 
-function dvDefaultConfig(){ const cfg={}; DV_VOYAGES.forEach(v=>{cfg[v.code]={};DV_FORMULES.forEach(f=>{cfg[v.code][f]={prixAdulte:'',reducEnfantSansLit:'',reducBebeSansLit:'',reducBebeAvecLit:'',valeurVol:'',supplements:[{label:'Chambre Double',prix:''},{label:'Chambre Triple',prix:''},{label:'Chambre Individuelle',prix:''},{label:'Guide',prix:''},{label:'Ihram',prix:''},{label:'Bagage supplémentaire',prix:''}]};})}); return cfg; }
+function dvDefaultConfig(){ const cfg={}; DV_VOYAGES.forEach(v=>{cfg[v.code]={};DV_FORMULES.forEach(f=>{cfg[v.code][f]={prixAdulte:'',reducEnfantSansLit:'',reducBebeSansLit:'',reducBebeAvecLit:'',valeurVol:'',supplements:[{label:'Chambre Double',prix:''},{label:'Chambre Triple',prix:''},{label:'Chambre Individuelle',prix:''},{label:'Guide privé',prix:''},{label:'Ihram',prix:''},{label:'Bagage supplémentaire',prix:''}]};})}); return cfg; }
 function dvLoadConfig(){ try{const raw=localStorage.getItem(DV_STORAGE);if(!raw)return dvDefaultConfig();const parsed=JSON.parse(raw);const base=dvDefaultConfig();DV_VOYAGES.forEach(v=>DV_FORMULES.forEach(f=>{if(parsed[v.code]&&parsed[v.code][f])base[v.code][f]=Object.assign({},base[v.code][f],parsed[v.code][f]);}));return base;}catch(e){return dvDefaultConfig();} }
 function dvSaveConfig(cfg){ try{localStorage.setItem(DV_STORAGE,JSON.stringify(cfg));}catch(e){} }
 let DV_CFG = dvLoadConfig();
