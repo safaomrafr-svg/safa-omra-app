@@ -450,6 +450,52 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
 .dv-btn-primary:hover { background:var(--emerald-deep); }
 .dv-btn-modal-close { background:#fff; border:1.5px solid var(--line); color:#6b6355; border-radius:9px; padding:11px 12px; font-size:12.5px; cursor:pointer; }
 
+  /* ── Compteur voyageurs ── */
+.dv-voyageurs-recap {
+  background: linear-gradient(135deg, #f0f8f4 0%, #e8f5ef 100%);
+  border: 1.5px solid #b8dece;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dv-voyageurs-total {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--emerald-deep);
+  line-height: 1;
+}
+.dv-voyageurs-label {
+  font-size: 11px;
+  color: #4a8a6a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-top: 2px;
+}
+.dv-voyageurs-pills {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.dv-voy-pill {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #c2ddd0;
+  color: var(--emerald-deep);
+  white-space: nowrap;
+}
+.dv-voy-pill.zero { opacity: .35; }
+
+  
 @media print {
   .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
   body { background:#fff; margin:0; }
@@ -636,30 +682,39 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
             </div>
           </div>
 
-          <!-- SECTION : Voyageurs (adultes toujours visible) -->
-          <div class="dv-section">
-            <div class="dv-section-head">
-              <div class="dv-section-title"><span class="s-ico">👥</span> Adultes &amp; tarif</div>
-            </div>
-            <div class="dv-section-body">
-              <div class="dv-cat-block">
-                <div class="dv-cat-title">Adulte (à partir de 12 ans)</div>
-                <div class="dv-row3">
-                  <span style="font-size:12px;color:#5a5046;align-self:center;">Adulte 12+</span>
-                  <div>
-                    <label style="font-size:10px;margin-bottom:2px;">Qté</label>
-                    <input id="dv-q-adulte" type="number" min="0" value="1">
-                  </div>
-                  <div>
-                    <label style="font-size:10px;margin-bottom:2px;">Prix (€)</label>
-                    <input id="dv-p-adulte" type="number" min="0" placeholder="0">
-                  </div>
-                </div>
-                <div class="dv-price-hint" id="dv-hint-adulte"></div>
-              </div>
-            </div>
+          <!-- SECTION : Voyageurs -->
+<div class="dv-section">
+  <div class="dv-section-head">
+    <div class="dv-section-title"><span class="s-ico">👥</span> Voyageurs</div>
+  </div>
+  <div class="dv-section-body">
+    <!-- Compteur total calculé automatiquement -->
+    <div class="dv-voyageurs-recap" id="dv-voy-recap">
+      <div>
+        <div class="dv-voyageurs-total" id="dv-voy-total">0</div>
+        <div class="dv-voyageurs-label">voyageur(s) au total</div>
+      </div>
+      <div class="dv-voyageurs-pills" id="dv-voy-pills"></div>
+    </div>
+    <!-- Prix adulte -->
+    <div class="dv-cat-block">
+      <div class="dv-cat-title">Adulte (à partir de 12 ans)</div>
+      <div class="dv-row2">
+        <div>
+          <label>Prix par adulte (€)</label>
+          <input id="dv-p-adulte" type="number" min="0" placeholder="0">
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+          <div style="width:100%;">
+            <label style="color:var(--txt3);">Nb adultes (auto)</label>
+            <input id="dv-q-adulte" type="number" min="0" value="1" style="background:#f3f0ea;color:var(--txt3);cursor:default;" readonly tabindex="-1">
           </div>
-
+        </div>
+      </div>
+      <div class="dv-price-hint" id="dv-hint-adulte"></div>
+    </div>
+  </div>
+</div>
           <!-- SECTION : Enfants & bébés — COLLAPSIBLE (fermée par défaut) -->
           <div class="dv-section">
             <div class="dv-section-head collapsible" onclick="dvToggle('enfants')">
@@ -1120,11 +1175,27 @@ function dvRender(){
   function fmtDate(d){if(!d)return '';const[y,m,j]=d.split('-');return j+'/'+m+'/'+y;}
   document.getElementById('dv-out-chambre').innerHTML=(depart||retour)?'<span style="display:inline-flex;align-items:center;gap:6px;background:#F5F0E8;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">✈️ Du '+fmtDate(depart)+' au '+fmtDate(retour)+'</span>':'';
 
+ // ── Calcul total voyageurs ──
+const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
+let nbAdultesAuto=0;
+dvChambres.forEach(c=>{const q=Number(c.qty)||0;nbAdultesAuto+=q*(persParChambre2[c.type]||1);});
+document.getElementById('dv-q-adulte').value=nbAdultesAuto;
+const nbEnfantsSL=qESL, nbEnfantsAL=qEAL, nbBebesSL=qBSL, nbBebesAL=qBAL;
+const totalVoyageurs=nbAdultesAuto+nbEnfantsSL+nbEnfantsAL+nbBebesSL+nbBebesAL;
+document.getElementById('dv-voy-total').textContent=totalVoyageurs;
+const pillsBox=document.getElementById('dv-voy-pills');
+pillsBox.innerHTML=[
+  {label:' '+nbAdultesAuto+' adulte'+(nbAdultesAuto>1?'s':''), zero:nbAdultesAuto===0},
+  {label:' '+(nbEnfantsSL+nbEnfantsAL)+' enfant'+((nbEnfantsSL+nbEnfantsAL)>1?'s':''), zero:(nbEnfantsSL+nbEnfantsAL)===0},
+  {label:' '+(nbBebesSL+nbBebesAL)+' bébé'+((nbBebesSL+nbBebesAL)>1?'s':''), zero:(nbBebesSL+nbBebesAL)===0},
+].map(p=>'<span class="dv-voy-pill'+(p.zero?' zero':'')+'">'+p.label+'</span>').join('');
+// ── Fin calcul voyageurs ──
+  
   const tbody=document.getElementById('dv-out-tbody');
   tbody.innerHTML='';
   let total=0;
   const hotelsDetail=[];
-  const persParChambre={Quadruple:4,Triple:3,Double:2,Individuelle:1};
+  
 
   dvChambres.forEach(c=>{
     const qty=Number(c.qty)||0;
