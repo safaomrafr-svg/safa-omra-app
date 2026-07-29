@@ -1311,9 +1311,24 @@ dvRenderChambresForm();
 dvAppliquerTarifs();
 dvRender();
 
+// Sécurité : si tout plante, on masque le splash au bout de 5s max
+const splashTimeout = setTimeout(function(){
+  document.getElementById('splash').style.display = 'none';
+}, 5000);
+
 jsonp("api=stats")
-  .then(function(stats){renderVoyages(stats);const sp=document.getElementById('splash');sp.style.opacity='0';setTimeout(function(){sp.style.display='none';},400);})
-  .catch(function(){renderVoyages({});document.getElementById('splash').style.display='none';});
+  .then(function(stats){
+    clearTimeout(splashTimeout);
+    renderVoyages(stats);
+    const sp = document.getElementById('splash');
+    sp.style.opacity = '0';
+    setTimeout(function(){ sp.style.display='none'; }, 400);
+  })
+  .catch(function(){
+    clearTimeout(splashTimeout);
+    renderVoyages({});
+    document.getElementById('splash').style.display = 'none';
+  });
 </script>
 </body>
 </html>
