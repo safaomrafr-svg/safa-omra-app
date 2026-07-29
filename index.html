@@ -1162,15 +1162,17 @@ function dvRender(){
   const notesTexte=document.getElementById('dv-notes').value.trim();
   const lignesNotes=notesTexte?notesTexte.split('\n').filter(l=>l.trim()).map(l=>l.trim()):[];
 
-  const lignesDetail=[
-    ...(volInclus?(()=>{
+  const lignesVol = (function(){
+      if(!volInclus) return [];
       const sel=document.getElementById('dv-vol-depart').value;
       const ville=sel==='Autre'?(document.getElementById('dv-vol-autre').value.trim()||'ville à préciser'):sel;
       const compSel=document.getElementById('dv-vol-compagnie').value;
       const compagnie=compSel==='Autre'?(document.getElementById('dv-vol-compagnie-autre').value.trim()||''):compSel;
       const compLabel=compagnie?' avec <strong>'+compagnie+'</strong>':'';
-      return['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
-    })()):([]),
+      return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
+    })();
+    const lignesDetail=[
+    ...lignesVol,
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
