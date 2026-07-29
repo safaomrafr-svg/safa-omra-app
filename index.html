@@ -981,7 +981,7 @@ const VOYAGES_CFG=[
 ];
 let S={key:null,name:null},detailCache={};
 function formUrl(base,key){const p=PLANNING[key];return base+"?planning_id="+p.id+"&onglet_confort="+encodeURIComponent(p.c)+"&onglet_eco="+encodeURIComponent(p.e);}
-function jsonp(params){return new Promise(function(resolve,reject){const cb="cb_"+Math.random().toString(36).slice(2);const t=setTimeout(function(){cleanup();reject(new Error("timeout"));},15000);function cleanup(){clearTimeout(t);delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);}window[cb]=function(data){cleanup();resolve(data);};const s=document.createElement("script");s.src=API+"?"+params+"&callback="+cb;s.onerror=function(){cleanup();reject(new Error("réseau"));};document.body.appendChild(s);});}
+function jsonp(params){return new Promise(function(resolve,reject){const cb="cb_"+Math.random().toString(36).slice(2);const t=setTimeout(function(){cleanup();reject(new Error("timeout"));},4000);function cleanup(){clearTimeout(t);delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);}window[cb]=function(data){cleanup();resolve(data);};const s=document.createElement("script");s.src=API+"?"+params+"&callback="+cb;s.onerror=function(){cleanup();reject(new Error("réseau"));};document.body.appendChild(s);});}
 function fmtEur(n){return Number(n||0).toLocaleString('fr-FR')+' €';}
 function bClass(s){return s==='soldé'?'solde':s==='partiel'?'partiel':'nonpaye';}
 function bLabel(s){return s==='soldé'?'Soldé':s==='partiel'?'Partiel':'Non payé';}
@@ -1374,19 +1374,11 @@ document.getElementById('dv-btn-save-tarifs').addEventListener('click',()=>{dvSa
 document.getElementById('dv-modal-tarifs').addEventListener('click',e=>{if(e.target.id==='dv-modal-tarifs'){DV_CFG=dvLoadConfig();document.getElementById('dv-modal-tarifs').classList.remove('open');}});
 
 /* ════ 11. INIT ════ */
-document.getElementById('ts').textContent=new Date().toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
-document.getElementById('dv-date').value=dvToday();
-document.getElementById('dv-ref').value=dvRandRef();
-dvRenderSuppForm();
-dvLoadLogo();
-dvRenderChambresForm();
-dvAppliquerTarifs();
-dvRender();
-
-// Sécurité : si tout plante, on masque le splash au bout de 5s max
+// Sécurité splash — déclaré AVANT jsonp
 const splashTimeout = setTimeout(function(){
-  document.getElementById('splash').style.display = 'none';
+  const sp = document.getElementById('splash');
+  sp.style.opacity = '0';
+  setTimeout(function(){ sp.style.display='none'; }, 400);
 }, 5000);
 
 jsonp("api=stats")
@@ -1400,7 +1392,9 @@ jsonp("api=stats")
   .catch(function(){
     clearTimeout(splashTimeout);
     renderVoyages({});
-    document.getElementById('splash').style.display = 'none';
+    const sp = document.getElementById('splash');
+    sp.style.opacity = '0';
+    setTimeout(function(){ sp.style.display='none'; }, 400);
   });
 </script>
 </body>
