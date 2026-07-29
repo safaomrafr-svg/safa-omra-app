@@ -1173,7 +1173,15 @@ function dvRender(){
   const depart=document.getElementById('dv-depart').value;
   const retour=document.getElementById('dv-retour').value;
   function fmtDate(d){if(!d)return '';const[y,m,j]=d.split('-');return j+'/'+m+'/'+y;}
-  document.getElementById('dv-out-chambre').innerHTML=(depart||retour)?'<span style="display:inline-flex;align-items:center;gap:6px;background:#F5F0E8;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">✈️ Du '+fmtDate(depart)+' au '+fmtDate(retour)+'</span>':'';
+ const pillVoyageurs = totalVoyageurs > 0
+  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#E1F5EE;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">👥 '+totalVoyageurs+' voyageur'+(totalVoyageurs>1?'s':'')+'</span>'
+  : '';
+
+const pillDates = (depart||retour)
+  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#F5F0E8;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">✈️ Du '+fmtDate(depart)+' au '+fmtDate(retour)+'</span>'
+  : '';
+
+document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">'+pillVoyageurs+pillDates+'</div>';
 
  // ── Calcul total voyageurs ──
 const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
