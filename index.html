@@ -1173,17 +1173,8 @@ function dvRender(){
   const depart=document.getElementById('dv-depart').value;
   const retour=document.getElementById('dv-retour').value;
   function fmtDate(d){if(!d)return '';const[y,m,j]=d.split('-');return j+'/'+m+'/'+y;}
- const pillVoyageurs = totalVoyageurs > 0
-  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#E1F5EE;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">👥 '+totalVoyageurs+' voyageur'+(totalVoyageurs>1?'s':'')+'</span>'
-  : '';
 
-const pillDates = (depart||retour)
-  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#F5F0E8;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">✈️ Du '+fmtDate(depart)+' au '+fmtDate(retour)+'</span>'
-  : '';
-
-document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">'+pillVoyageurs+pillDates+'</div>';
-
- // ── Calcul total voyageurs ──
+  // ── Calcul total voyageurs (doit être AVANT les pills) ──
 const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
 let nbAdultesAuto=0;
 dvChambres.forEach(c=>{const q=Number(c.qty)||0;nbAdultesAuto+=q*(persParChambre2[c.type]||1);});
@@ -1197,7 +1188,16 @@ pillsBox.innerHTML=[
   {label:' '+(nbEnfantsSL+nbEnfantsAL)+' enfant'+((nbEnfantsSL+nbEnfantsAL)>1?'s':''), zero:(nbEnfantsSL+nbEnfantsAL)===0},
   {label:' '+(nbBebesSL+nbBebesAL)+' bébé'+((nbBebesSL+nbBebesAL)>1?'s':''), zero:(nbBebesSL+nbBebesAL)===0},
 ].map(p=>'<span class="dv-voy-pill'+(p.zero?' zero':'')+'">'+p.label+'</span>').join('');
-// ── Fin calcul voyageurs ──
+
+// ── Pills aperçu (maintenant totalVoyageurs est défini) ──
+const pillVoyageurs = totalVoyageurs > 0
+  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#E1F5EE;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">👥 '+totalVoyageurs+' voyageur'+(totalVoyageurs>1?'s':'')+'</span>'
+  : '';
+const pillDates = (depart||retour)
+  ? '<span style="display:inline-flex;align-items:center;gap:6px;background:#F5F0E8;color:#0F4531;font-weight:700;font-size:12.5px;padding:4px 10px;border-radius:20px;border:1px solid #b2dcc8;">✈️ Du '+fmtDate(depart)+' au '+fmtDate(retour)+'</span>'
+  : '';
+document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">'+pillVoyageurs+pillDates+'</div>';
+
   
   const tbody=document.getElementById('dv-out-tbody');
   tbody.innerHTML='';
