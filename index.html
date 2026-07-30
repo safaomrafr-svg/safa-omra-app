@@ -1059,6 +1059,8 @@ let DV_CFG=dvLoadConfig();
   if(s) document.getElementById('dv-logo-slot').innerHTML='<img src="'+s+'" alt="Logo">';
 })();
 
+const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
+
 let dvChambres=[{type:'Quadruple',qty:1,places:1,hotelMekkah:'',hotelMedine:'',customMekkahName:'',customMekkahDist:'',customMedineName:'',customMedineDist:''}];
 let dvSupplements=[];
 
@@ -1185,7 +1187,7 @@ function dvRender(){
   function fmtDate(d){if(!d)return '';const[y,m,j]=d.split('-');return j+'/'+m+'/'+y;}
 
   // ── Calcul total voyageurs (doit être AVANT les pills) ──
-const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
+//const persParChambre2={Quadruple:4,Triple:3,Double:2,Individuelle:1};
 let nbAdultesAuto=0;
 dvChambres.forEach(c=>{const q=Number(c.qty)||0;const pl=Number(c.places)||(persParChambre2[c.type]||1);nbAdultesAuto+=q*pl;});
 document.getElementById('dv-q-adulte').value=nbAdultesAuto;
