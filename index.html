@@ -1008,12 +1008,12 @@ const DV_HOTELS_MEKKAH = [
   {name:"Dar Al Tawhid InterContinental",stars:5,distance:null,walking:2,transport:"walking",shuttle:false,shuttle24:false},
   {name:"Anjum Hotel",stars:5,distance:null,walking:5,transport:"walking",shuttle:false,shuttle24:false},
   {name:"Hilton Convention Jabal Omar",stars:5,distance:null,walking:8,transport:"walking",shuttle:false,shuttle24:false},
-  {name:"DoubleTree by Hilton Jabal Omar",stars:4,distance:null,walking:10,transport:"walking",shuttle:true,shuttle24:false},
+  {name:"DoubleTree by Hilton Jabal Omar",stars:4,distance:null,walking:5,transport:"walking",shuttle:true,shuttle24:false},
   {name:"Jabal Omar Marriott",stars:5,distance:null,walking:10,transport:"walking",shuttle:false,shuttle24:false},
   {name:"Address Jabal Omar Makkah",stars:5,distance:null,walking:7,transport:"walking",shuttle:false,shuttle24:false},
-  {name:"Le Méridien Makkah",stars:5,distance:null,walking:12,transport:"walking",shuttle:true,shuttle24:true},
+  {name:"Le Méridien Makkah",stars:5,distance:null,walking:7,transport:"walking",shuttle:true,shuttle24:true},
   {name:"Tilal Jabal Al Kaaba",stars:4,distance:null,walking:13,transport:"walking",shuttle:false,shuttle24:false},
-  {name:"Sheraton Makkah Jabal Al Kaaba",stars:5,distance:null,walking:14,transport:"walking",shuttle:false,shuttle24:false},
+  {name:"Sheraton Makkah Jabal Al Kaaba",stars:5,distance:null,walking:7,transport:"walking",shuttle:false,shuttle24:false},
   {name:"voco Makkah by IHG",stars:4,distance:null,walking:20,transport:"shuttle",shuttle:true,shuttle24:true},
   {name:"Autre / Personnalisé",stars:0,distance:0,walking:0,transport:"walking",shuttle:false,shuttle24:false,custom:true},
 ];
@@ -1272,8 +1272,8 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
     ...hotelsDetail.flatMap(x=>[
-      'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.walking>0?' <span class="h-dist">· '+x.mk.walking+' min à pied</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette incluse</span>':''),
-      'Médine'+(nuitsMedine?' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(x.md.walking>0?' <span class="h-dist">· '+x.md.walking+' min à pied</span>':'')+(x.md.transport==='shuttle'?' <span class="h-dist">· navette incluse</span>':''),
+      'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.stars>0?' <span class="h-dist">'+x.mk.stars+'★</span>':'')+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.walking>0?' <span class="h-dist">· '+x.mk.walking+' min à pied</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette disponible</span>':''),
+'Médine'+(nuitsMedine?' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.md.name+'</span>'+(x.md.stars>0?' <span class="h-dist">'+x.md.stars+'★</span>':'')+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(x.md.walking>0?' <span class="h-dist">· '+x.md.walking+' min à pied</span>':'')+(x.md.transport==='shuttle'?' <span class="h-dist">· navette disponible</span>':''),
     ]),
     ...lignesNotes
   ];
