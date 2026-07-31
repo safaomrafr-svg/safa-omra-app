@@ -1272,8 +1272,8 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
     ...hotelsDetail.flatMap(x=>[
-      'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette</span>':' <span class="h-dist">· '+x.mk.walking+' min à pied</span>'),
-      'Médine'+(nuitsMedine?' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(x.md.transport==='shuttle'?' <span class="h-dist">· navette</span>':' <span class="h-dist">· '+x.md.walking+' min à pied</span>'),
+      'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.walking>0?' <span class="h-dist">· '+x.mk.walking+' min à pied</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette incluse</span>':''),
+      'Médine'+(nuitsMedine?' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.md.name+'</span>'+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(x.md.walking>0?' <span class="h-dist">· '+x.md.walking+' min à pied</span>':'')+(x.md.transport==='shuttle'?' <span class="h-dist">· navette incluse</span>':''),
     ]),
     ...lignesNotes
   ];
