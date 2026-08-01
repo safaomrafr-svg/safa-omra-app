@@ -643,9 +643,7 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
                 <label for="dv-vol-compagnie" style="margin-top:8px;">Compagnie aérienne</label>
                 <select id="dv-vol-compagnie">
                   <option value="">— Non précisée —</option>
-                  <option value="Saudia (Saudi Arabian Airlines)">Saudia (Saudi Arabian Airlines)</option>
-                  <option value="flynas">flynas</option>
-                  <option value="flyadeal">flyadeal</option>
+                  <option value="Saudia Airlines">Saudia Airlines</option>
                   <option value="Air Arabia">Air Arabia</option>
                   <option value="Royal Air Maroc">Royal Air Maroc</option>
                   <option value="Air Jordanian">Air Jordanian</option>
@@ -1269,16 +1267,16 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
       return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
     })();
     const lignesBagage = (function(){
-      if(!volInclus) return [];
-      const compSel=document.getElementById('dv-vol-compagnie').value;
-      const compagnie=compSel==='Autre'?(document.getElementById('dv-vol-compagnie-autre').value.trim()||''):compSel;
-      if(compagnie==='Turkish Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 10 kilo par personne — escale à Istanbul'];
-      if(compagnie==='Air Jordanian') return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kilo par personne — escale à Amann'];
-      if(compagnie==='Qatar Airways') return ['Franchise bagage : 30 kg + 1 bagage cabine de 10 kilo par personne — escale à Doha'];
-      if(compagnie==='Saudia (Saudi Arabian Airlines') return ['Franchise bagage : 1×23 kg en soute + 1 bagage cabine de 7 kilo — escale à Djeddah']
-      if(compagnie==='flynas'||compagnie==='flyadeal'||compagnie==='Air Arabia'||compagnie==='Royal Air Maroc'||compagnie==='Air Algérie'||compagnie==='Turkish Airlines'||compagnie==='Emirates'||compagnie==='Air France') return ['Franchise bagage : 1×23 kg en soute + 1 bagage cabine'];
-      return [];
-    })();
+  if(!volInclus) return [];
+  const compSel=document.getElementById('dv-vol-compagnie').value;
+  const compagnie=compSel==='Autre'?(document.getElementById('dv-vol-compagnie-autre').value.trim()||''):compSel;
+  if(compagnie==='Turkish Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 10 kg par personne — escale à Istanbul'];
+  if(compagnie==='Air Jordanian') return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg par personne — escale à Amman'];
+  if(compagnie==='Qatar Airways') return ['Franchise bagage : 30 kg + 1 bagage cabine de 10 kg par personne — escale à Doha'];
+  if(compagnie==='Saudia Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 7 kg — vol direct'];
+  if(compagnie==='flynas'||compagnie==='flyadeal'||compagnie==='Air Arabia'||compagnie==='Royal Air Maroc'||compagnie==='Air Algérie'||compagnie==='Emirates'||compagnie==='Air France') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine'];
+  return [];
+})();
     const isPerso = dvCurrentCode()==='PERSO';
     const lignesIhram = isPerso ? ['Ihram offert (inclus dans le pack Omra personnalisée)'] : [];
     const lignesDetail=[
