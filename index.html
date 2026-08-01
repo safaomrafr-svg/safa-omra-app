@@ -1267,14 +1267,28 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
       return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
     })();
     const lignesBagage = (function(){
-  if(!volInclus) return [];
-  const compSel=document.getElementById('dv-vol-compagnie').value;
-  const compagnie=compSel==='Autre'?(document.getElementById('dv-vol-compagnie-autre').value.trim()||''):compSel;
-  if(compagnie==='Turkish Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 10 kg par personne — escale à Istanbul'];
-  if(compagnie==='Air Jordanian') return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg — escale à Amman'];
-  if(compagnie==='Qatar Airways') return ['Franchise bagage : 30 kg + 1 bagage cabine de 10 kg par personne — escale à Doha'];
-  if(compagnie==='Saudia Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 7 kg — escale à Djeddah'];
-  if(compagnie==='flynas'||compagnie==='flyadeal'||compagnie==='Air Arabia'||compagnie==='Royal Air Maroc'||compagnie==='Air Algérie'||compagnie==='Emirates'||compagnie==='Air France') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine'];
+  if (!volInclus) return [];
+
+  const compSel = document.getElementById('dv-vol-compagnie').value;
+  const compagnie = compSel === 'Autre'
+    ? (document.getElementById('dv-vol-compagnie-autre').value.trim() || '')
+    : compSel;
+
+  if (compagnie === 'Turkish Airlines')
+    return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 10 kg par personne<br><span class="dv-note">✈️ Escale à Istanbul</span>'];
+
+  if (compagnie === 'Air Jordanian')
+    return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg<br><span class="dv-note">✈️ Escale à Amman</span>'];
+
+  if (compagnie === 'Qatar Airways')
+    return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg par personne<br><span class="dv-note">✈️ Escale à Doha</span>'];
+
+  if (compagnie === 'Saudia Airlines')
+    return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 7 kg<br><span class="dv-note">✈️ Escale à Djeddah</span>'];
+
+  if (['flynas','flyadeal','Air Arabia','Royal Air Maroc','Air Algérie','Emirates','Air France'].includes(compagnie))
+    return ['Franchise bagage : 23 kg en soute + 1 bagage cabine'];
+
   return [];
 })();
     const isPerso = dvCurrentCode()==='PERSO';
