@@ -1268,18 +1268,34 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
       const compLabel=compagnie?' avec <strong>'+compagnie+'</strong>':'';
       return ['Vols aller et retour au départ de <strong>'+ville+'</strong>'+compLabel];
     })();
+    const lignesBagage = (function(){
+      if(!volInclus) return [];
+      const compSel=document.getElementById('dv-vol-compagnie').value;
+      const compagnie=compSel==='Autre'?(document.getElementById('dv-vol-compagnie-autre').value.trim()||''):compSel;
+      if(compagnie==='Turkish Airlines') return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 10 kilo par personne — escale à Istanbul'];
+      if(compagnie==='Air Jordanian') return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kilo par personne — escale à Amann'];
+      if(compagnie==='Qatar Airways') return ['Franchise bagage : 30 kg + 1 bagage cabine de 10 kilo par personne — escale à Doha'];
+      if(compagnie==='Saudia (Saudi Arabian Airlines') return ['Franchise bagage : 1×23 kg en soute + 1 bagage cabine de 7 kilo — escale à Djeddah']
+      if(compagnie==='flynas'||compagnie==='flyadeal'||compagnie==='Air Arabia'||compagnie==='Royal Air Maroc'||compagnie==='Air Algérie'||compagnie==='Turkish Airlines'||compagnie==='Emirates'||compagnie==='Air France') return ['Franchise bagage : 1×23 kg en soute + 1 bagage cabine'];
+      return [];
+    })();
+    const isPerso = dvCurrentCode()==='PERSO';
+    const lignesIhram = isPerso ? ['Ihram offert (inclus dans le pack Omra personnalisée)'] : [];
     const lignesDetail=[
     ...lignesVol,
+    ...lignesBagage,
     'Transport et transferts aéroport inclus',
     'Visa Omra inclus',
     'Guide et accompagnement inclus',
+    'Programme de visites des lieux saints inclus',
+    'Cours sur la Omra (théorie et pratique inclus)',
+    ...lignesIhram,
     ...hotelsDetail.flatMap(x=>[
       'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.stars>0?' <span class="h-dist">'+x.mk.stars+'★</span>':'')+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.walking>0?' <span class="h-dist">· '+x.mk.walking+' min à pied</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette disponible</span>':''),
 'Médine'+(nuitsMedine?' — <strong>'+nuitsMedine+' nuit'+(nuitsMedine>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.md.name+'</span>'+(x.md.stars>0?' <span class="h-dist">'+x.md.stars+'★</span>':'')+(x.md.dist?' <span class="h-dist">('+x.md.dist+')</span>':'')+(x.md.walking>0?' <span class="h-dist">· '+x.md.walking+' min à pied</span>':'')+(x.md.transport==='shuttle'?' <span class="h-dist">· navette disponible</span>':''),
     ]),
     ...lignesNotes
   ];
-
   const detailBox=document.getElementById('dv-out-detail');
   detailBox.style.display='block';
   detailBox.innerHTML='<h5>Prestations et hébergements inclus</h5><ul class="dv-detail-list">'+lignesDetail.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
