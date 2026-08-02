@@ -1616,8 +1616,34 @@ function dvOuvrirModalConfirmation() {
     const item = r.closest('.conf-voyage-item');
     if (item) item.classList.toggle('selected', r.value === autoKey);
   });
+// Adapter le modal selon si c'est PERSO ou non
+const isPerso = code === 'PERSO';
 
-  document.getElementById('conf-modal').classList.add('open');
+// Cacher/montrer la liste des plannings
+document.querySelector('.conf-voyages-list').style.display = isPerso ? 'none' : 'block';
+
+// Cacher/montrer le titre "Sélectionnez le planning"
+const lastSection = document.querySelector('.conf-modal-body .conf-section:last-of-type');
+if (lastSection) lastSection.style.display = isPerso ? 'none' : 'block';
+
+// Adapter le message d'alerte
+const alertBox = document.querySelector('.conf-alert');
+if (alertBox) {
+  alertBox.innerHTML = isPerso
+    ? '💡 <strong>Omra personnalisée</strong> — les données du devis seront pré-remplies dans le formulaire.<br>Il restera à saisir les informations voyageurs (passeports, dates de naissance…) et le versement.'
+    : '💡 <strong>Le formulaire s\'ouvrira avec le voyage et les hôtels pré-chargés.</strong><br>Il restera à saisir les données voyageurs (passeports, dates de naissance…) et le versement.';
+}
+
+// Adapter le texte du bouton
+const btnConf = document.querySelector('.conf-btn-primary');
+if (btnConf) {
+  btnConf.textContent = isPerso
+    ? '✅ Ouvrir le formulaire Omra personnalisée'
+    : '✅ Ouvrir le formulaire de confirmation';
+}
+
+document.getElementById('conf-modal').classList.add('open');
+ 
 }
 
 function dvLancerConfirmation() {
