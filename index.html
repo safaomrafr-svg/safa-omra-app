@@ -974,6 +974,74 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
   </div>
 </div>
 
+  <!-- ══ MODAL CONFIRMATION ══ -->
+<div class="conf-modal-overlay" id="conf-modal">
+  <div class="conf-modal">
+    <div class="conf-modal-header">
+      <h3>✅ Convertir en confirmation de réservation</h3>
+      <div class="conf-sub">Ouvre le formulaire Apps Script avec les données du devis pré-remplies</div>
+    </div>
+    <div class="conf-modal-body">
+      <div class="conf-alert">
+        💡 <strong>Le formulaire de confirmation s'ouvrira avec le voyage et les hôtels pré-chargés.</strong><br>
+        Il restera à saisir les données voyageurs (passeports, dates de naissance…) et le versement.
+      </div>
+      <div class="conf-recap-box">
+        <div class="conf-recap-total" id="conf-recap-total">—</div>
+        <div class="conf-recap-label" id="conf-recap-label">Total devis</div>
+      </div>
+      <div class="conf-section">
+        <div class="conf-section-title">Récapitulatif du devis</div>
+        <div class="conf-row"><span class="cl">Client</span><span class="cv" id="conf-info-nom">—</span></div>
+        <div class="conf-row"><span class="cl">Voyage</span><span class="cv" id="conf-info-voyage">—</span></div>
+        <div class="conf-row"><span class="cl">Formule</span><span id="conf-info-formule">—</span></div>
+        <div class="conf-row"><span class="cl">Dates</span><span class="cv" id="conf-info-dates">—</span></div>
+        <div class="conf-row"><span class="cl">Hôtel Mekkah</span><span class="cv" id="conf-info-hotel-mk">—</span></div>
+        <div class="conf-row"><span class="cl">Hôtel Médine</span><span class="cv" id="conf-info-hotel-md">—</span></div>
+        <div class="conf-row"><span class="cl">Voyageurs</span><span class="cv" id="conf-info-voy">—</span></div>
+        <div class="conf-row"><span class="cl">Montant total</span><span class="cv" id="conf-info-total">—</span></div>
+      </div>
+      <div class="conf-section">
+        <div class="conf-section-title">Sélectionnez le planning à charger</div>
+        <div class="conf-voyages-list">
+          <label class="conf-voyage-item selected" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="oct26" checked>
+            <div>
+              <div class="conf-voyage-name">🍂 Octobre 2026</div>
+              <div class="conf-voyage-sub">Omra confort octobre 2026 / omra Eco octobre 2026</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="dec26">
+            <div>
+              <div class="conf-voyage-name">❄️ Décembre 2026</div>
+              <div class="conf-voyage-sub">Omra Confort decembre 2026 / Omra Eco decembre 2026</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="sha27">
+            <div>
+              <div class="conf-voyage-name">🌙 Chaabane 2027</div>
+              <div class="conf-voyage-sub">Omra Confort Chaabane 2027 / Omra Eco Chaabane 2027</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="ram27">
+            <div>
+              <div class="conf-voyage-name">⭐ Ramadan 2027</div>
+              <div class="conf-voyage-sub">Omra Confort Ramadan 2027 / Omra Eco Ramadan 2027</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="conf-modal-actions">
+      <button class="conf-btn-secondary" onclick="document.getElementById('conf-modal').classList.remove('open')">Annuler</button>
+      <button class="conf-btn-primary" onclick="dvLancerConfirmation()">✅ Ouvrir le formulaire de confirmation</button>
+    </div>
+  </div>
+</div> 
+  
 <script>
 /* ════ 0. NAV ════ */
 function switchTab(name){
@@ -1472,9 +1540,12 @@ const DV_CONF_PLANNINGS = {
 
 document.getElementById('dv-btn-confirmation').addEventListener('click', dvOuvrirModalConfirmation);
 
-document.getElementById('conf-modal').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
-});
+const confModal = document.getElementById('conf-modal');
+if (confModal) {
+  confModal.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+}
 
 function dvSelectConfVoyage(labelEl) {
   document.querySelectorAll('.conf-voyage-item').forEach(el => el.classList.remove('selected'));
@@ -1587,73 +1658,7 @@ try {
 }
 </script>
 
- <!-- ══ MODAL CONFIRMATION ══ -->
-<div class="conf-modal-overlay" id="conf-modal">
-  <div class="conf-modal">
-    <div class="conf-modal-header">
-      <h3>✅ Convertir en confirmation de réservation</h3>
-      <div class="conf-sub">Ouvre le formulaire Apps Script avec les données du devis pré-remplies</div>
-    </div>
-    <div class="conf-modal-body">
-      <div class="conf-alert">
-        💡 <strong>Le formulaire de confirmation s'ouvrira avec le voyage et les hôtels pré-chargés.</strong><br>
-        Il restera à saisir les données voyageurs (passeports, dates de naissance…) et le versement.
-      </div>
-      <div class="conf-recap-box">
-        <div class="conf-recap-total" id="conf-recap-total">—</div>
-        <div class="conf-recap-label" id="conf-recap-label">Total devis</div>
-      </div>
-      <div class="conf-section">
-        <div class="conf-section-title">Récapitulatif du devis</div>
-        <div class="conf-row"><span class="cl">Client</span><span class="cv" id="conf-info-nom">—</span></div>
-        <div class="conf-row"><span class="cl">Voyage</span><span class="cv" id="conf-info-voyage">—</span></div>
-        <div class="conf-row"><span class="cl">Formule</span><span id="conf-info-formule">—</span></div>
-        <div class="conf-row"><span class="cl">Dates</span><span class="cv" id="conf-info-dates">—</span></div>
-        <div class="conf-row"><span class="cl">Hôtel Mekkah</span><span class="cv" id="conf-info-hotel-mk">—</span></div>
-        <div class="conf-row"><span class="cl">Hôtel Médine</span><span class="cv" id="conf-info-hotel-md">—</span></div>
-        <div class="conf-row"><span class="cl">Voyageurs</span><span class="cv" id="conf-info-voy">—</span></div>
-        <div class="conf-row"><span class="cl">Montant total</span><span class="cv" id="conf-info-total">—</span></div>
-      </div>
-      <div class="conf-section">
-        <div class="conf-section-title">Sélectionnez le planning à charger</div>
-        <div class="conf-voyages-list">
-          <label class="conf-voyage-item selected" onclick="dvSelectConfVoyage(this)">
-            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="oct26" checked>
-            <div>
-              <div class="conf-voyage-name">🍂 Octobre 2026</div>
-              <div class="conf-voyage-sub">Omra confort octobre 2026 / omra Eco octobre 2026</div>
-            </div>
-          </label>
-          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
-            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="dec26">
-            <div>
-              <div class="conf-voyage-name">❄️ Décembre 2026</div>
-              <div class="conf-voyage-sub">Omra Confort decembre 2026 / Omra Eco decembre 2026</div>
-            </div>
-          </label>
-          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
-            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="sha27">
-            <div>
-              <div class="conf-voyage-name">🌙 Chaabane 2027</div>
-              <div class="conf-voyage-sub">Omra Confort Chaabane 2027 / Omra Eco Chaabane 2027</div>
-            </div>
-          </label>
-          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
-            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="ram27">
-            <div>
-              <div class="conf-voyage-name">⭐ Ramadan 2027</div>
-              <div class="conf-voyage-sub">Omra Confort Ramadan 2027 / Omra Eco Ramadan 2027</div>
-            </div>
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="conf-modal-actions">
-      <button class="conf-btn-secondary" onclick="document.getElementById('conf-modal').classList.remove('open')">Annuler</button>
-      <button class="conf-btn-primary" onclick="dvLancerConfirmation()">✅ Ouvrir le formulaire de confirmation</button>
-    </div>
-  </div>
-</div> 
+ 
   
 </body>
 </html>
