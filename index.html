@@ -495,6 +495,39 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
 }
 .dv-voy-pill.zero { opacity: .35; }
 
+/* ── Modal Confirmation ── */
+.conf-modal-overlay { display:none; position:fixed; inset:0; background:rgba(43,38,32,.5); z-index:300; align-items:center; justify-content:center; padding:16px; }
+.conf-modal-overlay.open { display:flex; }
+.conf-modal { background:#fff; border-radius:16px; max-width:640px; width:100%; max-height:90vh; overflow-y:auto; padding:0; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+.conf-modal-header { background:var(--emerald); color:#fff; padding:20px 24px 16px; border-radius:16px 16px 0 0; }
+.conf-modal-header h3 { font-family:"Fraunces",serif; font-size:17px; font-weight:600; margin:0 0 3px; }
+.conf-modal-header .conf-sub { font-size:12px; opacity:.7; }
+.conf-modal-body { padding:20px 24px; }
+.conf-section { margin-bottom:16px; }
+.conf-section-title { font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--or-m); margin-bottom:8px; }
+.conf-row { display:flex; justify-content:space-between; align-items:baseline; padding:4px 0; border-bottom:1px solid #f0ead9; font-size:13px; }
+.conf-row:last-child { border-bottom:none; }
+.conf-row .cl { color:#6b6355; }
+.conf-row .cv { font-weight:600; color:var(--ink); }
+.conf-badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+.conf-badge.confort { background:#E6F1FB; color:#185FA5; }
+.conf-badge.eco { background:var(--vert-l); color:var(--emerald-deep); }
+.conf-badge.perso { background:#EEE8FE; color:#7B61D9; }
+.conf-recap-box { background:var(--vert-l); border:1.5px solid #b2dcc8; border-radius:10px; padding:12px 16px; margin-bottom:16px; }
+.conf-recap-total { font-family:"Fraunces",serif; font-size:24px; font-weight:700; color:var(--emerald-deep); }
+.conf-recap-label { font-size:11px; color:#4a8a6a; font-weight:600; text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+.conf-voyages-list { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.conf-voyage-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; background:#fdfcf9; transition:border-color .15s, background .15s; }
+.conf-voyage-item:hover { border-color:var(--emerald); background:#f0f8f4; }
+.conf-voyage-item.selected { border-color:var(--emerald); background:#f0f8f4; }
+.conf-voyage-radio { width:16px; height:16px; accent-color:var(--emerald); flex-shrink:0; }
+.conf-voyage-name { font-size:13px; font-weight:600; color:var(--ink); }
+.conf-voyage-sub { font-size:11px; color:var(--txt2); margin-top:1px; }
+.conf-alert { background:#FFF8E1; border:1px solid #FFD54F; border-radius:8px; padding:10px 14px; font-size:12px; color:#7B5800; margin-bottom:16px; line-height:1.5; }
+.conf-modal-actions { display:flex; gap:8px; padding:0 24px 20px; }
+.conf-btn-primary { flex:1; background:var(--emerald); color:#fff; border:none; border-radius:9px; padding:12px; font-size:13.5px; font-weight:600; cursor:pointer; font-family:"Inter",sans-serif; transition:background .15s; }
+.conf-btn-primary:hover { background:var(--emerald-deep); }
+.conf-btn-secondary { background:#fff; border:1.5px solid var(--border2); color:#6b6355; border-radius:9px; padding:12px 16px; font-size:12.5px; cursor:pointer; }
   
 @media print {
   .topbar,.tab-bar,.dv-panel,.dv-print-bar,.dv-modal-overlay,.info-bar,.breadcrumb { display:none !important; }
@@ -825,8 +858,9 @@ table.dv-price tr.supp td { font-style:italic; color:#544c3d; }
       <!-- APERÇU -->
       <div class="dv-preview-wrap">
         <div class="dv-print-bar">
-          <button id="dv-btn-print">🖨️ Imprimer / PDF</button>
+         <button id="dv-btn-print">🖨️ Imprimer / PDF</button>
           <button id="dv-btn-logo" class="ghost">🖼️ Logo</button>
+          <button id="dv-btn-confirmation" style="background:var(--emerald);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">✅ → Confirmation</button>
         </div>
         <input type="file" id="dv-logo-input" accept="image/*" style="display:none;">
         <div class="dv-devis" id="dv-doc">
@@ -1427,7 +1461,105 @@ document.getElementById('dv-btn-close-tarifs').addEventListener('click',()=>{DV_
 document.getElementById('dv-btn-save-tarifs').addEventListener('click',()=>{dvSaveConfig(DV_CFG);document.getElementById('dv-modal-tarifs').classList.remove('open');dvAppliquerTarifs();dvRender();});
 document.getElementById('dv-modal-tarifs').addEventListener('click',e=>{if(e.target.id==='dv-modal-tarifs'){DV_CFG=dvLoadConfig();document.getElementById('dv-modal-tarifs').classList.remove('open');}});
 
-/* ════ 11. INIT ════ */
+/* ════ CONFIRMATION DEVIS → FORMULAIRE APPS SCRIPT ════ */
+const DV_CONF_URL = 'https://script.google.com/macros/s/AKfycbzHWN15wIQaygB7UlIRSjvnlJxlSf1VU0LS0tv6tCHchX6BJuFsfsVarcLQOEasBQexug/exec';
+const DV_CONF_PLANNINGS = {
+  oct26: { id:'1L-SlQO_gKvd5Urt3QA51-zSjQIMsdGEvceh4ge-RDeA', confort:'Omra%20confort%20octobre%202026', eco:'omra%20Eco%20octobre%202026' },
+  dec26: { id:'1N5zXTIq44_r_ORmH2lZpn7O528-4Dwi5fDjoIkc_eZg', confort:'Omra%20Confort%20decembre%202026', eco:'Omra%20Eco%20decembre%202026' },
+  sha27: { id:'17z6AtIee59vYWU9BVWIww2xq1QqZbulxJZbyrUEapb4', confort:'Omra%20Confort%20Chaabane%202027', eco:'Omra%20Eco%20Chaabane%202027' },
+  ram27: { id:'1n8bcvZnD1933k2RsYUh9f5MkSfosxdikISYO_-HcI0M', confort:'Omra%20Confort%20Ramadan%202027', eco:'Omra%20Eco%20Ramadan%202027' }
+};
+
+document.getElementById('dv-btn-confirmation').addEventListener('click', dvOuvrirModalConfirmation);
+
+document.getElementById('conf-modal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+function dvSelectConfVoyage(labelEl) {
+  document.querySelectorAll('.conf-voyage-item').forEach(el => el.classList.remove('selected'));
+  labelEl.classList.add('selected');
+}
+
+function dvOuvrirModalConfirmation() {
+  const nom    = document.getElementById('dv-nom').value || '—';
+  const voyVal = document.getElementById('dv-voyage').value;
+  const [code, voyageLabel] = voyVal.split('|');
+  const formule     = document.getElementById('dv-formule').value;
+  const depart      = document.getElementById('dv-depart').value;
+  const retour      = document.getElementById('dv-retour').value;
+  const nuitsMekkah = document.getElementById('dv-nuits-mekkah').value || '0';
+  const nuitsMedine = document.getElementById('dv-nuits-medine').value || '0';
+  const totalTxt    = document.getElementById('dv-out-total').textContent;
+
+  // Hôtels (1er pack chambre)
+  let hotelMk = '—', hotelMd = '—';
+  if (dvChambres.length > 0) {
+    const c = dvChambres[0];
+    const mkE = DV_HOTELS_MEKKAH.find(h => h.name === c.hotelMekkah);
+    const mdE = DV_HOTELS_MEDINE.find(h => h.name === c.hotelMedine);
+    hotelMk = mkE && !mkE.custom ? mkE.name : (c.customMekkahName || c.hotelMekkah || '—');
+    hotelMd = mdE && !mdE.custom ? mdE.name : (c.customMedineName || c.hotelMedine || '—');
+  }
+
+  // Voyageurs
+  const nbA  = Number(document.getElementById('dv-q-adulte').value)     || 0;
+  const nbES = Number(document.getElementById('dv-q-enfant-sl').value)   || 0;
+  const nbEA = Number(document.getElementById('dv-q-enfant-al').value)   || 0;
+  const nbBS = Number(document.getElementById('dv-q-bebe-sl').value)     || 0;
+  const nbBA = Number(document.getElementById('dv-q-bebe-al').value)     || 0;
+  const nbTotal = nbA + nbES + nbEA + nbBS + nbBA;
+
+  const parts = [];
+  if (nbA  > 0) parts.push(nbA  + ' adulte'  + (nbA  > 1 ? 's' : ''));
+  if (nbES + nbEA > 0) parts.push((nbES + nbEA) + ' enfant' + ((nbES + nbEA) > 1 ? 's' : ''));
+  if (nbBS + nbBA > 0) parts.push((nbBS + nbBA) + ' bébé'   + ((nbBS + nbBA) > 1 ? 's' : ''));
+  const voyStr = nbTotal + ' voyageur' + (nbTotal > 1 ? 's' : '') + (parts.length ? ' (' + parts.join(', ') + ')' : '');
+
+  function fmtD(iso) {
+    if (!iso) return '—';
+    const [y, m, d] = iso.split('-');
+    return d + '/' + m + '/' + y;
+  }
+
+  // Remplir le modal
+  document.getElementById('conf-info-nom').textContent      = nom;
+  document.getElementById('conf-info-voyage').textContent   = voyageLabel || code || '—';
+  document.getElementById('conf-info-dates').textContent    = fmtD(depart) + ' → ' + fmtD(retour);
+  document.getElementById('conf-info-hotel-mk').textContent = hotelMk + (Number(nuitsMekkah) > 0 ? ' · ' + nuitsMekkah + ' nuits' : '');
+  document.getElementById('conf-info-hotel-md').textContent = hotelMd + (Number(nuitsMedine) > 0 ? ' · ' + nuitsMedine + ' nuits' : '');
+  document.getElementById('conf-info-voy').textContent      = voyStr;
+  document.getElementById('conf-info-total').textContent    = totalTxt;
+  document.getElementById('conf-recap-total').textContent   = totalTxt;
+  document.getElementById('conf-recap-label').textContent   = voyStr;
+
+  const badgeClass = formule === 'Confort' ? 'confort' : formule === 'Éco' ? 'eco' : 'perso';
+  document.getElementById('conf-info-formule').innerHTML =
+    '<span class="conf-badge ' + badgeClass + '">Formule ' + formule + '</span>';
+
+  // Auto-sélection voyage
+  const codeMap = { 'OCT26':'oct26', 'DEC26':'dec26', 'CHA27':'sha27', 'RAM27':'ram27' };
+  const autoKey = codeMap[code] || 'oct26';
+  document.querySelectorAll('input[name="conf-voyage"]').forEach(r => {
+    r.checked = (r.value === autoKey);
+    const item = r.closest('.conf-voyage-item');
+    if (item) item.classList.toggle('selected', r.value === autoKey);
+  });
+
+  document.getElementById('conf-modal').classList.add('open');
+}
+
+function dvLancerConfirmation() {
+  const sel = document.querySelector('input[name="conf-voyage"]:checked');
+  if (!sel) { alert('Sélectionnez un voyage.'); return; }
+  const p = DV_CONF_PLANNINGS[sel.value];
+  if (!p) { alert('Planning introuvable.'); return; }
+  const url = DV_CONF_URL + '?planning_id=' + p.id + '&onglet_confort=' + p.confort + '&onglet_eco=' + p.eco;
+  document.getElementById('conf-modal').classList.remove('open');
+  window.open(url, '_blank');
+}
+  
+  /* ════ 11. INIT ════ */
 // Sécurité splash — déclaré AVANT jsonp
 document.getElementById('dv-ref').value = dvRandRef();
 document.getElementById('dv-date').value = dvToday();
@@ -1456,5 +1588,74 @@ jsonp("api=stats")
     setTimeout(function(){ sp.style.display='none'; }, 400);
   });
 </script>
+
+ <!-- ══ MODAL CONFIRMATION ══ -->
+<div class="conf-modal-overlay" id="conf-modal">
+  <div class="conf-modal">
+    <div class="conf-modal-header">
+      <h3>✅ Convertir en confirmation de réservation</h3>
+      <div class="conf-sub">Ouvre le formulaire Apps Script avec les données du devis pré-remplies</div>
+    </div>
+    <div class="conf-modal-body">
+      <div class="conf-alert">
+        💡 <strong>Le formulaire de confirmation s'ouvrira avec le voyage et les hôtels pré-chargés.</strong><br>
+        Il restera à saisir les données voyageurs (passeports, dates de naissance…) et le versement.
+      </div>
+      <div class="conf-recap-box">
+        <div class="conf-recap-total" id="conf-recap-total">—</div>
+        <div class="conf-recap-label" id="conf-recap-label">Total devis</div>
+      </div>
+      <div class="conf-section">
+        <div class="conf-section-title">Récapitulatif du devis</div>
+        <div class="conf-row"><span class="cl">Client</span><span class="cv" id="conf-info-nom">—</span></div>
+        <div class="conf-row"><span class="cl">Voyage</span><span class="cv" id="conf-info-voyage">—</span></div>
+        <div class="conf-row"><span class="cl">Formule</span><span id="conf-info-formule">—</span></div>
+        <div class="conf-row"><span class="cl">Dates</span><span class="cv" id="conf-info-dates">—</span></div>
+        <div class="conf-row"><span class="cl">Hôtel Mekkah</span><span class="cv" id="conf-info-hotel-mk">—</span></div>
+        <div class="conf-row"><span class="cl">Hôtel Médine</span><span class="cv" id="conf-info-hotel-md">—</span></div>
+        <div class="conf-row"><span class="cl">Voyageurs</span><span class="cv" id="conf-info-voy">—</span></div>
+        <div class="conf-row"><span class="cl">Montant total</span><span class="cv" id="conf-info-total">—</span></div>
+      </div>
+      <div class="conf-section">
+        <div class="conf-section-title">Sélectionnez le planning à charger</div>
+        <div class="conf-voyages-list">
+          <label class="conf-voyage-item selected" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="oct26" checked>
+            <div>
+              <div class="conf-voyage-name">🍂 Octobre 2026</div>
+              <div class="conf-voyage-sub">Omra confort octobre 2026 / omra Eco octobre 2026</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="dec26">
+            <div>
+              <div class="conf-voyage-name">❄️ Décembre 2026</div>
+              <div class="conf-voyage-sub">Omra Confort decembre 2026 / Omra Eco decembre 2026</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="sha27">
+            <div>
+              <div class="conf-voyage-name">🌙 Chaabane 2027</div>
+              <div class="conf-voyage-sub">Omra Confort Chaabane 2027 / Omra Eco Chaabane 2027</div>
+            </div>
+          </label>
+          <label class="conf-voyage-item" onclick="dvSelectConfVoyage(this)">
+            <input type="radio" name="conf-voyage" class="conf-voyage-radio" value="ram27">
+            <div>
+              <div class="conf-voyage-name">⭐ Ramadan 2027</div>
+              <div class="conf-voyage-sub">Omra Confort Ramadan 2027 / Omra Eco Ramadan 2027</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="conf-modal-actions">
+      <button class="conf-btn-secondary" onclick="document.getElementById('conf-modal').classList.remove('open')">Annuler</button>
+      <button class="conf-btn-primary" onclick="dvLancerConfirmation()">✅ Ouvrir le formulaire de confirmation</button>
+    </div>
+  </div>
+</div> 
+  
 </body>
 </html>
