@@ -1621,12 +1621,39 @@ function dvOuvrirModalConfirmation() {
 }
 
 function dvLancerConfirmation() {
+  const code = dvCurrentCode();
+  document.getElementById('conf-modal').classList.remove('open');
+
+  // ── Omra personnalisée ──
+  if (code === 'PERSO') {
+    const devisData = {
+      formuleKey  : 'perso',
+      nomVoyage   : document.getElementById('dv-nom').value || '',
+      dateDepart  : document.getElementById('dv-depart').value,
+      dateRetour  : document.getElementById('dv-retour').value,
+      sansVol     : !document.getElementById('dv-vol').checked,
+      hotelMakka  : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Mekkah').name : '',
+      nuitsMakka  : document.getElementById('dv-nuits-mekkah').value,
+      hotelMedine : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Medine').name : '',
+      nuitsMedine : document.getElementById('dv-nuits-medine').value,
+      prixPers    : document.getElementById('dv-p-adulte').value,
+      remarques   : document.getElementById('dv-notes').value,
+      ref         : document.getElementById('dv-ref').value,
+    };
+
+    const json = JSON.stringify(devisData);
+    const b64  = btoa(unescape(encodeURIComponent(json)));
+    const url  = DV_CONF_URL + '?devis=' + b64;
+    window.open(url, '_blank');
+    return;
+  }
+
+  // ── Voyages classiques ──
   const sel = document.querySelector('input[name="conf-voyage"]:checked');
   if (!sel) { alert('Sélectionnez un voyage.'); return; }
   const p = DV_CONF_PLANNINGS[sel.value];
   if (!p) { alert('Planning introuvable.'); return; }
   const url = DV_CONF_URL + '?planning_id=' + p.id + '&onglet_confort=' + p.confort + '&onglet_eco=' + p.eco;
-  document.getElementById('conf-modal').classList.remove('open');
   window.open(url, '_blank');
 }
   
