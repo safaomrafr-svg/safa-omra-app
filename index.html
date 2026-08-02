@@ -1383,7 +1383,7 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
     return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg<br><span class="dv-note">✈️ Escale à Amman</span>'];
 
   if (compagnie === 'Qatar Airways')
-    return ['Franchise bagage : 30 kg en soute + 1 bagage cabine de 10 kg par personne<br><span class="dv-note">✈️ Escale à Doha</span>'];
+    return ['Franchise bagage : 25 kg en soute + 1 bagage cabine de 7 kg par personne<br><span class="dv-note">✈️ Escale à Doha</span>'];
 
   if (compagnie === 'Saudia Airlines')
     return ['Franchise bagage : 23 kg en soute + 1 bagage cabine de 7 kg<br><span class="dv-note">✈️ Escale à Djeddah</span>'];
@@ -1399,10 +1399,10 @@ document.getElementById('dv-out-chambre').innerHTML = '<div style="display:flex;
     ...lignesVol,
     ...lignesBagage,
     'Transport et transferts aéroport inclus',
-    'Visa Omra inclus',
-    'Guide et accompagnement inclus',
-    'Programme de visites des lieux saints inclus',
-    'Cours sur la Omra (théorie et pratique inclus)',
+    'Visa inclus',
+    'Guide omra inclus',
+    'Visites des lieux légiférés inclus',
+    'Cours sur la Omra',
     ...lignesIhram,
     ...hotelsDetail.flatMap(x=>[
       'Mekkah'+(nuitsMekkah?' — <strong>'+nuitsMekkah+' nuit'+(nuitsMekkah>1?'s':'')+'</strong>':'')+' à <span class="h-name">'+x.mk.name+'</span>'+(x.mk.stars>0?' <span class="h-dist">'+x.mk.stars+'★</span>':'')+(x.mk.dist?' <span class="h-dist">('+x.mk.dist+')</span>':'')+(x.mk.walking>0?' <span class="h-dist">· '+x.mk.walking+' min à pied</span>':'')+(x.mk.transport==='shuttle'?' <span class="h-dist">· navette disponible</span>':''),
