@@ -1651,21 +1651,24 @@ function dvLancerConfirmation() {
   document.getElementById('conf-modal').classList.remove('open');
 
   // ── Omra personnalisée ──
-  if (code === 'PERSO') {
-    const devisData = {
-      formuleKey  : 'perso',
-      nomVoyage   : document.getElementById('dv-nom').value || '',
-      dateDepart  : document.getElementById('dv-depart').value,
-      dateRetour  : document.getElementById('dv-retour').value,
-      sansVol     : !document.getElementById('dv-vol').checked,
-      hotelMakka  : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Mekkah').name : '',
-      nuitsMakka  : document.getElementById('dv-nuits-mekkah').value,
-      hotelMedine : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Medine').name : '',
-      nuitsMedine : document.getElementById('dv-nuits-medine').value,
-      prixPers    : document.getElementById('dv-p-adulte').value,
-      remarques   : document.getElementById('dv-notes').value,
-      ref         : document.getElementById('dv-ref').value,
-    };
+if (code === 'PERSO') {
+  const depart = document.getElementById('dv-depart').value;
+  const departFR = depart ? depart.split('-').reverse().join('/') : '';
+  
+  const devisData = {
+    formuleKey  : 'perso',
+    nomVoyage   : 'Omra Personnalisée' + (departFR ? ' — ' + departFR : ''),
+    dateDepart  : depart,
+    dateRetour  : document.getElementById('dv-retour').value,
+    sansVol     : !document.getElementById('dv-vol').checked,
+    hotelMakka  : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Mekkah').name : '',
+    nuitsMakka  : document.getElementById('dv-nuits-mekkah').value,
+    hotelMedine : dvChambres[0] ? dvResolveHotelVille(dvChambres[0], 'Medine').name : '',
+    nuitsMedine : document.getElementById('dv-nuits-medine').value,
+    prixPers    : document.getElementById('dv-p-adulte').value,
+    remarques   : document.getElementById('dv-notes').value,
+    ref         : document.getElementById('dv-ref').value,
+  };
 
     const json = JSON.stringify(devisData);
     const b64  = btoa(unescape(encodeURIComponent(json)));
