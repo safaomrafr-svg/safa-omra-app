@@ -1,4 +1,4 @@
-const CACHE = 'safa-omra-v72';
+const CACHE = 'safa-omra-v73';
 
 // Chemins RELATIFS (restent dans /safa-omra-app/)
 const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
