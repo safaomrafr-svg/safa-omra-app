@@ -1559,34 +1559,40 @@ function dvLancerConfirmation() {
   window.open(url, '_blank');
 }
   
-  /* ════ 11. INIT ════ */
-// Sécurité splash — déclaré AVANT jsonp
+ /* ════ 11. INIT ════ */
 document.getElementById('dv-ref').value = dvRandRef();
 document.getElementById('dv-date').value = dvToday();
 dvRenderChambresForm();
 dvAppliquerTarifs();
 dvRender();
-const splashTimeout = setTimeout(function(){
-  const sp = document.getElementById('splash');
-  sp.style.opacity = '0';
-  setTimeout(function(){ sp.style.display='none'; }, 400);
-}, 5000);
 
-jsonp("api=stats")
-  .then(function(stats){
-    clearTimeout(splashTimeout);
-    renderVoyages(stats);
-    const sp = document.getElementById('splash');
-    sp.style.opacity = '0';
-    setTimeout(function(){ sp.style.display='none'; }, 400);
-  })
-  .catch(function(){
-    clearTimeout(splashTimeout);
-    renderVoyages({});
-    const sp = document.getElementById('splash');
-    sp.style.opacity = '0';
-    setTimeout(function(){ sp.style.display='none'; }, 400);
-  });
+function hideSplash() {
+  const sp = document.getElementById('splash');
+  if (!sp) return;
+  sp.style.opacity = '0';
+  setTimeout(function(){ sp.style.display = 'none'; }, 400);
+}
+
+// Splash disparaît dans tous les cas après 3 secondes
+const splashTimeout = setTimeout(hideSplash, 3000);
+
+try {
+  jsonp("api=stats")
+    .then(function(stats){
+      clearTimeout(splashTimeout);
+      renderVoyages(stats);
+      hideSplash();
+    })
+    .catch(function(){
+      clearTimeout(splashTimeout);
+      renderVoyages({});
+      hideSplash();
+    });
+} catch(e) {
+  clearTimeout(splashTimeout);
+  renderVoyages({});
+  hideSplash();
+}
 </script>
 
  <!-- ══ MODAL CONFIRMATION ══ -->
