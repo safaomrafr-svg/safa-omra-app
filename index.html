@@ -1908,7 +1908,7 @@ if (code === 'PERSO') {
   window.open(url, '_blank');
 }
   
- /* ════ 11. INIT ════ */
+/* ════ 11. INIT ════ */
 document.getElementById('dv-ref').value = dvRandRef();
 document.getElementById('dv-date').value = dvToday();
 
@@ -1919,21 +1919,19 @@ function hideSplash() {
   setTimeout(function(){ sp.style.display = 'none'; }, 400);
 }
 
-// Masque le splash EN PREMIER, immédiatement
+// Splash masqué dès que le DOM est prêt, sans attendre quoi que ce soit
 hideSplash();
 
-// Ensuite initialise le reste
-try { dvRenderChambresForm(); } catch(e) { console.error('chambres', e); }
-try { dvAppliquerTarifs(); } catch(e) { console.error('tarifs', e); }
-try { dvRender(); } catch(e) { console.error('render', e); }
-
-try {
-  jsonp("api=stats")
-    .then(function(stats){ renderVoyages(stats); })
-    .catch(function(){ renderVoyages({}); });
-} catch(e) {
-  renderVoyages({});
-}
+setTimeout(function() {
+  try { dvRenderChambresForm(); } catch(e) { console.error('chambres', e); }
+  try { dvAppliquerTarifs(); } catch(e) { console.error('tarifs', e); }
+  try { dvRender(); } catch(e) { console.error('render', e); }
+  try {
+    jsonp("api=stats")
+      .then(function(stats){ renderVoyages(stats); })
+      .catch(function(){ renderVoyages({}); });
+  } catch(e) { renderVoyages({}); }
+}, 0);
 </script>
 
  
