@@ -1919,10 +1919,7 @@ function hideSplash() {
   setTimeout(function(){ sp.style.display = 'none'; }, 400);
 }
 
-// Splash masqué dès que le DOM est prêt, sans attendre quoi que ce soit
-hideSplash();
-
-setTimeout(function() {
+window.addEventListener('load', function() {
   try { dvRenderChambresForm(); } catch(e) { console.error('chambres', e); }
   try { dvAppliquerTarifs(); } catch(e) { console.error('tarifs', e); }
   try { dvRender(); } catch(e) { console.error('render', e); }
@@ -1931,7 +1928,9 @@ setTimeout(function() {
       .then(function(stats){ renderVoyages(stats); })
       .catch(function(){ renderVoyages({}); });
   } catch(e) { renderVoyages({}); }
-}, 0);
+
+  hideSplash();
+});
 </script>
 
  
