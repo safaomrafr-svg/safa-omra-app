@@ -1919,7 +1919,7 @@ function hideSplash() {
   setTimeout(function(){ sp.style.display = 'none'; }, 400);
 }
 
-window.addEventListener('load', function() {
+function dvInit() {
   try { dvRenderChambresForm(); } catch(e) { console.error('chambres', e); }
   try { dvAppliquerTarifs(); } catch(e) { console.error('tarifs', e); }
   try { dvRender(); } catch(e) { console.error('render', e); }
@@ -1928,9 +1928,16 @@ window.addEventListener('load', function() {
       .then(function(stats){ renderVoyages(stats); })
       .catch(function(){ renderVoyages({}); });
   } catch(e) { renderVoyages({}); }
+}
 
+// Masquer le splash dans tous les cas après 300ms max
+setTimeout(function() {
+  dvInit();
   hideSplash();
-});
+}, 300);
+
+// Sécurité : si jamais encore visible après 2s, on force
+setTimeout(hideSplash, 2000);
 </script>
 
  
